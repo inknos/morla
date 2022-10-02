@@ -1,0 +1,18 @@
+- name: Open TCP ports for Jellyfin
+  become: yes
+  ansible.posix.firewalld:
+    port: "{{ item }}/tcp"
+    permanent: yes
+    state: enabled
+    immediate: true
+  loop: "{{ morla_jellyfin_fw_ports.tcp }}"
+
+      
+- name: Open UDP ports for Jellyfin
+  become: yes
+  ansible.posix.firewalld:
+    port: "{{ item }}/udp"
+    permanent: yes
+    state: enabled
+    immediate: true
+  loop: "{{ morla_jellyfin_fw_ports.udp }}"

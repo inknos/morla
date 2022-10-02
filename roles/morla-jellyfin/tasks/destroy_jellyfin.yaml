@@ -1,0 +1,4 @@
+- name: Destroy Jellyfin
+  containers.podman.podman_container:
+    name: "{{ morla_jellyfin_container_name }}"
+    state: absent

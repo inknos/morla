@@ -1,0 +1,4 @@
+- name: Destroy Wordle
+  containers.podman.podman_container:
+    name: "{{ morla_wordle_container_name }}"
+    state: absent

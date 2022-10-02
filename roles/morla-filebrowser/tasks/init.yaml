@@ -1,0 +1,66 @@
+---
+# - name: Add Filebrowser to the list of public domains
+#   ansible.builtin.set_fact:
+#     morla_public_domains: "{{ morla_public_domains + [ morla_filebrowser_public_url ] }}"
+
+# - name: Add Container to the list of Wireguard accessible containers
+#   ansible.builtin.set_fact:
+#     morla_wireguard_domains: "{{ morla_wireguard_domains + [ morla_filebrowser_short_name ] }}"
+
+- name: Add Container to the list of autostart containers
+  ansible.builtin.set_fact:
+    morla_systemd_autostart_containers: "{{ morla_systemd_autostart_containers + [ morla_filebrowser_container_name ] }}"
+
+- name: Check if Config dir exists
+  stat:
+    path: "{{ morla_filebrowser_config_dir }}"
+  register: check_filebrowser_config_dir
+
+- name: Create config directory
+  ansible.builtin.file:
+    path: "{{ morla_filebrowser_config_dir }}"
+    state: directory
+    owner: "{{ morla_user_username }}"
+    group: "{{ morla_user_groupname }}"
+  when: not check_filebrowser_config_dir.stat.exists
+
+- name: Check if database dir exists
+  stat:
+    path: "{{ morla_filebrowser_database_dir }}"
+  register: check_filebrowser_database_dir
+
+- name: Create database directory
+  ansible.builtin.file:
+    path: "{{ morla_filebrowser_database_dir }}"
+    state: directory
+    owner: "{{ morla_user_username }}"
+    group: "{{ morla_user_groupname }}"
+  when: not check_filebrowser_database_dir.stat.exists
+
+- name: Check if Config/config dir exists
+  stat:
+    path: "{{ morla_filebrowser_config_config_dir }}"
+  register: check_filebrowser_config_config_dir
+
+- name: Create Config/config directory
+  ansible.builtin.file:
+    path: "{{ morla_filebrowser_config_config_dir }}"
+    state: directory
+    owner: "{{ morla_user_username }}"
+    group: "{{ morla_user_groupname }}"
+  when: not check_filebrowser_config_config_dir.stat.exists
+
+- name: Check if database file exists
+  stat:
+    path: "{{ morla_filebrowser_db }}"
+  register: check_filebrowser_db
+
+- name: Create empty database file
+  ansible.builtin.file:
+    path: "{{ morla_filebrowser_db }}"
+    state: touch
+    owner: "{{ morla_user_username }}"
+    group: "{{ morla_user_groupname }}"
+  when: not check_filebrowser_db.stat.exists
+
+- ansible.builtin.import_tasks: "{{ role_path }}/templates/main.yaml"

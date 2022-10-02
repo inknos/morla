@@ -1,0 +1,21 @@
+---
+- name: Check if certificate exists
+  stat:
+    path: "{{ morla_letsencrypt_dir }}/live/{{ outer_item }}"
+  register: check_letsencrypt_dir
+
+# podman run --rm -it -v ~/Config/Letsencrypt/etc/letsencrypt/:/etc/letsencrypt/:Z certbot-gandi:v0 certbot certonly --authenticator dns-gandi --dns-gandi-credentials /etc/letsencrypt/gandi/gandi.ini --agree-tos --non-interactive -m mail -d subdomain.domain
+- name: Run Certbot
+  containers.podman.podman_container:
+    name: "{{ morla_letsencrypt_certbot_container_name }}"
+    image: "{{ morla_letsencrypt_certbot_container_image }}"
+    volumes: "{{ morla_letsencrypt_certbot_volumes }}"
+    command: |
+      certbot certonly \
+      --authenticator dns-gandi \
+      --dns-gandi-credentials /etc/letsencrypt/gandi/gandi.ini \
+      --agree-tos \
+      --non-interactive \
+      -m {{ morla_letsencrypt_email }} \
+      -d {{ outer_item }}
+

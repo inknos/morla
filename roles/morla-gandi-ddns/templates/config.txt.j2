@@ -1,0 +1,21 @@
+[local]
+# gandi.net API (Production) key
+apikey = {{ morla_letsencrypt_gandi_api_key }}
+
+# domain
+domain = {{ morla_domain }}
+
+# A-record name (@, dev, home, etc) that will be updated
+# example is for raspbian.example.com
+a_name = @
+
+# TTL (seconds)
+ttl = 3600
+
+# Production API
+gandi_api = https://api.gandi.net/v5/livedns/
+
+# Number of retries for looking up our own IP address, since
+# the service seems to be flaky sometimes.
+retries = 3
+ipify_api = https://api.ipify.org

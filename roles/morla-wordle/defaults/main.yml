@@ -1,0 +1,28 @@
+morla_wordle_enabled: true
+
+morla_wordle_long_name: "Wordle"
+morla_wordle_short_name: wordle
+
+morla_wordle_public_url: "{{ morla_wordle_short_name }}.{{ morla_public_url }}"
+
+# filesystem dir for configs
+morla_wordle_config_dir: "{{ morla_config_dir }}/Wordle"
+morla_wordle_git_dir: "{{ role_path }}/files/wordle-git"
+
+morla_wordle_git_repo: "https://github.com/cwackerfuss/react-wordle.git"
+
+morla_wordle_container_name: "{{ morla_user_username }}-{{morla_wordle_short_name}}" 
+morla_wordle_container_image_base: "{{ morla_wordle_short_name }}"
+morla_wordle_container_image_tag: prod
+morla_wordle_container_image: "{{ morla_wordle_container_image_base }}:{{ morla_wordle_container_image_tag }}"
+morla_wordle_container_extra_args: "--target=prod"
+
+morla_wordle_reverse_proxy_port: 32123
+
+morla_wordle_fw_ports:
+  tcp:
+    - "{{ morla_wordle_reverse_proxy_port }}"
+  udp:
+
+morla_wordle_ports:
+  - "{{ morla_wordle_reverse_proxy_port }}:8080"

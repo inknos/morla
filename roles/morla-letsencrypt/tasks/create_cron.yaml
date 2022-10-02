@@ -1,0 +1,15 @@
+- name: Install cronjob to install letsencrypt certs twice a day
+  ansible.builtin.cron:
+    name: "renew certs for {{ item }}"
+    minute: "0"
+    hour: "10,22"
+    job: 
+      "/usr/bin/podman run --rm --name certbot -v {{ morla_letsencrypt_dir }}:/etc/letsencrypt:Z {{ morla_certbot_gandi_short_name }} certbot certonly --authenticator dns-gandi --dns-gandi-credentials /etc/letsencrypt/gandi/gandi.ini --agree-tos --non-interactive -m {{ morla_letsencrypt_email }} -d {{ item }}"
+  loop: "{{ morla_public_domains }}"
+
+- name: Restart service cron, also issue daemon-reload
+  become: true
+  ansible.builtin.systemd:
+    state: restarted
+    daemon_reload: yes
+    name: crond

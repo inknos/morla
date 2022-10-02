@@ -1,0 +1,4 @@
+- name: Pull Filebrowser image
+  containers.podman.podman_image:
+    name: "{{ morla_filebrowser_container_image }}"
+    tag: latest

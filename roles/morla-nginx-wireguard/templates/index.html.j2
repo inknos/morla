@@ -1,0 +1,16 @@
+<h1>Hello, Morla!</h1>
+{% if morla_wireguard_domains is defined %}
+<ul>
+{% for item in morla_wireguard_domains %}
+	<li><a href="http://{{ morla_internal_ip }}:{{ item.port }}"> {{ item.name }} </a></li>
+{% endfor %}
+</ul>
+{% endif %}
+
+{% if morla_wireguard_domains is defined %}
+<ul>
+{% for item in morla_wireguard_domains %}
+	<li><a href="{{ item.name }}"> {{ item.name }} </a></li>
+{% endfor %}
+</ul>
+{% endif %}

@@ -1,0 +1,8 @@
+---
+# - name: Add Filebrowser to the list of public domains
+#   ansible.builtin.set_fact:
+#     morla_public_domains: "{{ morla_public_domains + [ morla_gandi_ddns_public_url ] }}"
+# 
+# - name: Add Container to the list of autostart containers
+#   ansible.builtin.set_fact:
+#     morla_systemd_autostart_containers: "{{ morla_systemd_autostart_containers + [ morla_gandi_ddns_container_name ] }}"

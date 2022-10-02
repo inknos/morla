@@ -1,0 +1,18 @@
+- name: Open TCP ports for Filebrowser
+  become: yes
+  ansible.posix.firewalld:
+    port: "{{ item }}/tcp"
+    permanent: yes
+    state: enabled
+    immediate: true
+  loop: "{{ morla_filebrowser_fw_ports.tcp }}"
+
+      
+- name: Open UDP ports for Filebrowser
+  become: yes
+  ansible.posix.firewalld:
+    port: "{{ item }}/udp"
+    permanent: yes
+    state: enabled
+    immediate: true
+  loop: "{{ morla_filebrowser_fw_ports.udp if morla_filebrowser_fw_ports.udp is iterable else []}}"

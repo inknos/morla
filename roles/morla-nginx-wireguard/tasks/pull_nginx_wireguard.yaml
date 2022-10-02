@@ -1,0 +1,4 @@
+- name: Pull NginxWireguard image
+  containers.podman.podman_image:
+    name: "{{ morla_nginx_wireguard_container_image }}"
+    tag: latest

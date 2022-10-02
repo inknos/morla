@@ -1,0 +1,8 @@
+- name: Open ports for Radarr
+  become: yes
+  ansible.posix.firewalld:
+    port: "{{ item }}/tcp"
+    permanent: yes
+    state: enabled
+    immediate: true
+  loop: "{{ morla_radarr_fw_ports.tcp }}"

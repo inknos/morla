@@ -1,0 +1,26 @@
+---
+# - name: Add Wireguard to the list of public domains
+#   ansible.builtin.set_fact:
+#     morla_public_domains: "{{ morla_public_domains + [ morla_wireguard_public_url ] }}"
+
+# - name: Add Container to the list of autostart containers
+#   ansible.builtin.set_fact:
+#     morla_systemd_autostart_containers: "{{ morla_systemd_autostart_containers + [ morla_wireguard_container_name ] }}"
+
+- name: Add Pod to the list of Autostart Pods
+  ansible.builtin.set_fact:
+    morla_systemd_autostart_pods: "{{ morla_systemd_autostart_pods + [ morla_wireguard_pod_name ] }}"
+
+- name: Check if Config dir exists
+  stat:
+    path: "{{ morla_wireguard_config_dir }}"
+  register: check_wireguard_config_dir
+
+- name: Create config directory
+  ansible.builtin.file:
+    path: "{{ morla_wireguard_config_dir }}"
+    state: directory
+    owner: "{{ morla_user_username }}"
+    group: "{{ morla_user_groupname }}"
+  when: not check_wireguard_config_dir.stat.exists
+

@@ -1,0 +1,4 @@
+- name: Pull Radarr image
+  containers.podman.podman_image:
+    name: "{{ morla_radarr_container_image }}"
+    tag: latest

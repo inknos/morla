@@ -1,0 +1,41 @@
+# roles/radarr/tasks/main.yaml
+
+- ansible.builtin.import_tasks: "{{ role_path }}/tasks/init.yaml"
+  tags:
+    - always
+
+- ansible.builtin.import_tasks: "{{ role_path }}/tasks/pull_radarr.yaml"
+  when: "morla_radarr_enabled | bool"
+  tags:
+    - setup-all
+    - setup-radarr
+
+- ansible.builtin.import_tasks: "{{ role_path }}/tasks/destroy_radarr.yaml"
+  when: "morla_radarr_enabled | bool"
+  tags:
+    - never
+    - destroy-all
+    - destroy-radarr
+
+- ansible.builtin.import_tasks: "{{ role_path }}/tasks/setup_radarr.yaml"
+  when: "morla_radarr_enabled | bool"
+  tags:
+    - setup-all
+    - setup-radarr
+
+- ansible.builtin.import_tasks: "{{ role_path }}/tasks/fw_close_radarr.yaml"
+  when: "morla_radarr_enabled | bool"
+  tags:
+    - never
+    - destroy-all
+    - destroy-radarr
+    - fw-down-all
+    - fw-down-radarr
+
+- ansible.builtin.import_tasks: "{{ role_path }}/tasks/fw_open_radarr.yaml"
+  when: "morla_radarr_enabled | bool"
+  tags:
+    - fw-up-all
+    - fw-up-radarr
+    - setup-all
+    - setup-radarr

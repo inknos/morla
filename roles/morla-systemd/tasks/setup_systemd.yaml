@@ -1,0 +1,21 @@
+---
+- name: Autostart Containers
+  ansible.builtin.systemd:
+    name: "{{ morla_systemd_service_prefix }}-{{ item }}"
+    state: started
+    enabled: yes
+    scope: user
+  loop: "{{ morla_systemd_autostart_containers }}"
+
+- name: Autostart Pods
+  ansible.builtin.systemd:
+    name: "pod-{{ item }}"
+    state: started
+    enabled: yes
+    scope: user
+  loop: "{{ morla_systemd_autostart_pods }}"
+
+- name: Enable Lingering to autostart pods
+  # https://docs.podman.io/en/latest/markdown/podman-generate-systemd.1.html
+  ansible.builtin.shell: "loginctl enable-linger {{ morla_user_username }}"
+

@@ -1,0 +1,4 @@
+- name: Pull Nginx image
+  containers.podman.podman_image:
+    name: "{{ morla_nginx_container_image }}"
+    tag: latest

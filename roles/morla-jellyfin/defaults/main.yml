@@ -1,0 +1,42 @@
+morla_jellyfin_enabled: true
+
+morla_jellyfin_long_name: "Jellyfin"
+morla_jellyfin_short_name: jellyfin
+
+morla_jellyfin_container_short_name: "{{ morla_jellyfin_short_name }}"
+morla_jellyfin_container_name: "{{ morla_user_username }}-{{ morla_jellyfin_container_short_name }}"
+
+morla_jellyfin_public_url: "{{ morla_jellyfin_short_name }}.{{ morla_public_url }}"
+
+# filesystem dir for configs
+morla_jellyfin_config_dir: "{{ morla_config_dir }}/{{ morla_jellyfin_long_name }}"
+morla_jellyfin_movies_dir: "{{ morla_multimedia_movies_dir }}"
+morla_jellyfin_series_dir: "{{ morla_multimedia_series_dir }}"
+morla_jellyfin_music_dir: "{{ morla_multimedia_music_dir }}"
+
+morla_jellyfin_container_image_base: "lscr.io/linuxserver/jellyfin"
+morla_jellyfin_container_image_tag: "latest"
+morla_jellyfin_container_image: "{{ morla_jellyfin_container_image_base }}:{{ morla_radarr_container_image_tag }}"
+
+# used inside container config
+morla_jellyfin_reverse_proxy_port: "8096"
+
+morla_jellyfin_fw_ports:
+  tcp:
+    - "8096"
+    - "8920"
+  udp:
+    - "7359"
+    - "1900"
+
+morla_jellyfin_ports:
+  - "8096:8096"
+  - "8920:8920"
+  - "7359:7359/udp"
+  - "1900:1900/udp"
+
+morla_jellyfin_volumes:
+  - "{{ morla_jellyfin_config_dir }}:/config:Z"
+  - "{{ morla_jellyfin_movies_dir }}:/data/movies:z"
+  - "{{ morla_jellyfin_series_dir }}:/data/series:z"
+  - "{{ morla_jellyfin_music_dir }}:/data/music:z"

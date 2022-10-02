@@ -1,0 +1,21 @@
+---
+- name: Copy certificates to Nginx
+  become: true
+  ansible.builtin.copy:
+    src: "{{ morla_letsencrypt_dir }}"
+    dest: "{{ morla_nginx_config_dir }}"
+    owner: 100999
+    group: 100999
+
+- name: Restart Nginx
+  containers.podman.podman_container:
+    name: "{{ morla_nginx_container_name }}"
+    image: "{{ morla_nginx_container_image}}"
+    volumes: "{{ morla_nginx_volumes }}"
+    ports: "{{ morla_nginx_ports }}"
+    env:
+      PUID: "{{ morla_user_puid }}"
+      PGID: "{{ morla_user_pgid }}"
+      TZ: "{{ morla_tz }}"
+    state: started
+    restart_policy: unless-stopped

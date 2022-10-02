@@ -1,0 +1,31 @@
+- name: Check if Config dir exists
+  stat:
+    path: "{{ morla_transmission_config_dir }}"
+  register: check_transmission_config_dir
+
+- name: Create config directory
+  ansible.builtin.file:
+    path: "{{ morla_transmission_config_dir }}"
+    state: directory
+    owner: "{{ morla_user_username }}"
+    group: "{{ morla_user_groupname }}"
+  when: not check_transmission_config_dir.stat.exists
+
+- name: Create container
+  containers.podman.podman_container:
+    name: "{{ morla_transmission_container_name }}"
+    image: "{{ morla_transmission_container_image}}"
+    volumes: "{{ morla_transmission_volumes }}"
+    ports: "{{ morla_transmission_ports }}"
+    env:
+      PUID: "{{ morla_root_puid }}"
+      PGID: "{{ morla_root_pgid }}"
+      TZ: "{{ morla_tz }}"
+      TRANSMISSION_WEB_HOME: "{{ morla_transmission_web_home }}"
+    state: started
+    restart_policy: unless-stopped
+    generate_systemd:
+      path: "{{ morla_home_config_systemd_dir }}"
+      restart_policy: always
+      names: true
+      container_prefix: "{{ morla_systemd_service_prefix }}"

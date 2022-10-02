@@ -1,0 +1,42 @@
+# roles/nginx/tasks/main.yaml
+
+- ansible.builtin.import_tasks: "{{ role_path }}/tasks/init.yaml"
+  tags:
+    - always
+
+- ansible.builtin.import_tasks: "{{ role_path }}/tasks/pull_nginx.yaml"
+  tags:
+    - setup-all
+    - setup-nginx
+
+- ansible.builtin.import_tasks: "{{ role_path }}/tasks/destroy_nginx.yaml"
+  tags:
+    - never
+    - destroy-all
+    - destroy-nginx
+
+- ansible.builtin.import_tasks: "{{ role_path }}/templates/main.yaml"
+  tags:
+    - setup-all
+    - setup-nginx
+
+- ansible.builtin.import_tasks: "{{ role_path }}/tasks/setup_nginx.yaml"
+  tags:
+    - setup-all
+    - setup-nginx
+
+- ansible.builtin.import_tasks: "{{ role_path }}/tasks/fw_close_nginx.yaml"
+  tags:
+    - never
+    - destroy-all
+    - destroy-nginx
+    - fw-down-all
+    - fw-down-nginx
+
+- ansible.builtin.import_tasks: "{{ role_path }}/tasks/fw_open_nginx.yaml"
+  tags:
+    - fw-up-all
+    - fw-up-nginx
+    - setup-all
+    - setup-nginx
+

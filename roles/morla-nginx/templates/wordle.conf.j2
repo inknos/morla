@@ -1,0 +1,54 @@
+map $http_upgrade $connection_upgrade {
+        default upgrade;
+        ''      close;
+}
+
+server {
+    listen 80;
+    listen [::]:80;
+    server_name {{ morla_wordle_public_url }};
+
+    # Uncomment to redirect HTTP to HTTPS
+    return 301 https://$host$request_uri;
+}
+
+server {
+        server_name {{ morla_wordle_public_url }};
+
+    	## The default `client_max_body_size` is 1M, this might not be enough for some posters, etc.
+    	client_max_body_size 20M;
+
+	# Security / XSS Mitigation Headers
+	# NOTE: X-Frame-Options may cause issues with the webOS app
+	add_header X-Frame-Options "SAMEORIGIN";
+	add_header X-XSS-Protection "1; mode=block";
+	add_header X-Content-Type-Options "nosniff";
+
+        location / {
+                proxy_pass http://{{ morla_internal_ip }}:{{ morla_wordle_reverse_proxy_port }};
+                proxy_set_header Host $host;
+                proxy_set_header X-Real-IP $remote_addr;
+                proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+                proxy_set_header X-Forwarded-Proto $scheme;
+
+                proxy_set_header X-Forwarded-Protocol $scheme;
+                proxy_set_header X-Forwarded-Host $http_host;
+        }
+
+
+	listen [::]:443 ssl http2;
+	listen 443 ssl http2;
+
+	ssl_certificate      /config/letsencrypt/live/{{ morla_wordle_public_url }}/fullchain.pem;
+	ssl_certificate_key  /config/letsencrypt/live/{{ morla_wordle_public_url }}/privkey.pem;
+
+	# include /config/letsencrypt/options-ssl-nginx.conf; # managed by Certbot
+	#ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem;
+
+	add_header Strict-Transport-Security "max-age=31536000" always;
+	ssl_trusted_certificate /config/letsencrypt/live/{{ morla_wordle_public_url }}/chain.pem;
+	ssl_stapling on;
+	ssl_stapling_verify on;
+
+}
+

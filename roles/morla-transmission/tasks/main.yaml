@@ -1,0 +1,42 @@
+# roles/transmission/tasks/main.yaml
+
+- ansible.builtin.import_tasks: "{{ role_path }}/tasks/init.yaml"
+  tags:
+    - always
+
+- ansible.builtin.import_tasks: "{{ role_path }}/tasks/pull_transmission.yaml"
+  when: "morla_transmission_enabled | bool"
+  tags:
+    - setup-all
+    - setup-transmission
+
+- ansible.builtin.import_tasks: "{{ role_path }}/tasks/destroy_transmission.yaml"
+  when: "morla_transmission_enabled | bool"
+  tags:
+    - never
+    - destroy-all
+    - destroy-transmission
+
+- ansible.builtin.import_tasks: "{{ role_path }}/tasks/setup_transmission.yaml"
+  when: "morla_transmission_enabled | bool"
+  tags:
+    - setup-all
+    - setup-transmission
+
+- ansible.builtin.import_tasks: "{{ role_path }}/tasks/fw_close_transmission.yaml"
+  when: "morla_transmission_enabled | bool"
+  tags:
+    - never
+    - destroy-all
+    - destroy-transmission
+    - fw-down-all
+    - fw-down-transmission
+
+- ansible.builtin.import_tasks: "{{ role_path }}/tasks/fw_open_transmission.yaml"
+  when: "morla_transmission_enabled | bool"
+  tags:
+    - fw-up-all
+    - fw-up-transmission
+    - setup-all
+    - setup-transmission
+

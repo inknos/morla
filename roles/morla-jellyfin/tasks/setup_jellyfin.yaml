@@ -1,0 +1,28 @@
+---
+- name: Create config directory
+  ansible.builtin.file:
+    path: "{{ morla_jellyfin_config_dir }}"
+    state: directory
+    owner: "{{ morla_user_username }}"
+    group: "{{ morla_user_groupname }}"
+  when: not check_jellyfin_config_dir.stat.exists
+
+- name: Create container
+  containers.podman.podman_container:
+    name: "{{ morla_jellyfin_container_name }}"
+    image: "{{ morla_jellyfin_container_image}}"
+    volumes: "{{ morla_jellyfin_volumes }}"
+    ports: "{{ morla_jellyfin_ports }}"
+    security_opt:
+      - "label=disable"
+    env:
+      PUID: 0
+      PGID: 0
+      TZ: "{{ morla_tz }}"
+    state: started
+    restart_policy: unless-stopped
+    generate_systemd:
+      path: "{{ morla_home_config_systemd_dir }}"
+      restart_policy: always
+      names: true
+      container_prefix: "{{ morla_systemd_service_prefix }}"

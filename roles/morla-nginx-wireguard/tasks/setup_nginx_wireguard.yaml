@@ -1,0 +1,30 @@
+- name: Create container
+  containers.podman.podman_container:
+    name: "{{ morla_nginx_wireguard_container_name }}"
+    image: "{{ morla_nginx_wireguard_container_image}}"
+    volumes: "{{ morla_nginx_wireguard_volumes }}"
+      #ports: "{{ morla_nginx_wireguard_ports }}"
+    env:
+      PUID: "{{ morla_user_puid }}"
+      PGID: "{{ morla_user_pgid }}"
+      TZ: "{{ morla_tz }}"
+    state: started
+    pod: morla-wireguard-pod
+    restart_policy: unless-stopped
+    generate_systemd:
+      path: "{{ morla_home_config_systemd_dir }}"
+      restart_policy: always
+      names: true
+      container_prefix: "{{ morla_systemd_service_prefix }}" 
+
+        # - name: Remove Default files
+        #   become: true
+        #   ansible.builtin.file:
+        #     path: "{{ morla_nginx_wireguard_site_confs }}/{{ item }}"
+        #     state: absent
+        #   loop:
+        #     - default.conf
+        #     - default.conf.sample
+        # 
+        # - name: Reload Nginx
+        #   ansible.builtin.shell: "podman exec -it {{ morla_nginx_wireguard_container_name }} /bin/sh -c 'nginx -t && nginx -s reload'"

@@ -1,0 +1,9 @@
+---
+# This will contain a list of enabled services that the playbook is managing.
+# # Each component is expected to append its service name to this list.
+morla_public_domains: [ ]
+
+morla_wireguard_domains: [ ]
+
+morla_systemd_autostart_containers: []
+morla_systemd_autostart_pods: []

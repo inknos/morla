@@ -1,0 +1,4 @@
+password
+
+# ignore git folders
+roles/morla-*/files/*-git/

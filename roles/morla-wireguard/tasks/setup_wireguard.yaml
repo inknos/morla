@@ -1,0 +1,45 @@
+- name: Create Morla Wireguard Network
+  containers.podman.podman_network:
+    name: morla-wireguard-network
+    subnet: 172.20.0.0/24
+    driver: bridge 
+
+- name: Crete Morla Wireguard Pod
+  containers.podman.podman_pod:
+    name: morla-wireguard-pod
+    state: started
+    network: 
+      - morla-wireguard-network
+    ports: "{{ morla_wireguard_ports }}"
+    generate_systemd:
+      path: "{{ morla_home_config_systemd_dir }}"
+      restart_policy: always
+      names: true
+
+- name: Create container
+  containers.podman.podman_container:
+    name: "{{ morla_wireguard_container_name }}"
+    image: "{{ morla_wireguard_container_image}}"
+    volumes: "{{ morla_wireguard_volumes }}"
+      # ports: "{{ morla_wireguard_ports }}"
+    privileged: "{{ morla_wireguard_privileged }}"
+    env:
+      PUID: "{{ morla_root_puid }}"
+      PGID: "{{ morla_root_pgid }}"
+      TZ: "{{ morla_tz }}"
+      SERVERURL: "{{ morla_domain }}"
+      SERVERPORT: "{{ morla_wireguard_reverse_proxy_port }}"
+      PEERS: "{{ morla_wireguard_env_peers }}"
+      ALLOWEDIPS: "10.13.13.1/24,192.168.1.1/24"
+      LOG_CONFS: false
+    cap_add: "{{ morla_wireguard_cap_add }}"
+    pod: morla-wireguard-pod
+      # sysctl:
+      # net.ipv4.conf.all.src_valid_mark: 1
+    state: started
+    restart_policy: unless-stopped
+    generate_systemd:
+      path: "{{ morla_home_config_systemd_dir }}"
+      restart_policy: always
+      names: true
+      container_prefix: "{{ morla_systemd_service_prefix }}"

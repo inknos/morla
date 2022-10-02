@@ -1,0 +1,18 @@
+- name: Close TCP ports for Transmission
+  become: true
+  ansible.posix.firewalld:
+    port: "{{ item }}/tcp"
+    permanent: yes
+    state: disabled
+    immediate: true
+  loop: "{{ morla_transmission_fw_ports.tcp }}"
+
+- name: Close UDP ports for Transmission
+  become: true
+  ansible.posix.firewalld:
+    port: "{{ item }}/udp"
+    permanent: yes
+    state: disabled
+    immediate: true
+  loop: "{{ morla_transmission_fw_ports.udp }}"
+

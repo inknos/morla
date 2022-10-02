@@ -1,0 +1,15 @@
+---
+- name: Add Jellyfin to the list of public domains
+  ansible.builtin.set_fact:
+    morla_public_domains: "{{ morla_public_domains + [ morla_jellyfin_public_url ] }}"
+
+- name: Add Container to the list of autostart containers
+  ansible.builtin.set_fact:
+    morla_systemd_autostart_containers: "{{ morla_systemd_autostart_containers + [ morla_jellyfin_container_name ] }}"
+
+- name: Check if Config dir exists
+  stat:
+    path: "{{ morla_jellyfin_config_dir }}"
+  register: check_jellyfin_config_dir
+
+

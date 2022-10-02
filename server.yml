@@ -1,0 +1,60 @@
+---
+- name: "Setup a container environment for morla"
+  hosts: "{{ target if target is defined else 'localhost' }}"
+  #connection: local
+  vars:
+    - morla_user_username: morla
+    - morla_user_groupname: "{{ morla_user_username }}"
+    - morla_root_username: root
+    - morla_root_groupname: "{{ morla_root_username }}"
+
+    - morla_internal_ip: "192.168.1.166"
+    - morla_domain: "{{ morla_main_domain }}"
+    - morla_subdomain: "morla"
+    - morla_public_url: "{{ morla_subdomain }}.{{ morla_domain }}"
+
+    - morla_user_puid: 1000
+    - morla_user_pgid: 1000
+    - morla_root_puid: 0
+    - morla_root_pgid: 0
+    - morla_fake_puid: 911
+    - morla_fake_pgid: 911
+    - morla_subuid_size: 65536
+    - morla_subgid_size: 65536
+    - morla_tz: "Europe/Prague"
+
+    - morla_home_dir: "/home/{{ morla_user_username }}"
+    - morla_home_config_systemd_dir: "{{ morla_home_dir }}/.config/systemd/user"
+    - morla_config_dir: "{{ morla_home_dir }}/Config"
+
+    - morla_one_media: "/one/media"
+    - morla_one_vault: "/one/vault"
+
+    - morla_multimedia_dir: "{{ morla_one_media }}/Multimedia"
+    - morla_multimedia_movies_dir: "{{ morla_multimedia_dir }}/Videos/Movies"
+    - morla_multimedia_series_dir: "{{ morla_multimedia_dir }}/Videos/Series"
+    - morla_multimedia_music_dir: "{{ morla_multimedia_dir }}/Music"
+    - morla_multimedia_downloads_dir: "{{ morla_multimedia_dir }}/Downloads"
+    - morla_multimedia_downloads_transmission_downloads_dir: "{{ morla_multimedia_downloads_dir }}/transmission/downloads"
+    - morla_multimedia_downloads_transmission_watch_dir: "{{ morla_multimedia_downloads_dir }}/transmission/watch"
+
+    - morla_vault_dir: "{{ morla_one_vault }}/Vault"
+
+  vars_files:
+    - group_vars/vault.yaml
+
+  roles:
+    - morla-base            # setup base environment for containers
+    - morla-wireguard       # setup wireguard wpn and keys
+    - morla-filebrowser     # setup filebrowser container
+    - morla-jellyfin        # setup jellyfin container
+    - morla-radarr          # setup radarr container
+    - morla-transmission    # setup transmission container
+    - morla-wordle          # setup wordle
+    - morla-nginx-wireguard # setup server to use internally
+    - morla-nginx           # setup server for public containers
+    - morla-gandi-ddns
+    - morla-letsencrypt     # manage certificates for public containers
+    - morla-systemd         # manage containers autostart
+
+
