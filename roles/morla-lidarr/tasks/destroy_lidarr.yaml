@@ -1,0 +1,4 @@
+- name: Destroy Lidarr
+  containers.podman.podman_container:
+    name: "{{ morla_lidarr_container_name }}"
+    state: absent

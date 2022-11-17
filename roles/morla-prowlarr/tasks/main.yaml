@@ -1,0 +1,41 @@
+# roles/prowlarr/tasks/main.yaml
+
+- ansible.builtin.import_tasks: "{{ role_path }}/tasks/init.yaml"
+  tags:
+    - always
+
+- ansible.builtin.import_tasks: "{{ role_path }}/tasks/pull_prowlarr.yaml"
+  when: "morla_prowlarr_enabled | bool"
+  tags:
+    - setup-all
+    - setup-prowlarr
+
+- ansible.builtin.import_tasks: "{{ role_path }}/tasks/destroy_prowlarr.yaml"
+  when: "morla_prowlarr_enabled | bool"
+  tags:
+    - never
+    - destroy-all
+    - destroy-prowlarr
+
+- ansible.builtin.import_tasks: "{{ role_path }}/tasks/setup_prowlarr.yaml"
+  when: "morla_prowlarr_enabled | bool"
+  tags:
+    - setup-all
+    - setup-prowlarr
+
+- ansible.builtin.import_tasks: "{{ role_path }}/tasks/fw_close_prowlarr.yaml"
+  when: "morla_prowlarr_enabled | bool"
+  tags:
+    - never
+    - destroy-all
+    - destroy-prowlarr
+    - fw-down-all
+    - fw-down-prowlarr
+
+- ansible.builtin.import_tasks: "{{ role_path }}/tasks/fw_open_prowlarr.yaml"
+  when: "morla_prowlarr_enabled | bool"
+  tags:
+    - fw-up-all
+    - fw-up-prowlarr
+    - setup-all
+    - setup-prowlarr

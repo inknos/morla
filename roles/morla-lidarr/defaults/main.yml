@@ -1,0 +1,40 @@
+morla_lidarr_enabled: true
+morla_lidarr_become: true
+
+morla_lidarr_flag_public: false
+morla_lidarr_flag_autostart: true
+morla_lidarr_flag_wireguard: true
+
+morla_lidarr_long_name: "Lidarr"
+morla_lidarr_short_name: lidarr
+
+morla_lidarr_container_short_name: "{{ morla_lidarr_short_name }}"
+morla_lidarr_container_name: "{{ morla_user_username }}-{{ morla_lidarr_container_short_name }}"
+
+morla_lidarr_public_url: "{{ morla_lidarr_short_name }}.{{ morla_public_url }}"
+
+# filesystem dir for configs
+morla_lidarr_config_dir: "{{ morla_config_dir }}/{{ morla_lidarr_long_name }}"
+morla_lidarr_music_dir: "{{ morla_multimedia_music_dir }}"
+morla_lidarr_downloads_dir: "{{ morla_multimedia_downloads_transmission_downloads_dir }}"
+
+morla_lidarr_container_image_base: "cr.hotio.dev/hotio/lidarr"
+morla_lidarr_container_image_tag: "latest"
+morla_lidarr_container_image: "{{ morla_lidarr_container_image_base }}:{{ morla_lidarr_container_image_tag }}"
+
+# used inside container config
+morla_lidarr_volumes:
+  - "{{ morla_lidarr_config_dir }}:/config:Z"
+  - "{{ morla_lidarr_music_dir }}:/music:z"
+  - "{{ morla_lidarr_downloads_dir }}:/downloads:z"
+
+morla_lidarr_reverse_proxy_port: "8686"
+
+morla_lidarr_fw_ports:
+  tcp:
+    - "{{ morla_lidarr_reverse_proxy_port }}"
+
+morla_lidarr_ports:
+  - "{{ morla_lidarr_reverse_proxy_port }}:{{ morla_lidarr_reverse_proxy_port }}"
+
+

@@ -1,0 +1,8 @@
+---
+- ansible.builtin.import_tasks: "{{ role_path }}/tasks/init_flag.yaml"
+
+- name: Check if Config dir exists
+  stat:
+    path: "{{ morla_readarr_config_dir }}"
+  register: check_readarr_config_dir
+

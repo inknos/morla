@@ -1,0 +1,41 @@
+# roles/sonarr/tasks/main.yaml
+
+- ansible.builtin.import_tasks: "{{ role_path }}/tasks/init.yaml"
+  tags:
+    - always
+
+- ansible.builtin.import_tasks: "{{ role_path }}/tasks/pull_sonarr.yaml"
+  when: "morla_sonarr_enabled | bool"
+  tags:
+    - setup-all
+    - setup-sonarr
+
+- ansible.builtin.import_tasks: "{{ role_path }}/tasks/destroy_sonarr.yaml"
+  when: "morla_sonarr_enabled | bool"
+  tags:
+    - never
+    - destroy-all
+    - destroy-sonarr
+
+- ansible.builtin.import_tasks: "{{ role_path }}/tasks/setup_sonarr.yaml"
+  when: "morla_sonarr_enabled | bool"
+  tags:
+    - setup-all
+    - setup-sonarr
+
+- ansible.builtin.import_tasks: "{{ role_path }}/tasks/fw_close_sonarr.yaml"
+  when: "morla_sonarr_enabled | bool"
+  tags:
+    - never
+    - destroy-all
+    - destroy-sonarr
+    - fw-down-all
+    - fw-down-sonarr
+
+- ansible.builtin.import_tasks: "{{ role_path }}/tasks/fw_open_sonarr.yaml"
+  when: "morla_sonarr_enabled | bool"
+  tags:
+    - fw-up-all
+    - fw-up-sonarr
+    - setup-all
+    - setup-sonarr

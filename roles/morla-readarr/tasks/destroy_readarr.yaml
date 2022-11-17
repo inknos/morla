@@ -1,0 +1,4 @@
+- name: Destroy Readarr
+  containers.podman.podman_container:
+    name: "{{ morla_readarr_container_name }}"
+    state: absent

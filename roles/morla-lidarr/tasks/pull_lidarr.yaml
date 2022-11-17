@@ -1,0 +1,4 @@
+- name: Pull Lidarr image
+  containers.podman.podman_image:
+    name: "{{ morla_lidarr_container_image }}"
+    tag: latest

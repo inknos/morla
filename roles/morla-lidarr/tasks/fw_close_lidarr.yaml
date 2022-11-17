@@ -1,0 +1,9 @@
+- name: Close ports for Lidarr
+  become: true
+  ansible.posix.firewalld:
+    port: "{{ item }}/tcp"
+    permanent: yes
+    state: disabled
+    immediate: true
+  loop: "{{ morla_lidarr_fw_ports.tcp }}"
+

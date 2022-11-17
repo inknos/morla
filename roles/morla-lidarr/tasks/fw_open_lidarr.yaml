@@ -1,0 +1,8 @@
+- name: Open ports for Lidarr
+  become: yes
+  ansible.posix.firewalld:
+    port: "{{ item }}/tcp"
+    permanent: yes
+    state: enabled
+    immediate: true
+  loop: "{{ morla_lidarr_fw_ports.tcp }}"

@@ -1,0 +1,4 @@
+- name: Destroy Sonarr
+  containers.podman.podman_container:
+    name: "{{ morla_sonarr_container_name }}"
+    state: absent

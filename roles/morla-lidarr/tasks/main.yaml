@@ -1,0 +1,41 @@
+# roles/lidarr/tasks/main.yaml
+
+- ansible.builtin.import_tasks: "{{ role_path }}/tasks/init.yaml"
+  tags:
+    - always
+
+- ansible.builtin.import_tasks: "{{ role_path }}/tasks/pull_lidarr.yaml"
+  when: "morla_lidarr_enabled | bool"
+  tags:
+    - setup-all
+    - setup-lidarr
+
+- ansible.builtin.import_tasks: "{{ role_path }}/tasks/destroy_lidarr.yaml"
+  when: "morla_lidarr_enabled | bool"
+  tags:
+    - never
+    - destroy-all
+    - destroy-lidarr
+
+- ansible.builtin.import_tasks: "{{ role_path }}/tasks/setup_lidarr.yaml"
+  when: "morla_lidarr_enabled | bool"
+  tags:
+    - setup-all
+    - setup-lidarr
+
+- ansible.builtin.import_tasks: "{{ role_path }}/tasks/fw_close_lidarr.yaml"
+  when: "morla_lidarr_enabled | bool"
+  tags:
+    - never
+    - destroy-all
+    - destroy-lidarr
+    - fw-down-all
+    - fw-down-lidarr
+
+- ansible.builtin.import_tasks: "{{ role_path }}/tasks/fw_open_lidarr.yaml"
+  when: "morla_lidarr_enabled | bool"
+  tags:
+    - fw-up-all
+    - fw-up-lidarr
+    - setup-all
+    - setup-lidarr

@@ -1,0 +1,9 @@
+- name: Close ports for Readarr
+  become: true
+  ansible.posix.firewalld:
+    port: "{{ item }}/tcp"
+    permanent: yes
+    state: disabled
+    immediate: true
+  loop: "{{ morla_readarr_fw_ports.tcp }}"
+
