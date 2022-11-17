@@ -28,7 +28,8 @@ morla_wireguard_cap_add:
   - SYS_MODULE
 
 morla_wireguard_privileged: true
-morla_wireguard_env_serverurl: "89.103.120.9"
+morla_wireguard_env_serverurl: "{{ morla_domain }}"
+morla_wireguard_env_allowedips: "10.13.13.1/24,192.168.1.1/24"
 morla_wireguard_env_peers: "nik_phone,nik_pc_work,nik_pc_home,nik_pc_gaming,leo_phone,leo_pc_home"
 # used inside container config
 morla_wireguard_external_server_port: "12882"
@@ -37,10 +38,10 @@ morla_wireguard_reverse_proxy_port: "51820"
 morla_wireguard_fw_ports:
   tcp:
   udp:
-    - "{{ morla_wireguard_external_server_port }}"
+    - "{{ morla_wireguard_reverse_proxy_port }}"
 
 morla_wireguard_ports:
-  - "{{ morla_wireguard_fw_ports.udp[0] }}:{{ morla_wireguard_reverse_proxy_port }}/udp"
+  - "{{ morla_wireguard_fw_ports.udp[0] }}:{{ morla_wireguard_fw_ports.udp[0] }}/udp"
 
 morla_wireguard_volumes:
   - "{{ morla_wireguard_config_dir }}:/config:Z"

@@ -29,21 +29,18 @@
     name: "{{ morla_wireguard_container_name }}"
     image: "{{ morla_wireguard_container_image}}"
     volumes: "{{ morla_wireguard_volumes }}"
-      # ports: "{{ morla_wireguard_ports }}"
     privileged: "{{ morla_wireguard_privileged }}"
     env:
       PUID: "{{ morla_fake_puid }}"
       PGID: "{{ morla_fake_pgid }}"
       TZ: "{{ morla_tz }}"
-      SERVERURL: "{{ morla_domain }}"
+      SERVERURL: "{{ morla_wireguard_env_serverurl }}"
       SERVERPORT: "{{ morla_wireguard_external_server_port }}"
       PEERS: "{{ morla_wireguard_env_peers }}"
-      ALLOWEDIPS: "10.13.13.1/24,192.168.1.1/24"
+      ALLOWEDIPS: "{{ morla_wireguard_env_allowedips }}"
       LOG_CONFS: false
     cap_add: "{{ morla_wireguard_cap_add }}"
     pod: morla-wireguard-pod
-      # sysctl:
-      # net.ipv4.conf.all.src_valid_mark: 1
     state: started
     restart_policy: unless-stopped
     generate_systemd:
@@ -51,3 +48,4 @@
       restart_policy: always
       names: true
       container_prefix: "{{ morla_systemd_service_prefix }}"
+
