@@ -34,6 +34,7 @@
     - morla_multimedia_movies_dir: "{{ morla_multimedia_dir }}/Videos/Movies"
     - morla_multimedia_series_dir: "{{ morla_multimedia_dir }}/Videos/Series"
     - morla_multimedia_music_dir: "{{ morla_multimedia_dir }}/Music"
+    - morla_multimedia_books_dir: "{{ morla_multimedia_dir }}/Books"
     - morla_multimedia_downloads_dir: "{{ morla_multimedia_dir }}/Downloads"
     - morla_multimedia_downloads_transmission_downloads_dir: "{{ morla_multimedia_downloads_dir }}/transmission/downloads"
     - morla_multimedia_downloads_transmission_watch_dir: "{{ morla_multimedia_downloads_dir }}/transmission/watch"
@@ -48,13 +49,16 @@
     - morla-wireguard       # setup wireguard wpn and keys
     - morla-filebrowser     # setup filebrowser container
     - morla-jellyfin        # setup jellyfin container
-    - morla-radarr          # setup radarr container
+    - morla-radarr          # setup servarr stack
+    - morla-sonarr          #
+    - morla-prowlarr        #
+    - morla-lidarr          #
+    - morla-readarr         #
     - morla-transmission    # setup transmission container
     - morla-wordle          # setup wordle
     - morla-nginx-wireguard # setup server to use internally
     - morla-nginx           # setup server for public containers
-    - morla-gandi-ddns
+    - morla-gandi-ddns      # setup python script to update gandi dns
     - morla-letsencrypt     # manage certificates for public containers
     - morla-systemd         # manage containers autostart
-
 

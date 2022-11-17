@@ -1,27 +1,18 @@
 # - name: Create Main NginxWireguard Config
-#   become: true
 #   ansible.builtin.template:
-#     owner: 100999
-#     group: 100999
 #     mode: "0664"
 #     src: nginx.conf.j2
 #     dest: "{{ morla_nginx_wireguard_site_confs }}/nginx.conf"
 
 # - name: Create Reverse Proxy NginxWireguard Config
-#   become: true
 #   ansible.builtin.template:
-#     owner: 100999
-#     group: 100999
 #     mode: "0664"
 #     src: "{{ item.name }}.conf.j2"
 #     dest: "{{ morla_nginx_wireguard_site_confs }}/{{ item.name }}.conf"
 #   loop: "{{ morla_wireguard_domains }}"
 
 - name: Create index.html
-  become: true
   ansible.builtin.template:
-    owner: 100999
-    group: 100999
     mode: "0664"
     src: "index.html.j2"
     dest: "{{ morla_nginx_wireguard_www_dir }}/index.html"

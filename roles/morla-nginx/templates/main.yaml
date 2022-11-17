@@ -1,17 +1,11 @@
 - name: Create Main Nginx Config
-  become: true
   ansible.builtin.template:
-    owner: 100999
-    group: 100999
     mode: "0664"
     src: nginx.conf.j2
     dest: "{{ morla_nginx_site_confs }}/nginx.conf"
 
 - name: Create Reverse Proxy Nginx Config
-  become: true
   ansible.builtin.template:
-    owner: 100999
-    group: 100999
     mode: "0664"
     src: "{{ item }}.conf.j2"
     dest: "{{ morla_nginx_site_confs }}/{{ item }}.{{ morla_subdomain }}.{{ morla_domain }}.conf"

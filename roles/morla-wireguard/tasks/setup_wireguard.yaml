@@ -15,6 +15,14 @@
       path: "{{ morla_home_config_systemd_dir }}"
       restart_policy: always
       names: true
+    uidmap:
+      - "{{ morla_fake_puid }}:0:1"
+      - "0:1:{{ morla_fake_puid }}"
+      - "{{ morla_fake_puid + 1 }}:{{ morla_fake_puid + 1 }}:{{ morla_subuid_size - morla_fake_puid }}"
+    gidmap:
+      - "{{ morla_fake_pgid }}:0:1"
+      - "0:1:{{ morla_fake_pgid }}"
+      - "{{ morla_fake_pgid + 1 }}:{{ morla_fake_pgid + 1 }}:{{ morla_subgid_size - morla_fake_pgid }}"
 
 - name: Create container
   containers.podman.podman_container:
@@ -24,11 +32,11 @@
       # ports: "{{ morla_wireguard_ports }}"
     privileged: "{{ morla_wireguard_privileged }}"
     env:
-      PUID: "{{ morla_root_puid }}"
-      PGID: "{{ morla_root_pgid }}"
+      PUID: "{{ morla_fake_puid }}"
+      PGID: "{{ morla_fake_pgid }}"
       TZ: "{{ morla_tz }}"
       SERVERURL: "{{ morla_domain }}"
-      SERVERPORT: "{{ morla_wireguard_reverse_proxy_port }}"
+      SERVERPORT: "{{ morla_wireguard_external_server_port }}"
       PEERS: "{{ morla_wireguard_env_peers }}"
       ALLOWEDIPS: "10.13.13.1/24,192.168.1.1/24"
       LOG_CONFS: false

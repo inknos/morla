@@ -1,15 +1,11 @@
 ---
-# - name: Add Wireguard to the list of public domains
-#   ansible.builtin.set_fact:
-#     morla_public_domains: "{{ morla_public_domains + [ morla_wireguard_public_url ] }}"
+- ansible.builtin.import_tasks: "{{ role_path }}/tasks/init_flag.yaml"
 
-# - name: Add Container to the list of autostart containers
-#   ansible.builtin.set_fact:
-#     morla_systemd_autostart_containers: "{{ morla_systemd_autostart_containers + [ morla_wireguard_container_name ] }}"
-
-- name: Add Pod to the list of Autostart Pods
-  ansible.builtin.set_fact:
-    morla_systemd_autostart_pods: "{{ morla_systemd_autostart_pods + [ morla_wireguard_pod_name ] }}"
+- name: Add the ip_tables module
+  community.general.modprobe:
+    name: ip_tables
+    state: present
+  become: true
 
 - name: Check if Config dir exists
   stat:

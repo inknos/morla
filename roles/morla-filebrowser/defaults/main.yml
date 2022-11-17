@@ -1,5 +1,9 @@
 morla_filebrowser_enabled: true
 
+morla_filebrowser_flag_public: false
+morla_filebrowser_flag_autostart: true
+morla_filebrowser_flag_wireguard: true
+
 morla_filebrowser_long_name: "Filebrowser"
 morla_filebrowser_short_name: filebrowser
 
