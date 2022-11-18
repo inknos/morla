@@ -3,7 +3,6 @@
     name: "{{ morla_nginx_wireguard_container_name }}"
     image: "{{ morla_nginx_wireguard_container_image}}"
     volumes: "{{ morla_nginx_wireguard_volumes }}"
-      #ports: "{{ morla_nginx_wireguard_ports }}"
     env:
       PUID: "{{ morla_fake_puid }}"
       PGID: "{{ morla_fake_pgid }}"

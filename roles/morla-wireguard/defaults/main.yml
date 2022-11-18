@@ -29,7 +29,7 @@ morla_wireguard_cap_add:
 
 morla_wireguard_privileged: true
 morla_wireguard_env_serverurl: "{{ morla_domain }}"
-morla_wireguard_env_allowedips: "10.13.13.1/24,192.168.1.1/24"
+morla_wireguard_env_allowedips: "10.13.13.1/24,192.168.1.1/16"
 morla_wireguard_env_peers: "nik_phone,nik_pc_work,nik_pc_home,nik_pc_gaming,leo_phone,leo_pc_home"
 # used inside container config
 morla_wireguard_external_server_port: "12882"

@@ -2,7 +2,7 @@
   containers.podman.podman_network:
     name: morla-wireguard-network
     subnet: 172.20.0.0/24
-    driver: bridge 
+    driver: bridge
 
 - name: Crete Morla Wireguard Pod
   containers.podman.podman_pod:
