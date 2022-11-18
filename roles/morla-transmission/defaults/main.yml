@@ -15,10 +15,7 @@ morla_transmission_public_url: "{{ morla_transmission_short_name }}.{{ morla_pub
 
 # filesystem dir for configs
 morla_transmission_config_dir: "{{ morla_config_dir }}/{{ morla_transmission_long_name }}"
-# /Multimedia/Downloads/transmission/download
-# /Multimedia/Downloads/transmission/watch
-morla_transmission_downloads_dir: "{{ morla_multimedia_downloads_transmission_downloads_dir }}"
-morla_transmission_watch_dir: "{{ morla_multimedia_downloads_transmission_watch_dir }}"
+morla_transmission_torrents_dir: "{{ morla_torrents_dir }}"
 
 morla_transmission_container_image_base: "lscr.io/linuxserver/transmission"
 morla_transmission_container_image_tag: "latest"
@@ -43,5 +40,4 @@ morla_transmission_ports:
 
 morla_transmission_volumes:
   - "{{ morla_transmission_config_dir }}:/config:Z"
-  - "{{ morla_transmission_downloads_dir }}:/downloads:z"
-  - "{{ morla_transmission_watch_dir }}:/watch:z"
+  - "{{ morla_transmission_torrents_dir }}:/data/torrents"

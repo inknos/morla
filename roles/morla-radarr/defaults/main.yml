@@ -15,8 +15,7 @@ morla_radarr_public_url: "{{ morla_radarr_short_name }}.{{ morla_public_url }}"
 
 # filesystem dir for configs
 morla_radarr_config_dir: "{{ morla_config_dir }}/{{ morla_radarr_long_name }}"
-morla_radarr_movies_dir: "{{ morla_multimedia_movies_dir }}"
-morla_radarr_downloads_dir: "{{ morla_multimedia_downloads_transmission_downloads_dir }}"
+morla_radarr_data_dir: "{{ morla_data_dir }}"
 
 morla_radarr_container_image_base: "cr.hotio.dev/hotio/radarr"
 morla_radarr_container_image_tag: "latest"
@@ -25,8 +24,7 @@ morla_radarr_container_image: "{{ morla_radarr_container_image_base }}:{{ morla_
 # used inside container config
 morla_radarr_volumes:
   - "{{ morla_radarr_config_dir }}:/config:Z"
-  - "{{ morla_radarr_movies_dir }}:/movies:z"
-  - "{{ morla_radarr_downloads_dir }}:/downloads:z"
+  - "{{ morla_radarr_data_dir }}:/data:z"
 
 morla_radarr_reverse_proxy_port: "7878"
 

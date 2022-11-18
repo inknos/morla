@@ -30,14 +30,9 @@
     - morla_one_media: "/one/media"
     - morla_one_vault: "/one/vault"
 
-    - morla_multimedia_dir: "{{ morla_one_media }}/Multimedia"
-    - morla_multimedia_movies_dir: "{{ morla_multimedia_dir }}/Videos/Movies"
-    - morla_multimedia_series_dir: "{{ morla_multimedia_dir }}/Videos/Series"
-    - morla_multimedia_music_dir: "{{ morla_multimedia_dir }}/Music"
-    - morla_multimedia_books_dir: "{{ morla_multimedia_dir }}/Books"
-    - morla_multimedia_downloads_dir: "{{ morla_multimedia_dir }}/Downloads"
-    - morla_multimedia_downloads_transmission_downloads_dir: "{{ morla_multimedia_downloads_dir }}/transmission/downloads"
-    - morla_multimedia_downloads_transmission_watch_dir: "{{ morla_multimedia_downloads_dir }}/transmission/watch"
+    - morla_data_dir: "{{ morla_one_media }}/data"
+    - morla_media_dir: "{{ morla_one_media }}/data/media"
+    - morla_torrents_dir: "{{ morla_one_media }}/data/torrents"
 
     - morla_vault_dir: "{{ morla_one_vault }}/Vault"
 

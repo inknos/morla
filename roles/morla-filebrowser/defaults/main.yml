@@ -19,7 +19,7 @@ morla_filebrowser_database_dir: "{{ morla_filebrowser_config_dir }}/database"
 morla_filebrowser_db: "{{ morla_filebrowser_database_dir }}/filebrowser.db"
 morla_filebrowser_settings_json: "{{ morla_filebrowser_config_config_dir }}/settings.json"
 
-morla_filebrowser_srv_dir: "{{ morla_multimedia_dir }}"
+morla_filebrowser_srv_dir: "{{ morla_one_media }}"
 
 morla_filebrowser_container_image_base: "docker.io/filebrowser/filebrowser"
 morla_filebrowser_container_image_tag: "s6"

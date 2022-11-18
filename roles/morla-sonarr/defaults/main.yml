@@ -15,8 +15,7 @@ morla_sonarr_public_url: "{{ morla_sonarr_short_name }}.{{ morla_public_url }}"
 
 # filesystem dir for configs
 morla_sonarr_config_dir: "{{ morla_config_dir }}/{{ morla_sonarr_long_name }}"
-morla_sonarr_series_dir: "{{ morla_multimedia_series_dir }}"
-morla_sonarr_downloads_dir: "{{ morla_multimedia_downloads_transmission_downloads_dir }}"
+morla_sonarr_data_dir: "{{ morla_data_dir }}"
 
 morla_sonarr_container_image_base: "cr.hotio.dev/hotio/sonarr"
 morla_sonarr_container_image_tag: "latest"
@@ -25,8 +24,7 @@ morla_sonarr_container_image: "{{ morla_sonarr_container_image_base }}:{{ morla_
 # used inside container config
 morla_sonarr_volumes:
   - "{{ morla_sonarr_config_dir }}:/config:Z"
-  - "{{ morla_sonarr_series_dir }}:/series:z"
-  - "{{ morla_sonarr_downloads_dir }}:/downloads:z"
+  - "{{ morla_sonarr_data_dir }}:/data:z"
 
 morla_sonarr_reverse_proxy_port: "8989"
 
