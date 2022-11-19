@@ -1,8 +1,0 @@
-- name: Close TCP ports for Nginx
-  become: true
-  ansible.posix.firewalld:
-    port: "{{ item }}/tcp"
-    permanent: yes
-    state: disabled
-    immediate: true
-  loop: "{{ morla_nginx_fw_ports }}"

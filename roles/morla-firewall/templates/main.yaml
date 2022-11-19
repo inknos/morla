@@ -1,0 +1,14 @@
+# should check if dictionary has empty values before passing them to jinja
+
+- name: Create Firewall Service File
+  ansible.builtin.template:
+    src: "firewall_service.xml.j2"
+    dest: "/usr/lib/firewalld/services/container-morla-{{ item.name }}.xml"
+  become: true
+  loop: "{{ morla_firewall_services }}"
+
+- name: reload service firewalld
+  systemd:
+    name: firewalld
+    state: reloaded
+  become: true

@@ -1,0 +1,10 @@
+---
+- name: Enable Firewall Service
+  become: yes
+  ansible.posix.firewalld:
+    service: "container-morla-{{ item.name }}"
+    permanent: yes
+    zone: home
+    state: enabled
+    immediate: true
+  loop: "{{ morla_firewall_services }}"

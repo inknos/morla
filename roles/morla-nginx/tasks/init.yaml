@@ -1,7 +1,5 @@
 ---
-- name: Add Container to the list of autostart containers
-  ansible.builtin.set_fact:
-    morla_systemd_autostart_containers: "{{ morla_systemd_autostart_containers  + [ morla_nginx_container_name ] }} "
+- ansible.builtin.import_tasks: "{{ role_path }}/tasks/init_flag.yaml"
 
 - name: Check if Nginx Config dir exists
   stat:

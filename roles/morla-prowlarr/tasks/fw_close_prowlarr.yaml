@@ -1,9 +1,0 @@
-- name: Close ports for Prowlarr
-  become: true
-  ansible.posix.firewalld:
-    port: "{{ item }}/tcp"
-    permanent: yes
-    state: disabled
-    immediate: true
-  loop: "{{ morla_prowlarr_fw_ports.tcp }}"
-

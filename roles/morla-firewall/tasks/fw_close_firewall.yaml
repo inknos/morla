@@ -1,0 +1,11 @@
+---
+# should need massive workaround to disable all the services and detect conflights
+- name: Disable Firewall Service
+  become: yes
+  ansible.posix.firewalld:
+    service: "container-morla-{{ item.name }}"
+    permanent: yes
+    zone: home
+    state: enabled
+    immediate: true
+  loop: "{{ morla_firewall_services }}"

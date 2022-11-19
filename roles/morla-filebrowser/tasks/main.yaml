@@ -23,20 +23,7 @@
     - setup-all
     - setup-filebrowser
 
-- ansible.builtin.import_tasks: "{{ role_path }}/tasks/fw_close_filebrowser.yaml"
-  when: "morla_filebrowser_enabled | bool"
+- ansible.builtin.import_tasks: "{{ role_path }}/templates/main.yaml"
   tags:
-    - never
-    - destroy-all
-    - destroy-filebrowser
-    - fw-down-all
-    - fw-down-filebrowser
-
-- ansible.builtin.import_tasks: "{{ role_path }}/tasks/fw_open_filebrowser.yaml"
-  when: "morla_filebrowser_enabled | bool"
-  tags:
-    - fw-up-all
-    - fw-up-filebrowser
     - setup-all
     - setup-filebrowser
-

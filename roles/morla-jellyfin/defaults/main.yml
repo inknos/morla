@@ -1,5 +1,10 @@
 morla_jellyfin_enabled: true
 
+morla_jellyfin_flag_public: true
+morla_jellyfin_flag_autostart: true
+morla_jellyfin_flag_wireguard: true
+morla_jellyfin_flag_firewall: true # replace with if port list non empty
+
 morla_jellyfin_long_name: "Jellyfin"
 morla_jellyfin_short_name: jellyfin
 

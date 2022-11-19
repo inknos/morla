@@ -4,6 +4,7 @@ morla_transmission_become: true
 morla_transmission_flag_public: false
 morla_transmission_flag_autostart: true
 morla_transmission_flag_wireguard: true
+morla_transmission_flag_firewall: true # replace with if port list non empty
 
 morla_transmission_long_name: "Transmission"
 morla_transmission_short_name: transmission

@@ -25,18 +25,7 @@
     - setup-all
     - setup-nginx
 
-- ansible.builtin.import_tasks: "{{ role_path }}/tasks/fw_close_nginx.yaml"
+- ansible.builtin.import_tasks: "{{ role_path }}/templates/main.yaml"
   tags:
-    - never
-    - destroy-all
-    - destroy-nginx
-    - fw-down-all
-    - fw-down-nginx
-
-- ansible.builtin.import_tasks: "{{ role_path }}/tasks/fw_open_nginx.yaml"
-  tags:
-    - fw-up-all
-    - fw-up-nginx
     - setup-all
     - setup-nginx
-

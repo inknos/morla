@@ -14,4 +14,7 @@
     morla_systemd_autostart_containers: "{{ morla_systemd_autostart_containers + [ morla_wireguard_container_name ] }} "
   when: ( morla_wireguard_flag_autostart is defined ) and ( morla_wireguard_flag_autostart|bool == True ) 
 
-
+- name: Add Container to the list of Firewall Services
+  ansible.builtin.set_fact:
+    morla_firewall_services: "{{ morla_firewall_services + [ { 'name': morla_wireguard_short_name, 'ports': morla_wireguard_fw_ports } ]}}"
+  when: ( morla_wireguard_flag_firewall is defined ) and ( morla_wireguard_flag_firewall|bool == True )

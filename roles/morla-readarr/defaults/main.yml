@@ -4,6 +4,7 @@ morla_readarr_become: true
 morla_readarr_flag_public: false
 morla_readarr_flag_autostart: true
 morla_readarr_flag_wireguard: true
+morla_readarr_flag_firewall: true # replace with if port list non empty
 
 morla_readarr_long_name: "Readarr"
 morla_readarr_short_name: readarr

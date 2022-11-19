@@ -23,19 +23,3 @@
     - setup-all
     - setup-readarr
 
-- ansible.builtin.import_tasks: "{{ role_path }}/tasks/fw_close_readarr.yaml"
-  when: "morla_readarr_enabled | bool"
-  tags:
-    - never
-    - destroy-all
-    - destroy-readarr
-    - fw-down-all
-    - fw-down-readarr
-
-- ansible.builtin.import_tasks: "{{ role_path }}/tasks/fw_open_readarr.yaml"
-  when: "morla_readarr_enabled | bool"
-  tags:
-    - fw-up-all
-    - fw-up-readarr
-    - setup-all
-    - setup-readarr
