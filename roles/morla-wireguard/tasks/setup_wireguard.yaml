@@ -37,7 +37,7 @@
       SERVERURL: "{{ morla_wireguard_env_serverurl }}"
       SERVERPORT: "{{ morla_wireguard_external_server_port }}"
       PEERS: "{{ morla_wireguard_env_peers }}"
-      ALLOWEDIPS: "{{ morla_wireguard_env_allowedips }}"
+      ALLOWEDIPS: "{{ morla_wireguard_env_allowedips }},172.20.0.0/16"
       LOG_CONFS: false
     cap_add: "{{ morla_wireguard_cap_add }}"
     pod: morla-wireguard-pod

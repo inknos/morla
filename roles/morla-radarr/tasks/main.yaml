@@ -23,6 +23,11 @@
     - setup-all
     - setup-radarr
 
+- ansible.builtin.import_tasks: "{{ role_path }}/templates/main.yaml"
+  tags:
+    - setup-all
+    - setup-radarr
+
 - ansible.builtin.import_tasks: "{{ role_path }}/tasks/fw_close_radarr.yaml"
   when: "morla_radarr_enabled | bool"
   tags:
