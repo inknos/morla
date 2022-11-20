@@ -1,0 +1,4 @@
+- name: Destroy Qbittorrent
+  containers.podman.podman_container:
+    name: "{{ morla_qbittorrent_container_name }}"
+    state: absent
