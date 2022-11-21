@@ -1,4 +1,11 @@
 <h1>Hello, Morla!</h1>
+
+<h3><a href="http://10.13.13.1">10.13.13.1</a></h3>
+<h3><a href="http://172.20.0.66">172.20.0.66</a></h3>
+
+<hr>
+
+<h3>Internal Hosts</h3>
 {% if morla_wireguard_domains is defined %}
 <ul>
 {% for item in morla_wireguard_domains %}
@@ -7,10 +14,11 @@
 </ul>
 {% endif %}
 
+<h3>VPN Hosts</h3>
 {% if morla_wireguard_domains is defined %}
 <ul>
 {% for item in morla_wireguard_domains %}
-	<li><a href="{{ item.name }}"> {{ item.name }} </a></li>
+	<li><a href="http://{{ item.ip or ""}}:{{ item.port or "" }}"> {{ item.name }} </a></li>
 {% endfor %}
 </ul>
 {% endif %}

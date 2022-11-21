@@ -26,6 +26,9 @@
       - "0:1:{{ morla_fake_pgid }}"
       - "{{ morla_fake_pgid + 1 }}:{{ morla_fake_pgid + 1 }}:{{ morla_subgid_size - morla_fake_pgid }}"
     state: started
+    network: morla-wireguard-network
+    ip: "{{ morla_prowlarr_internal_ip }}"
+    network_aliases: "{{ morla_prowlarr_short_name }}"
       #pod: morla-wireguard-pod
       #network: morla-wireguard-network
     restart_policy: unless-stopped

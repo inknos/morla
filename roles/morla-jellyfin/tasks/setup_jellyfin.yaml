@@ -19,6 +19,9 @@
       PUID: 0
       PGID: 0
       TZ: "{{ morla_tz }}"
+    network: morla-wireguard-network
+    ip: "{{ morla_jellyfin_internal_ip }}"
+    network_aliases: "{{ morla_jellyfin_short_name }}"
     state: started
     restart_policy: unless-stopped
     generate_systemd:

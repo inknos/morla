@@ -28,6 +28,9 @@
     state: started
       #pod: morla-wireguard-pod
       #network: morla-wireguard-network
+    network: morla-wireguard-network
+    ip: "{{ morla_lidarr_internal_ip }}"
+    network_aliases: "{{ morla_lidarr_short_name }}"
     restart_policy: unless-stopped
     generate_systemd:
       path: "{{ morla_home_config_systemd_dir }}"

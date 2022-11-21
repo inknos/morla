@@ -27,6 +27,7 @@ morla_readarr_volumes:
   - "{{ morla_readarr_config_dir }}:/config:Z"
   - "{{ morla_readarr_data_dir }}:/data:z"
 
+morla_readarr_internal_ip: "172.20.0.87"
 morla_readarr_reverse_proxy_port: "8787"
 
 morla_readarr_fw_ports:

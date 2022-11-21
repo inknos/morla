@@ -27,6 +27,7 @@ morla_prowlarr_volumes:
 
 morla_prowlarr_reverse_proxy_port: "9696"
 
+morla_prowlarr_internal_ip: "172.20.0.96"
 morla_prowlarr_fw_ports:
   tcp:
     - "{{ morla_prowlarr_reverse_proxy_port }}"

@@ -6,7 +6,7 @@
  
 - name: Add Container to the list of Wireguard accessible containers
   ansible.builtin.set_fact:
-    morla_wireguard_domains: "{{ morla_wireguard_domains + [ { 'name': morla_readarr_short_name, 'port': morla_readarr_reverse_proxy_port } ] }}"
+    morla_wireguard_domains: "{{ morla_wireguard_domains + [ { 'name': morla_readarr_short_name, 'port': morla_readarr_reverse_proxy_port, 'ip': morla_readarr_internal_ip } ] }}"
   when: ( morla_readarr_flag_wireguard is defined ) and ( morla_readarr_flag_wireguard|bool == True ) 
 
 - name: Add Container to the list of autostart containers

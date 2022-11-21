@@ -26,6 +26,7 @@ morla_qbittorrent_env_webui_port: 9092
   # morla_qbittorrent_web_home: "/flood-for-qbittorrent/"
 
 # used inside container config
+morla_qbittorrent_internal_ip: "172.20.0.92"
 morla_qbittorrent_reverse_proxy_port: "{{ morla_qbittorrent_env_webui_port }}"
 
 morla_qbittorrent_fw_ports:

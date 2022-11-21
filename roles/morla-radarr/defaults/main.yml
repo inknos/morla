@@ -14,26 +14,28 @@ morla_radarr_container_name: "{{ morla_user_username }}-{{ morla_radarr_containe
 
 morla_radarr_public_url: "{{ morla_radarr_short_name }}.{{ morla_public_url }}"
 
-# filesystem dir for configs
-morla_radarr_config_dir: "{{ morla_config_dir }}/{{ morla_radarr_long_name }}"
-morla_radarr_data_dir: "{{ morla_data_dir }}"
-
 morla_radarr_container_image_base: "cr.hotio.dev/hotio/radarr"
 morla_radarr_container_image_tag: "latest"
 morla_radarr_container_image: "{{ morla_radarr_container_image_base }}:{{ morla_radarr_container_image_tag }}"
 
-# used inside container config
+# volumes
+
+morla_radarr_config_dir: "{{ morla_config_dir }}/{{ morla_radarr_long_name }}"
+morla_radarr_data_dir: "{{ morla_data_dir }}"
+
 morla_radarr_volumes:
   - "{{ morla_radarr_config_dir }}:/config:Z"
   - "{{ morla_radarr_data_dir }}:/data:z"
+
+# networking 
+morla_radarr_internal_ip: "172.20.0.78"
 
 morla_radarr_reverse_proxy_port: "7878"
 
 morla_radarr_fw_ports:
   tcp:
     - "7878"
+  udp:
 
 morla_radarr_ports:
   - "7878:7878"
-
-

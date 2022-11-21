@@ -54,7 +54,7 @@
     - morla-wordle          # setup wordle
     - morla-nginx-wireguard # setup server to use internally
     - morla-nginx           # setup server for public containers
-    - morla-gandi-ddns      # setup python script to update gandi dns
+      #- morla-gandi-ddns      # setup python script to update gandi dns
     - morla-letsencrypt     # manage certificates for public containers
     - morla-firewall        # manage firewall services and open ports
     - morla-systemd         # manage containers autostart

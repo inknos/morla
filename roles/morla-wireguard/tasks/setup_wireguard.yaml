@@ -8,9 +8,10 @@
   containers.podman.podman_pod:
     name: morla-wireguard-pod
     state: started
-    network: 
+    network:
       - morla-wireguard-network
     ports: "{{ morla_wireguard_ports }}"
+    ip: "172.20.0.66"
     generate_systemd:
       path: "{{ morla_home_config_systemd_dir }}"
       restart_policy: always
@@ -37,10 +38,12 @@
       SERVERURL: "{{ morla_wireguard_env_serverurl }}"
       SERVERPORT: "{{ morla_wireguard_external_server_port }}"
       PEERS: "{{ morla_wireguard_env_peers }}"
-      ALLOWEDIPS: "{{ morla_wireguard_env_allowedips }},172.20.0.0/16"
+      ALLOWEDIPS: "{{ morla_wireguard_env_allowedips }},172.20.0.0/24,10.88.0.0/16"
       LOG_CONFS: false
     cap_add: "{{ morla_wireguard_cap_add }}"
     pod: morla-wireguard-pod
+    sysctl:
+      net.ipv4.ip_forward: 1
     state: started
     restart_policy: unless-stopped
     generate_systemd:

@@ -29,6 +29,7 @@ morla_filebrowser_container_image: "{{ morla_filebrowser_container_image_base }}
 # used inside container config
 morla_filebrowser_reverse_proxy_port: "27765"
 
+morla_filebrowser_internal_ip: "172.20.0.27"
 morla_filebrowser_fw_ports:
   tcp:
     - "{{ morla_filebrowser_reverse_proxy_port }}"

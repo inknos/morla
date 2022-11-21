@@ -27,6 +27,8 @@ morla_sonarr_volumes:
   - "{{ morla_sonarr_config_dir }}:/config:Z"
   - "{{ morla_sonarr_data_dir }}:/data:z"
 
+morla_sonarr_internal_ip: "172.20.0.89"
+
 morla_sonarr_reverse_proxy_port: "8989"
 
 morla_sonarr_fw_ports:

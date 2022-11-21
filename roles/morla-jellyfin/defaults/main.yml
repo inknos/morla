@@ -23,6 +23,7 @@ morla_jellyfin_container_image: "{{ morla_jellyfin_container_image_base }}:{{ mo
 
 # used inside container config
 morla_jellyfin_reverse_proxy_port: "8096"
+morla_jellyfin_internal_ip: "172.20.0.80"
 
 morla_jellyfin_fw_ports:
   tcp:

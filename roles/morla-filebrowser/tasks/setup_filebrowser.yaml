@@ -9,7 +9,9 @@
       PGID: "{{ morla_root_pgid }}"
       TZ: "{{ morla_tz }}"
     state: started
-      #pod: morla-wireguard-pod
+    network: morla-wireguard-network
+    ip: "{{ morla_filebrowser_internal_ip }}"
+    network_aliases: "{{ morla_filebrowser_short_name }}"
     restart_policy: unless-stopped
     generate_systemd:
       path: "{{ morla_home_config_systemd_dir }}"

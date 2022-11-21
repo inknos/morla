@@ -22,6 +22,9 @@
       PGID: "{{ morla_root_pgid }}"
       TZ: "{{ morla_tz }}"
       WEBUI_PORT: "{{ morla_qbittorrent_env_webui_port }}"
+    network: morla-wireguard-network
+    ip: "{{ morla_qbittorrent_internal_ip }}"
+    network_aliases: "{{ morla_qbittorrent_short_name }}"
     state: started
     restart_policy: unless-stopped
     generate_systemd:

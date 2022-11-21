@@ -7,6 +7,10 @@
       PUID: "{{ morla_fake_puid }}"
       PGID: "{{ morla_fake_pgid }}"
       TZ: "{{ morla_tz }}"
+    cap_add:
+      - NET_ADMIN
+    sysctl:
+      net.ipv4.ip_forward: 1
     state: started
     pod: morla-wireguard-pod
     restart_policy: unless-stopped
