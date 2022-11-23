@@ -50,6 +50,7 @@
     - morla-lidarr          #
     - morla-readarr         #
     # - morla-transmission    # setup transmission container
+    - morla-hedgedoc
     - morla-qbittorrent
     - morla-wordle          # setup wordle
     - morla-nginx-wireguard # setup server to use internally

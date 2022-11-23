@@ -1,0 +1,4 @@
+- name: Destroy Hedgedoc
+  containers.podman.podman_container:
+    name: "{{ morla_hedgedoc_container_name }}"
+    state: absent

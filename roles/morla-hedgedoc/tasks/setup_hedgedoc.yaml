@@ -1,0 +1,77 @@
+---
+- name: Create config directory
+  ansible.builtin.file:
+    path: "{{ morla_hedgedoc_config_dir }}"
+    state: directory
+    owner: "{{ morla_user_username }}"
+    group: "{{ morla_user_groupname }}"
+  when: not check_hedgedoc_config_dir.stat.exists
+
+- name: Create DB config directory
+  ansible.builtin.file:
+    path: "{{ morla_hedgedoc_db_config_dir }}"
+    state: directory
+    owner: "{{ morla_user_username }}"
+    group: "{{ morla_user_groupname }}"
+  when: not check_hedgedoc_db_config_dir.stat.exists
+
+- name: Create container
+  containers.podman.podman_container:
+    name: "{{ morla_hedgedoc_container_name }}"
+    image: "{{ morla_hedgedoc_container_image}}"
+    volumes: "{{ morla_hedgedoc_volumes }}"
+    ports: "{{ morla_hedgedoc_ports }}"
+    ip: "{{ morla_hedgedoc_internal_ip }}"
+    network:
+      - morla-wireguard-network
+    network_aliases: "{{ morla_hedgedoc_short_name }}"
+    env:
+      PUID: "{{ morla_root_puid }}"
+      PGID: "{{ morla_root_pgid }}"
+      TZ: "{{ morla_tz }}"
+      # SSL options
+      CMD_DOMAIN: "{{ morla_hedgedoc_public_url }}"
+      CMD_URL_ADDPORT: false
+      CMD_PROTOCOL_USESSL: true
+      # DB options
+      CMD_DB_PORT: "{{ morla_hedgedoc_db_env_port }}"
+      CMD_DB_USERNAME: "{{ morla_hedgedoc_db_env_user }}"
+      CMD_DB_PASSWORD: "{{ morla_hedgedoc_db_env_password}}"
+      CMD_DB_HOST: "{{ morla_hedgedoc_db_container_name }}"
+      CMD_DB_DATABASE: "{{ morla_hedgedoc_db_env_db }}"
+      CMD_DB_DIALECT: postgres
+      # Auth methods
+      # CMD_GITHUB_CLIENTID: "{{ morla_hedgedoc_auth_github_clientid }}"
+      # CMD_GITHUB_CLIENTSECRET: "{{ morla_hedgedoc_auth_github_clientsecret }}"
+      # Security options
+      CMD_CSP_ALLOW_FRAMING: false
+      CMD_CSP_ALLOW_PDF_EMBED: false
+    state: started
+    restart_policy: unless-stopped
+    generate_systemd:
+      path: "{{ morla_home_config_systemd_dir }}"
+      restart_policy: always
+      names: true
+      container_prefix: "{{ morla_systemd_service_prefix }}"
+
+- name: Create Database
+  containers.podman.podman_container:
+    name: "{{ morla_hedgedoc_db_container_name }}"
+    image:  "{{ morla_hedgedoc_db_container_image }}"
+    volumes: "{{ morla_hedgedoc_db_volumes }}"
+    network: 
+      - container:morla-hedgedoc
+    env:
+      PUID: "{{ morla_root_puid }}"
+      PGID: "{{ morla_root_pgid }}"
+      TZ: "{{ morla_tz }}"
+      POSTGRES_USER: "{{ morla_hedgedoc_db_env_user }}"
+      POSTGRES_PASSWORD: "{{ morla_hedgedoc_db_env_password }}"
+      POSTGRES_DB: "{{ morla_hedgedoc_db_env_db }}"
+    state: started
+    restart_policy: unless-stopped
+    generate_systemd:
+      path: "{{ morla_home_config_systemd_dir }}"
+      restart_policy: always
+      names: true
+      container_prefix: "{{ morla_systemd_service_prefix }}"
