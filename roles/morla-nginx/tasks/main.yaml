@@ -15,11 +15,6 @@
     - destroy-all
     - destroy-nginx
 
-- ansible.builtin.import_tasks: "{{ role_path }}/templates/main.yaml"
-  tags:
-    - setup-all
-    - setup-nginx
-
 - ansible.builtin.import_tasks: "{{ role_path }}/tasks/setup_nginx.yaml"
   tags:
     - setup-all
