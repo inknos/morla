@@ -1,8 +1,0 @@
----
-- include_tasks: create_certificate.yaml
-  loop: "{{ morla_public_domains }}"
-  loop_control:
-    loop_var: outer_item
-
-# - name: Remove useless files from letsencrypt dir
-# - name: Verify certificates has been created

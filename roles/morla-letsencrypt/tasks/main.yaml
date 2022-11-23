@@ -17,7 +17,7 @@
     - setup-all
     - setup-letsencrypt
 
-- ansible.builtin.import_tasks: "{{ role_path }}/tasks/run_letsencrypt.yaml"
+- ansible.builtin.import_tasks: "{{ role_path }}/tasks/create_certificates.yaml"
   when: "morla_letsencrypt_enabled | bool"
   tags:
     - setup-all
