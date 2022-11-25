@@ -29,7 +29,13 @@
   loop: "{{ morla_systemd_autostart_pods }}"
   ignore_errors: yes
 
-- name: Enable Lingering to Autostart Containers with No Login
+- name: Check Linger Enabled
+  ansible.builtin.shell: "loginctl show-user {{ morla_user_username }} --property=Linger"
+  register: check_linger_equals_yes
+
+
+- name: Enable Linger to Autostart Containers with No Login
   # https://docs.podman.io/en/latest/markdown/podman-generate-systemd.1.html
   ansible.builtin.shell: "loginctl enable-linger {{ morla_user_username }}"
+  when: check_linger_equals_yes.stdout != "Linger=yes"
 
