@@ -15,16 +15,26 @@
     group: "{{ morla_user_groupname }}"
   when: not check_hedgedoc_db_config_dir.stat.exists
 
+- name: Create pod
+  containers.podman.podman_pod:
+    name: morla-hedgedoc-pod
+    state: started
+    network:
+      - morla-wireguard-network
+    network_aliases: "{{ morla_hedgedoc_short_name }}"
+    ip: "{{ morla_hedgedoc_internal_ip }}"
+    ports: "{{ morla_hedgedoc_ports }}"
+    generate_systemd:
+      path: "{{ morla_home_config_systemd_dir }}"
+      restart_policy: always
+      names: true
+
 - name: Create container
   containers.podman.podman_container:
     name: "{{ morla_hedgedoc_container_name }}"
     image: "{{ morla_hedgedoc_container_image}}"
     volumes: "{{ morla_hedgedoc_volumes }}"
-    ports: "{{ morla_hedgedoc_ports }}"
-    ip: "{{ morla_hedgedoc_internal_ip }}"
-    network:
-      - morla-wireguard-network
-    network_aliases: "{{ morla_hedgedoc_short_name }}"
+    pod: morla-hedgedoc-pod
     env:
       PUID: "{{ morla_root_puid }}"
       PGID: "{{ morla_root_pgid }}"
@@ -48,17 +58,13 @@
       CMD_CSP_ALLOW_PDF_EMBED: false
     state: started
     restart_policy: unless-stopped
-    generate_systemd:
-      path: "{{ morla_home_config_systemd_dir }}"
-      restart_policy: always
-      names: true
-      container_prefix: "{{ morla_systemd_service_prefix }}"
 
 - name: Create Database
   containers.podman.podman_container:
     name: "{{ morla_hedgedoc_db_container_name }}"
     image:  "{{ morla_hedgedoc_db_container_image }}"
     volumes: "{{ morla_hedgedoc_db_volumes }}"
+    pod: morla-hedgedoc-pod
     network: 
       - container:morla-hedgedoc
     env:
@@ -70,8 +76,3 @@
       POSTGRES_DB: "{{ morla_hedgedoc_db_env_db }}"
     state: started
     restart_policy: unless-stopped
-    generate_systemd:
-      path: "{{ morla_home_config_systemd_dir }}"
-      restart_policy: always
-      names: true
-      container_prefix: "{{ morla_systemd_service_prefix }}"

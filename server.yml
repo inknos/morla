@@ -49,7 +49,7 @@
     - morla-prowlarr        #
     - morla-lidarr          #
     - morla-readarr         #
-    - morla-hedgedoc
+      # - morla-hedgedoc
     - morla-qbittorrent
     - morla-wordle          # setup wordle
     - morla-nginx           # setup server for public containers
