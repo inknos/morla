@@ -1,4 +1,4 @@
 - name: Destroy Wireguard
-  containers.podman.podman_container:
-    name: "{{ morla_wireguard_container_name }}"
+  containers.podman.podman_pod:
+    name: morla-wireguard-pod
     state: absent

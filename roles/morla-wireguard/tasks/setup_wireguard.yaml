@@ -52,3 +52,46 @@
       names: true
       container_prefix: "{{ morla_systemd_service_prefix }}"
 
+- name: Create Reverse Proxy
+  containers.podman.podman_container:
+    name: "{{ morla_nginx_wireguard_container_name }}"
+    image: "{{ morla_nginx_wireguard_container_image}}"
+    volumes: "{{ morla_nginx_wireguard_volumes }}"
+    env:
+      PUID: "{{ morla_fake_puid }}"
+      PGID: "{{ morla_fake_pgid }}"
+      TZ: "{{ morla_tz }}"
+    cap_add:
+      - NET_ADMIN
+    sysctl:
+      net.ipv4.ip_forward: 1
+    state: started
+    pod: morla-wireguard-pod
+    restart_policy: unless-stopped
+    generate_systemd:
+      path: "{{ morla_home_config_systemd_dir }}"
+      restart_policy: always
+      names: true
+      container_prefix: "{{ morla_systemd_service_prefix }}" 
+
+        # - name: Create DNS Server
+        #   containers.podman.podman_container:
+        #     name: morla-coredns-wireguard
+        #     image: "docker.io/coredns/coredns:latest"
+        #     volumes:
+        #       - "/home/morla/Config/CoreDNSWireguard/etc/coredns:/etc/coredns:Z"
+        #     cap_drop:
+        #       - ALL
+        #     cap_add:
+        #       - NET_BIND_SERVICE
+        #     state: started
+        #     pod: morla-wireguard-pod
+        #     restart_policy: unless-stopped
+        #     read_only: true
+        #     command: "-conf /etc/coredns/Corefile"
+        #     generate_systemd:
+        #       path: "{{ morla_home_config_systemd_dir }}"
+        #       restart_policy: always
+        #       names: true
+        #       container_prefix: "{{ morla_systemd_service_prefix }}" 
+
