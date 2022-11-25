@@ -1,0 +1,11 @@
+wg.morla {
+    hosts /config/coredns/internal.hosts
+    log
+}
+
+. {
+    loop
+    health
+    forward . /etc/resolv.conf
+    log
+}
