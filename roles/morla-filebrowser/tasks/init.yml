@@ -1,0 +1,56 @@
+---
+- ansible.builtin.import_tasks: "{{ role_path }}/tasks/init_flag.yml"
+
+- name: Check if Config dir exists
+  stat:
+    path: "{{ morla_filebrowser_config_dir }}"
+  register: check_filebrowser_config_dir
+
+- name: Create config directory
+  ansible.builtin.file:
+    path: "{{ morla_filebrowser_config_dir }}"
+    state: directory
+    owner: "{{ morla_user_username }}"
+    group: "{{ morla_user_groupname }}"
+  when: not check_filebrowser_config_dir.stat.exists
+
+- name: Check if database dir exists
+  stat:
+    path: "{{ morla_filebrowser_database_dir }}"
+  register: check_filebrowser_database_dir
+
+- name: Create database directory
+  ansible.builtin.file:
+    path: "{{ morla_filebrowser_database_dir }}"
+    state: directory
+    owner: "{{ morla_user_username }}"
+    group: "{{ morla_user_groupname }}"
+  when: not check_filebrowser_database_dir.stat.exists
+
+- name: Check if Config/config dir exists
+  stat:
+    path: "{{ morla_filebrowser_config_config_dir }}"
+  register: check_filebrowser_config_config_dir
+
+- name: Create Config/config directory
+  ansible.builtin.file:
+    path: "{{ morla_filebrowser_config_config_dir }}"
+    state: directory
+    owner: "{{ morla_user_username }}"
+    group: "{{ morla_user_groupname }}"
+  when: not check_filebrowser_config_config_dir.stat.exists
+
+- name: Check if database file exists
+  stat:
+    path: "{{ morla_filebrowser_db }}"
+  register: check_filebrowser_db
+
+- name: Create empty database file
+  ansible.builtin.file:
+    path: "{{ morla_filebrowser_db }}"
+    state: touch
+    owner: "{{ morla_user_username }}"
+    group: "{{ morla_user_groupname }}"
+  when: not check_filebrowser_db.stat.exists
+
+- ansible.builtin.import_tasks: "{{ role_path }}/templates/main.yml"

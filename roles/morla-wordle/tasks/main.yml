@@ -1,0 +1,25 @@
+# roles/wordle/tasks/main.yml
+
+
+- ansible.builtin.import_tasks: "{{ role_path }}/tasks/init.yml"
+  tags:
+    - always
+
+- ansible.builtin.import_tasks: "{{ role_path }}/tasks/build_wordle.yml"
+  when: "morla_wordle_enabled | bool"
+  tags:
+    - setup-all
+    - setup-wordle
+
+- ansible.builtin.import_tasks: "{{ role_path }}/tasks/destroy_wordle.yml"
+  when: "morla_wordle_enabled | bool"
+  tags:
+    - never
+    - destroy-all
+    - destroy-wordle
+
+- ansible.builtin.import_tasks: "{{ role_path }}/tasks/setup_wordle.yml"
+  when: "morla_wordle_enabled | bool"
+  tags:
+    - setup-all
+    - setup-wordle

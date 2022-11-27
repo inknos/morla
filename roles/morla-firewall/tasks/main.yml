@@ -1,0 +1,24 @@
+# roles/morla-firewall/tasks/main.yml
+
+
+- ansible.builtin.import_tasks: "{{ role_path }}/tasks/init.yml"
+  tags:
+    - always
+
+- ansible.builtin.import_tasks: "{{ role_path }}/templates/main.yml"
+  tags:
+    - fw-up
+    - setup-all
+    - setup-firewall
+
+- ansible.builtin.import_tasks: "{{ role_path }}/tasks/fw_close_firewall.yml"
+  tags:
+    - never
+    - destroy-all
+    - fw-down
+
+- ansible.builtin.import_tasks: "{{ role_path }}/tasks/fw_open_firewall.yml"
+  tags:
+    - fw-up
+    - setup-all
+    - setup-firewall

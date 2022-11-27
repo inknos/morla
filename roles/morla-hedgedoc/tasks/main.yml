@@ -1,0 +1,24 @@
+# roles/hedgedoc/tasks/main.yml
+
+- ansible.builtin.import_tasks: "{{ role_path }}/tasks/init.yml"
+  tags:
+    - always
+
+- ansible.builtin.import_tasks: "{{ role_path }}/tasks/pull_hedgedoc.yml"
+  when: "morla_hedgedoc_enabled | bool"
+  tags:
+    - setup-all
+    - setup-hedgedoc
+
+- ansible.builtin.import_tasks: "{{ role_path }}/tasks/destroy_hedgedoc.yml"
+  when: "morla_hedgedoc_enabled | bool"
+  tags:
+    - never
+    - destroy-all
+    - destroy-hedgedoc
+
+- ansible.builtin.import_tasks: "{{ role_path }}/tasks/setup_hedgedoc.yml"
+  when: "morla_hedgedoc_enabled | bool"
+  tags:
+    - setup-all
+    - setup-hedgedoc

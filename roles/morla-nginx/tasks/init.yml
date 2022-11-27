@@ -1,0 +1,16 @@
+---
+- ansible.builtin.import_tasks: "{{ role_path }}/tasks/init_flag.yml"
+
+- name: Check if Nginx Config dir exists
+  stat:
+    path: "{{ morla_nginx_config_dir }}"
+  register: check_nginx_config_dir
+
+- name: Create config directory
+  ansible.builtin.file:
+    path: "{{ morla_nginx_config_dir }}"
+    state: directory
+    owner: "{{ morla_user_username }}"
+    group: "{{ morla_user_groupname }}"
+  when: not check_nginx_config_dir.stat.exists
+

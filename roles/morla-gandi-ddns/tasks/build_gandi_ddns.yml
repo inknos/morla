@@ -1,0 +1,23 @@
+- name: Check if Git Gandi-DDNS exist
+  stat:
+    path: "{{ morla_gandi_ddns_git_dir }}"
+  register: check_gandi_ddns_git_dir
+
+- name: Clone Gandi-DDNS if Git dir does not exsist
+  ansible.builtin.git:
+    repo: "{{ morla_gandi_ddns_git_repo }}"
+    dest: "{{ morla_gandi_ddns_git_dir }}"
+    update: yes
+  # when: not check_gandi_ddns_git_dir.stat.exists
+
+- ansible.builtin.import_tasks: "{{ role_path }}/templates/main.yml"
+
+  # - name: Build Gandi-DDNS
+  #   containers.podman.podman_image:
+  #     name: "{{ morla_gandi_ddns_container_image}}"
+  #     path: "{{ role_path }}/files"
+  #     build:
+  #       annotation:
+  #         app: "{{ morla_gandi_ddns_container_name }}"
+  #         info: Gandi-DDNS in React
+

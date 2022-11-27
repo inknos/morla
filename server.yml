@@ -37,7 +37,7 @@
     - morla_vault_dir: "{{ morla_one_vault }}/Vault"
 
   vars_files:
-    - group_vars/vault.yaml
+    - group_vars/vault.yml
 
   roles:
     - morla-base            # setup base environment for containers

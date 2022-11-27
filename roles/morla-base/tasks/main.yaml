@@ -1,4 +1,0 @@
----
-- ansible.builtin.import_tasks: "{{ role_path }}/tasks/init.yaml"
-  tags:
-    - always

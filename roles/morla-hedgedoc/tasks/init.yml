@@ -1,0 +1,13 @@
+---
+- ansible.builtin.import_tasks: "{{ role_path }}/tasks/init_flag.yml"
+
+- name: Check if Config dir exists
+  stat:
+    path: "{{ morla_hedgedoc_config_dir }}"
+  register: check_hedgedoc_config_dir
+
+- name: Check if Config dir for DB exists
+  stat:
+    path: "{{ morla_hedgedoc_db_config_dir }}"
+  register: check_hedgedoc_db_config_dir
+

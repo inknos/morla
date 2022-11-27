@@ -1,0 +1,35 @@
+---
+- ansible.builtin.import_tasks: "{{ role_path }}/tasks/init_flag.yml"
+
+- name: Add the ip_tables module
+  community.general.modprobe:
+    name: ip_tables
+    state: present
+  become: true
+
+- name: Check if Config dir exists
+  stat:
+    path: "{{ morla_wireguard_config_dir }}"
+  register: check_wireguard_config_dir
+
+- name: Create config directory
+  ansible.builtin.file:
+    path: "{{ morla_wireguard_config_dir }}"
+    state: directory
+    owner: "{{ morla_user_username }}"
+    group: "{{ morla_user_groupname }}"
+  when: not check_wireguard_config_dir.stat.exists
+
+- name: Check if NginxWireguard Config dir exists
+  stat:
+    path: "{{ morla_nginx_wireguard_config_dir }}"
+  register: check_nginx_wireguard_config_dir
+
+- name: Create config directory
+  ansible.builtin.file:
+    path: "{{ morla_nginx_wireguard_config_dir }}"
+    state: directory
+    owner: "{{ morla_user_username }}"
+    group: "{{ morla_user_groupname }}"
+  when: not check_nginx_wireguard_config_dir.stat.exists
+

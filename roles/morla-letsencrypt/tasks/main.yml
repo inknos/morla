@@ -1,0 +1,37 @@
+# roles/letsencrypt/tasks/main.yml
+
+- ansible.builtin.import_tasks: "{{ role_path }}/tasks/init.yml"
+  when: "morla_letsencrypt_enabled | bool"
+  tags:
+    - always
+
+- ansible.builtin.import_tasks: "{{ role_path }}/tasks/build_certbot.yml"
+  when: "morla_letsencrypt_enabled | bool"
+  tags:
+    - setup-all
+    - setup-letsencrypt
+
+- ansible.builtin.import_tasks: "{{ role_path }}/tasks/setup_letsencrypt.yml"
+  when: "morla_letsencrypt_enabled | bool"
+  tags:
+    - setup-all
+    - setup-letsencrypt
+
+- ansible.builtin.import_tasks: "{{ role_path }}/tasks/create_certificates.yml"
+  when: "morla_letsencrypt_enabled | bool"
+  tags:
+    - setup-all
+    - setup-letsencrypt
+
+- ansible.builtin.import_tasks: "{{ role_path }}/tasks/install_certificates.yml"
+  when: "morla_letsencrypt_enabled | bool"
+  tags:
+    - setup-all
+    - setup-letsencrypt
+
+- ansible.builtin.import_tasks: "{{ role_path }}/tasks/create_cron.yml"
+  when: "morla_letsencrypt_enabled | bool"
+  tags:
+    - setup-all
+    - setup-letsencrypt
+

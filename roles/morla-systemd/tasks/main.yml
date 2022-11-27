@@ -1,0 +1,10 @@
+# roles/morla-systemd/tasks/main.yml
+
+- ansible.builtin.import_tasks: "{{ role_path }}/tasks/init.yml"
+  tags:
+    - always
+
+- ansible.builtin.import_tasks: "{{ role_path }}/tasks/setup_systemd.yml"
+  tags:
+    - setup-all
+    - setup-systemd
