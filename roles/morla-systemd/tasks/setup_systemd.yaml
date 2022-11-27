@@ -32,6 +32,7 @@
 - name: Check Linger Enabled
   ansible.builtin.shell: "loginctl show-user {{ morla_user_username }} --property=Linger"
   register: check_linger_equals_yes
+  changed_when: False
 
 
 - name: Enable Linger to Autostart Containers with No Login
