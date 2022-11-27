@@ -20,4 +20,5 @@
     -m {{ morla_letsencrypt_email }} \
     -d {{ item.item }}.{{ morla_public_url }}
   loop: "{{ check_letsencrypt_dir.results }}"
+  register: new_certificate
   when: item.stat.exists == False
