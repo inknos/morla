@@ -6,9 +6,11 @@
     dest: "/usr/lib/firewalld/services/container-morla-{{ item.name }}.xml"
   become: true
   loop: "{{ morla_firewall_services }}"
+  register: check_firewall_change
 
 - name: reload service firewalld
   systemd:
     name: firewalld
     state: reloaded
   become: true
+  when: check_firewall_change.changed
