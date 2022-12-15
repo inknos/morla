@@ -17,7 +17,7 @@
 
 - name: Create pod
   containers.podman.podman_pod:
-    name: morla-hedgedoc-pod
+    name: "{{ morla_hedgedoc_pod_name }}"
     state: started
     network:
       - morla-wireguard-network
@@ -34,7 +34,7 @@
     name: "{{ morla_hedgedoc_container_name }}"
     image: "{{ morla_hedgedoc_container_image}}"
     volumes: "{{ morla_hedgedoc_volumes }}"
-    pod: morla-hedgedoc-pod
+    pod: "{{ morla_hedgedoc_pod_name }}"
     env:
       PUID: "{{ morla_root_puid }}"
       PGID: "{{ morla_root_pgid }}"
@@ -64,7 +64,7 @@
     name: "{{ morla_hedgedoc_db_container_name }}"
     image:  "{{ morla_hedgedoc_db_container_image }}"
     volumes: "{{ morla_hedgedoc_db_volumes }}"
-    pod: morla-hedgedoc-pod
+    pod: "{{ morla_hedgedoc_pod_name }}"
     network: 
       - container:morla-hedgedoc
     env:

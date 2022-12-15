@@ -6,6 +6,8 @@ morla_hedgedoc_flag_autostart: true
 morla_hedgedoc_flag_wireguard: true
 morla_hedgedoc_flag_firewall: true # replace with if port list non empty
 
+morla_hedgedoc_pod_name: morla-hedgedoc-pod
+
 morla_hedgedoc_long_name: "Hedgedoc"
 morla_hedgedoc_short_name: hedgedoc
 
