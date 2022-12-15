@@ -16,7 +16,7 @@
   tags:
     - never
     - destroy-all
-    - destroy-gandi-_ddns
+    - destroy-gandi-ddns
 
 - ansible.builtin.import_tasks: "{{ role_path }}/tasks/setup_gandi_ddns.yml"
   when: "morla_gandi_ddns_enabled | bool"

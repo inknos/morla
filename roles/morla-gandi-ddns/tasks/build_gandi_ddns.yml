@@ -12,12 +12,12 @@
 
 - ansible.builtin.import_tasks: "{{ role_path }}/templates/main.yml"
 
-  # - name: Build Gandi-DDNS
-  #   containers.podman.podman_image:
-  #     name: "{{ morla_gandi_ddns_container_image}}"
-  #     path: "{{ role_path }}/files"
-  #     build:
-  #       annotation:
-  #         app: "{{ morla_gandi_ddns_container_name }}"
-  #         info: Gandi-DDNS in React
+- name: Build Gandi-DDNS
+  containers.podman.podman_image:
+    name: "{{ morla_gandi_ddns_container_image}}"
+    path: "{{ morla_gandi_ddns_git_dir }}"
+    build:
+      annotation:
+        app: "{{ morla_gandi_ddns_container_name }}"
+        info: Gandi-DDNS in React
 

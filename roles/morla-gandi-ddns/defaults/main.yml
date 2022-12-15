@@ -1,7 +1,7 @@
 morla_gandi_ddns_enabled: true
 
 morla_gandi_ddns_long_name: "Gandi-DDNS"
-morla_gandi_ddns_short_name: gandi_ddns
+morla_gandi_ddns_short_name: "gandi-ddns"
 
 # filesystem dir for configs
 morla_gandi_ddns_git_dir: "{{ role_path }}/files/gandi_ddns-git"

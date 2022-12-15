@@ -53,7 +53,7 @@
     - morla-qbittorrent
     - morla-wordle          # setup wordle
     - morla-nginx           # setup server for public containers
-      #- morla-gandi-ddns      # setup python script to update gandi dns
+    - morla-gandi-ddns      # setup python script to update gandi dns
     - morla-letsencrypt     # manage certificates for public containers
     - morla-wireguard-config
     - morla-firewall        # manage firewall services and open ports

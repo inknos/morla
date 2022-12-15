@@ -10,4 +10,4 @@ RUN pip3 install -r /app/requirements.txt
                                        
 WORKDIR /app
 
-CMD [ "python3", "/app/gandi_ddns.py" ]
+ENTRYPOINT [ "python3", "/app/gandi_ddns.py" ]
