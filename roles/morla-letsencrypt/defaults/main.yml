@@ -16,4 +16,4 @@ morla_letsencrypt_certbot_container_image: "{{ morla_letsencrypt_certbot_contain
 
 
 morla_letsencrypt_certbot_volumes:
-  - "{{ morla_letsencrypt_dir }}:/etc/letsencrypt:Z"
+  - "{{ morla_letsencrypt_dir }}:/etc/letsencrypt:z"

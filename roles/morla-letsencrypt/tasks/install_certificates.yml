@@ -1,9 +1,9 @@
 ---
-- name: Copy certificates to Nginx
-  ansible.builtin.copy:
+- name: Link certificates to Nginx
+  ansible.builtin.file:
     src: "{{ morla_letsencrypt_dir }}"
-    dest: "{{ morla_nginx_config_dir }}"
-  when: new_certificate.changed
+    dest: "{{ morla_nginx_config_dir }}/letsencrypt"
+    state: link
 
 - name: Restart Nginx
   containers.podman.podman_container:
