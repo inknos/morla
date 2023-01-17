@@ -4,7 +4,7 @@
     minute: "0"
     hour: "10,22"
     job: 
-      "/usr/bin/podman run --rm --name certbot -v {{ morla_letsencrypt_dir }}:/etc/letsencrypt:Z {{ morla_certbot_gandi_short_name }} certbot certonly --authenticator dns-gandi --dns-gandi-credentials /etc/letsencrypt/gandi/gandi.ini --agree-tos --non-interactive -m {{ morla_letsencrypt_email }} -d {{ item }}.{{ morla_public_url }}"
+      "/usr/bin/podman run --rm --name certbot -v {{ morla_letsencrypt_dir }}:/etc/letsencrypt:z {{ morla_certbot_gandi_short_name }} certbot certonly --authenticator dns-gandi --dns-gandi-credentials /etc/letsencrypt/gandi/gandi.ini --agree-tos --non-interactive -m {{ morla_letsencrypt_email }} -d {{ item }}.{{ morla_public_url }}"
   loop: "{{ morla_public_domains }}"
   register: check_cron_install
 
