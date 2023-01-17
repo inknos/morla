@@ -1,10 +1,4 @@
 ---
-- name: Link certificates to Nginx
-  ansible.builtin.file:
-    src: "{{ morla_letsencrypt_dir }}"
-    dest: "{{ morla_nginx_config_dir }}/letsencrypt"
-    state: link
-
 - name: Restart Nginx
   containers.podman.podman_container:
     name: "{{ morla_nginx_container_name }}"

@@ -37,3 +37,4 @@ morla_nginx_ports:
 
 morla_nginx_volumes:
   - "{{ morla_nginx_config_dir }}:/config:Z"
+  - "{{ morla_letsencrypt_dir }}:/certs:z"

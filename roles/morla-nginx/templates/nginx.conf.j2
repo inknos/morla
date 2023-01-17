@@ -56,8 +56,8 @@ server {
 	     index  index.html index.htm;
 	}
 
-    ssl_certificate      /config/letsencrypt/live/{{ morla_domain }}/fullchain.pem;
-    ssl_certificate_key  /config/letsencrypt/live/{{ morla_domain }}/privkey.pem;
+    ssl_certificate      /certs/live/{{ morla_domain }}/fullchain.pem;
+    ssl_certificate_key  /certs/live/{{ morla_domain }}/privkey.pem;
 
     # include /config/letsencrypt/options-ssl-nginx.conf; # managed by Certbot
 
