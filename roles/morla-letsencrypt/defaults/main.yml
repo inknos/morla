@@ -11,7 +11,7 @@ morla_letsencrypt_gandi_dir: "{{ morla_letsencrypt_dir }}/gandi"
 
 morla_letsencrypt_certbot_container_name: "{{ morla_user_username }}-{{morla_letsencrypt_short_name}}-{{ morla_certbot_gandi_short_name }}" 
 morla_letsencrypt_certbot_container_image_base: "{{ morla_certbot_gandi_short_name }}"
-morla_letsencrypt_certbot_container_image_tag: v0
+morla_letsencrypt_certbot_container_image_tag: latest
 morla_letsencrypt_certbot_container_image: "{{ morla_letsencrypt_certbot_container_image_base }}:{{ morla_letsencrypt_certbot_container_image_tag }}"
 
 
