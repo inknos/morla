@@ -1,0 +1,65 @@
+morla_piwigo_enabled: true
+morla_piwigo_become: true
+
+morla_piwigo_flag_public: true
+morla_piwigo_flag_autostart: true
+morla_piwigo_flag_wireguard: true
+morla_piwigo_flag_firewall: true # replace with if port list non empty
+
+morla_piwigo_pod_name: morla-piwigo-pod
+
+morla_piwigo_long_name: "Piwigo"
+morla_piwigo_short_name: piwigo
+
+morla_piwigo_container_short_name: "{{ morla_piwigo_short_name }}"
+morla_piwigo_container_name: "{{ morla_user_username }}-{{ morla_piwigo_container_short_name }}"
+
+morla_piwigo_public_url: "{{ morla_piwigo_short_name }}.{{ morla_public_url }}"
+
+morla_piwigo_container_image_base: "lscr.io/linuxserver/piwigo"
+morla_piwigo_container_image_tag: "latest"
+morla_piwigo_container_image: "{{ morla_piwigo_container_image_base }}:{{ morla_piwigo_container_image_tag }}"
+
+# db
+morla_piwigo_db_long_name: "PiwigoDB"
+morla_piwigo_db_short_name: "piwigo-db"
+
+morla_piwigo_db_container_short_name: "{{ morla_piwigo_db_short_name }}"
+morla_piwigo_db_container_name: "{{ morla_user_username }}-{{ morla_piwigo_db_container_short_name }}"
+morla_piwigo_db_container_image_base: "lscr.io/linuxserver/mariadb"
+morla_piwigo_db_container_image_tag: "10.6.10"
+morla_piwigo_db_container_image: "{{ morla_piwigo_db_container_image_base }}:{{ morla_piwigo_db_container_image_tag }}"
+
+# env
+#env db
+morla_piwigo_db_env_mysql_user: piwigo
+morla_piwigo_db_env_mysql_password: "{{ morla_piwigo_db_password }}"
+morla_piwigo_db_env_mysql_database: piwigo-db
+morla_piwigo_db_env_mysql_random_root_password: true
+
+# volumes
+morla_piwigo_config_dir: "{{ morla_config_dir }}/{{ morla_piwigo_long_name }}"
+
+morla_piwigo_volumes:
+  - "{{ morla_piwigo_config_dir }}:/config:Z"
+  - "{{ morla_media_dir }}/pictures/Piwigo:/gallery:Z"
+
+# volumes db
+morla_piwigo_db_config_dir: "{{ morla_config_dir }}/{{ morla_piwigo_db_long_name }}"
+
+morla_piwigo_db_volumes:
+  - "{{ morla_piwigo_db_config_dir }}:/config:Z"
+
+# networking 
+morla_piwigo_internal_ip: "172.20.0.55"
+
+morla_piwigo_reverse_proxy_port: "5050"
+
+morla_piwigo_fw_ports:
+  tcp:
+    - "{{ morla_piwigo_reverse_proxy_port }}"
+  udp:
+
+morla_piwigo_ports:
+  - "{{ morla_piwigo_reverse_proxy_port }}:80"
+

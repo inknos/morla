@@ -1,0 +1,4 @@
+- name: Destroy Piwigo
+  containers.podman.podman_container:
+    name: "{{ morla_piwigo_container_name }}"
+    state: absent

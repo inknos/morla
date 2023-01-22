@@ -1,0 +1,24 @@
+# roles/piwigo/tasks/main.yml
+
+- ansible.builtin.import_tasks: "{{ role_path }}/tasks/init.yml"
+  tags:
+    - always
+
+- ansible.builtin.import_tasks: "{{ role_path }}/tasks/pull_piwigo.yml"
+  when: "morla_piwigo_enabled | bool"
+  tags:
+    - setup-all
+    - setup-piwigo
+
+- ansible.builtin.import_tasks: "{{ role_path }}/tasks/destroy_piwigo.yml"
+  when: "morla_piwigo_enabled | bool"
+  tags:
+    - never
+    - destroy-all
+    - destroy-piwigo
+
+- ansible.builtin.import_tasks: "{{ role_path }}/tasks/setup_piwigo.yml"
+  when: "morla_piwigo_enabled | bool"
+  tags:
+    - setup-all
+    - setup-piwigo

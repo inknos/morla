@@ -1,0 +1,21 @@
+---
+- name: Add Container to the list of public domains
+  ansible.builtin.set_fact:
+    morla_public_domains: "{{ morla_public_domains + [ morla_piwigo_short_name ] }}"
+  when: ( morla_piwigo_flag_public is defined ) and ( morla_piwigo_flag_public|bool == True ) 
+ 
+- name: Add Container to the list of Wireguard accessible containers
+  ansible.builtin.set_fact:
+    morla_wireguard_domains: "{{ morla_wireguard_domains + [ { 'name': morla_piwigo_short_name, 'port': morla_piwigo_reverse_proxy_port, 'ip': morla_piwigo_internal_ip } ] }}"
+  when: ( morla_piwigo_flag_wireguard is defined ) and ( morla_piwigo_flag_wireguard|bool == True ) 
+
+- name: Add Container to the list of autostart pods
+  ansible.builtin.set_fact:
+    morla_systemd_autostart_pods: "{{ morla_systemd_autostart_pods + [ morla_piwigo_pod_name ] }} "
+  when: ( morla_piwigo_flag_autostart is defined ) and ( morla_piwigo_flag_autostart|bool == True ) 
+
+- name: Add Container to the list of Firewall Services
+  ansible.builtin.set_fact:
+    morla_firewall_services: "{{ morla_firewall_services + [ { 'name': morla_piwigo_short_name, 'ports': morla_piwigo_fw_ports } ]}}"
+  when: ( morla_piwigo_flag_firewall is defined ) and ( morla_piwigo_flag_firewall|bool == True )
+
