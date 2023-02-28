@@ -1,0 +1,24 @@
+# roles/navidrome/tasks/main.yml
+
+- ansible.builtin.import_tasks: "{{ role_path }}/tasks/init.yml"
+  tags:
+    - always
+
+- ansible.builtin.import_tasks: "{{ role_path }}/tasks/pull_navidrome.yml"
+  when: "morla_navidrome_enabled | bool"
+  tags:
+    - setup-all
+    - setup-navidrome
+
+- ansible.builtin.import_tasks: "{{ role_path }}/tasks/destroy_navidrome.yml"
+  when: "morla_navidrome_enabled | bool"
+  tags:
+    - never
+    - destroy-all
+    - destroy-navidrome
+
+- ansible.builtin.import_tasks: "{{ role_path }}/tasks/setup_navidrome.yml"
+  when: "morla_navidrome_enabled | bool"
+  tags:
+    - setup-all
+    - setup-navidrome
