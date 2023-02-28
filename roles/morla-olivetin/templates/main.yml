@@ -1,0 +1,4 @@
+- Create Olivetin Config
+  ansible.builtin.template:
+    src: config.yaml.j2
+    dest: "{{ morla_olivetin_config_dir }}/config.yaml"

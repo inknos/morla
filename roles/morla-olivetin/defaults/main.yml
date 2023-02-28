@@ -1,0 +1,38 @@
+morla_olivetin_enabled: true
+morla_olivetin_become: true
+
+morla_olivetin_flag_public: false
+morla_olivetin_flag_autostart: true
+morla_olivetin_flag_wireguard: true
+morla_olivetin_flag_firewall: true # replace with if port list non empty
+
+morla_olivetin_long_name: "Olivetin"
+morla_olivetin_short_name: olivetin
+
+morla_olivetin_container_short_name: "{{ morla_olivetin_short_name }}"
+morla_olivetin_container_name: "{{ morla_user_username }}-{{ morla_olivetin_container_short_name }}"
+
+morla_olivetin_public_url: "{{ morla_olivetin_short_name }}.{{ morla_public_url }}"
+
+# filesystem dir for configs
+morla_olivetin_config_dir: "{{ morla_config_dir }}/{{ morla_olivetin_long_name }}"
+
+morla_olivetin_container_image_base: "docker.io/jamesread/olivetin"
+morla_olivetin_container_image_tag: "latest"
+morla_olivetin_container_image: "{{ morla_olivetin_container_image_base }}:{{ morla_radarr_container_image_tag }}"
+
+morla_olivetin_internal_ip: "172.20.0.37"
+
+# used inside container config
+morla_olivetin_reverse_proxy_port: "1337"
+
+morla_olivetin_fw_ports:
+  tcp:
+    - "{{ morla_olivetin_reverse_proxy_port }}"
+  udp:
+
+morla_olivetin_ports:
+  - "{{ morla_olivetin_fw_ports.tcp[0] }}:{{ morla_olivetin_fw_ports.tcp[0] }}"
+
+morla_olivetin_volumes:
+  - "{{ morla_olivetin_config_dir }}:/config:Z,ro"

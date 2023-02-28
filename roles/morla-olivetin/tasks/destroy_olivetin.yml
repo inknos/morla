@@ -1,0 +1,4 @@
+- name: Destroy Olivetin
+  containers.podman.podman_container:
+    name: "{{ morla_olivetin_container_name }}"
+    state: absent
