@@ -47,12 +47,13 @@
       CMD_DB_PORT: "{{ morla_hedgedoc_db_env_port }}"
       CMD_DB_USERNAME: "{{ morla_hedgedoc_db_env_user }}"
       CMD_DB_PASSWORD: "{{ morla_hedgedoc_db_env_password}}"
-      CMD_DB_HOST: "{{ morla_hedgedoc_db_container_name }}"
+      CMD_DB_HOST: "{{ morla_hedgedoc_internal_ip }}"
       CMD_DB_DATABASE: "{{ morla_hedgedoc_db_env_db }}"
       CMD_DB_DIALECT: postgres
       # Auth methods
       # CMD_GITHUB_CLIENTID: "{{ morla_hedgedoc_auth_github_clientid }}"
       # CMD_GITHUB_CLIENTSECRET: "{{ morla_hedgedoc_auth_github_clientsecret }}"
+      CMD_ALLOW_EMAIL_REGISTER: false
       # Security options
       CMD_CSP_ALLOW_FRAMING: false
       CMD_CSP_ALLOW_PDF_EMBED: false
