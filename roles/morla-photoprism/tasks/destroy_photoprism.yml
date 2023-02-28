@@ -1,0 +1,4 @@
+- name: Destroy Photoprism
+  containers.podman.podman_container:
+    name: "{{ morla_photoprism_container_name }}"
+    state: absent

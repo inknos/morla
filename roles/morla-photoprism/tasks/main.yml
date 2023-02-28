@@ -1,0 +1,24 @@
+# roles/photoprism/tasks/main.yml
+
+- ansible.builtin.import_tasks: "{{ role_path }}/tasks/init.yml"
+  tags:
+    - always
+
+- ansible.builtin.import_tasks: "{{ role_path }}/tasks/pull_photoprism.yml"
+  when: "morla_photoprism_enabled | bool"
+  tags:
+    - setup-all
+    - setup-photoprism
+
+- ansible.builtin.import_tasks: "{{ role_path }}/tasks/destroy_photoprism.yml"
+  when: "morla_photoprism_enabled | bool"
+  tags:
+    - never
+    - destroy-all
+    - destroy-photoprism
+
+- ansible.builtin.import_tasks: "{{ role_path }}/tasks/setup_photoprism.yml"
+  when: "morla_photoprism_enabled | bool"
+  tags:
+    - setup-all
+    - setup-photoprism
