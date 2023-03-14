@@ -1,0 +1,62 @@
+morla_ghost_enabled: true
+morla_ghost_become: true
+
+morla_ghost_flag_public: true
+morla_ghost_flag_autostart: true
+morla_ghost_flag_wireguard: true
+morla_ghost_flag_firewall: true # replace with if port list non empty
+
+morla_ghost_pod_name: morla-ghost-pod
+
+morla_ghost_long_name: "Ghost"
+morla_ghost_short_name: ghost
+
+morla_ghost_container_short_name: "{{ morla_ghost_short_name }}"
+morla_ghost_container_name: "{{ morla_user_username }}-{{ morla_ghost_container_short_name }}"
+
+morla_ghost_public_url: "{{ morla_ghost_short_name }}.{{ morla_public_url }}"
+
+morla_ghost_container_image_base: "docker.io/library/ghost"
+morla_ghost_container_image_tag: "latest"
+morla_ghost_container_image: "{{ morla_ghost_container_image_base }}:{{ morla_ghost_container_image_tag }}"
+
+# db
+morla_ghost_db_long_name: "GhostDB"
+morla_ghost_db_short_name: "ghost-db"
+
+morla_ghost_db_container_short_name: "{{ morla_ghost_db_short_name }}"
+morla_ghost_db_container_name: "{{ morla_user_username }}-{{ morla_ghost_db_container_short_name }}"
+morla_ghost_db_container_image_base: "lscr.io/linuxserver/mariadb"
+morla_ghost_db_container_image_tag: "10.6.10"
+morla_ghost_db_container_image: "{{ morla_ghost_db_container_image_base }}:{{ morla_ghost_db_container_image_tag }}"
+
+# env
+#env db
+morla_ghost_db_env_mysql_root_password: "{{ morla_ghost_db_password}}"
+morla_ghost_db_env_mysql_database: ghost-db
+
+# volumes
+morla_ghost_config_dir: "{{ morla_config_dir }}/{{ morla_ghost_long_name }}"
+morla_ghost_data_dir: "{{ morla_data_dir }}"
+
+morla_ghost_volumes:
+  - "{{ morla_ghost_config_dir }}:/var/lib/ghost/content:Z"
+
+# volumes db
+morla_ghost_db_config_dir: "{{ morla_config_dir }}/{{ morla_ghost_db_long_name }}"
+
+morla_ghost_db_volumes:
+  - "{{ morla_ghost_db_config_dir }}:/config:Z"
+
+# networking 
+morla_ghost_internal_ip: "172.20.0.236"
+
+morla_ghost_reverse_proxy_port: "2368"
+
+morla_ghost_fw_ports:
+  tcp:
+    - "{{ morla_ghost_reverse_proxy_port }}"
+  udp:
+
+morla_ghost_ports:
+  - "{{ morla_ghost_reverse_proxy_port }}:{{ morla_ghost_reverse_proxy_port }}"

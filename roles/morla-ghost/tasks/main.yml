@@ -1,0 +1,24 @@
+# roles/ghost/tasks/main.yml
+
+- ansible.builtin.import_tasks: "{{ role_path }}/tasks/init.yml"
+  tags:
+    - always
+
+- ansible.builtin.import_tasks: "{{ role_path }}/tasks/pull_ghost.yml"
+  when: "morla_ghost_enabled | bool"
+  tags:
+    - setup-all
+    - setup-ghost
+
+- ansible.builtin.import_tasks: "{{ role_path }}/tasks/destroy_ghost.yml"
+  when: "morla_ghost_enabled | bool"
+  tags:
+    - never
+    - destroy-all
+    - destroy-ghost
+
+- ansible.builtin.import_tasks: "{{ role_path }}/tasks/setup_ghost.yml"
+  when: "morla_ghost_enabled | bool"
+  tags:
+    - setup-all
+    - setup-ghost
