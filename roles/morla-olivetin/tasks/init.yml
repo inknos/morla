@@ -1,9 +1,0 @@
----
-- ansible.builtin.import_tasks: "{{ role_path }}/tasks/init_flag.yml"
-
-- name: Check if Config dir exists
-  stat:
-    path: "{{ morla_olivetin_config_dir }}"
-  register: check_olivetin_config_dir
-
-
