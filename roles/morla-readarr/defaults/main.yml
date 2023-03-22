@@ -1,3 +1,4 @@
+---
 morla_readarr_enabled: true
 morla_readarr_become: true
 
@@ -6,33 +7,33 @@ morla_readarr_flag_autostart: true
 morla_readarr_flag_wireguard: true
 morla_readarr_flag_firewall: true # replace with if port list non empty
 
-morla_readarr_long_name: "Readarr"
+morla_readarr_long_name: Readarr
 morla_readarr_short_name: readarr
 
-morla_readarr_container_short_name: "{{ morla_readarr_short_name }}"
-morla_readarr_container_name: "{{ morla_user_username }}-{{ morla_readarr_container_short_name }}"
+morla_readarr_container_short_name: '{{ morla_readarr_short_name }}'
+morla_readarr_container_name: '{{ morla_user_username }}-{{ morla_readarr_container_short_name }}'
 
-morla_readarr_public_url: "{{ morla_readarr_short_name }}.{{ morla_public_url }}"
+morla_readarr_public_url: '{{ morla_readarr_short_name }}.{{ morla_public_url }}'
 
 # filesystem dir for configs
-morla_readarr_config_dir: "{{ morla_config_dir }}/{{ morla_readarr_long_name }}"
-morla_readarr_data_dir: "{{ morla_data_dir }}"
+morla_readarr_config_dir: '{{ morla_config_dir }}/{{ morla_readarr_long_name }}'
+morla_readarr_data_dir: '{{ morla_data_dir }}'
 
-morla_readarr_container_image_base: "cr.hotio.dev/hotio/readarr"
-morla_readarr_container_image_tag: "latest"
-morla_readarr_container_image: "{{ morla_readarr_container_image_base }}:{{ morla_readarr_container_image_tag }}"
+morla_readarr_container_image_base: cr.hotio.dev/hotio/readarr
+morla_readarr_container_image_tag: latest
+morla_readarr_container_image: '{{ morla_readarr_container_image_base }}:{{ morla_readarr_container_image_tag }}'
 
 # used inside container config
 morla_readarr_volumes:
-  - "{{ morla_readarr_config_dir }}:/config:Z"
-  - "{{ morla_readarr_data_dir }}:/data:z"
+    - '{{ morla_readarr_config_dir }}:/config:Z'
+    - '{{ morla_readarr_data_dir }}:/data:z'
 
-morla_readarr_internal_ip: "172.20.0.87"
-morla_readarr_reverse_proxy_port: "8787"
+morla_readarr_internal_ip: 172.20.0.87
+morla_readarr_reverse_proxy_port: '8787'
 
 morla_readarr_fw_ports:
-  tcp:
-    - "{{ morla_readarr_reverse_proxy_port }}"
+    tcp:
+        - '{{ morla_readarr_reverse_proxy_port }}'
 
 morla_readarr_ports:
-  - "{{ morla_readarr_reverse_proxy_port }}:{{ morla_readarr_reverse_proxy_port }}"
+    - '{{ morla_readarr_reverse_proxy_port }}:{{ morla_readarr_reverse_proxy_port }}'

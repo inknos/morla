@@ -1,12 +1,13 @@
-- name: Check if Config dir exists
-  stat:
-    path: "{{ morla_config_dir }}"
-  register: check_config_dir
+---
+    - name: Check if Config dir exists
+      stat:
+          path: '{{ morla_config_dir }}'
+      register: check_config_dir
 
-- name: Create Config dir
-  ansible.builtin.file:
-    path: "{{ morla_config_dir }}"
-    state: directory
-    owner: "{{ morla_user_username }}"
-    group: "{{ morla_user_groupname }}"
-  when: not check_config_dir.stat.exists
+    - name: Create Config dir
+      ansible.builtin.file:
+          path: '{{ morla_config_dir }}'
+          state: directory
+          owner: '{{ morla_user_username }}'
+          group: '{{ morla_user_groupname }}'
+      when: not check_config_dir.stat.exists

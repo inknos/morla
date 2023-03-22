@@ -1,4 +1,5 @@
-- name: Pull Transmission image
-  containers.podman.podman_image:
-    name: "{{ morla_transmission_container_image }}"
-    tag: latest
+---
+    - name: Pull Transmission image
+      containers.podman.podman_image:
+          name: '{{ morla_transmission_container_image }}'
+          tag: latest

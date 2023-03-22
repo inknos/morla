@@ -1,15 +1,15 @@
 ---
-- name: Create container
-  containers.podman.podman_container:
-    name: "{{ morla_gandi_ddns_container_name }}"
-    image: "{{ morla_gandi_ddns_container_image}}"
+    - name: Create container
+      containers.podman.podman_container:
+          name: '{{ morla_gandi_ddns_container_name }}'
+          image: '{{ morla_gandi_ddns_container_image}}'
       #volumes: "{{ morla_gandi_ddns_volumes }}"
       # ports: "{{ morla_gandi_ddns_ports }}"
-    env:
-      PUID: "{{ morla_root_puid }}"
-      PGID: "{{ morla_root_pgid }}"
-      TZ: "{{ morla_tz }}"
-    state: present
+          env:
+              PUID: '{{ morla_root_puid }}'
+              PGID: '{{ morla_root_pgid }}'
+              TZ: '{{ morla_tz }}'
+          state: present
       # pod: morla-wireguard-pod
       # generate_systemd:
       #   path: "{{ morla_home_config_systemd_dir }}"
@@ -17,19 +17,18 @@
       #   names: true
       #   container_prefix: "{{ morla_systemd_service_prefix }}"
       #
-- name: Install cronjob to check DNS twice a day
-  ansible.builtin.cron:
-    name: "Check DNS for {{ morla_domain }}"
-    minute: 12
-    hour: "10,22"
-    job:
-      "/usr/bin/podman run --rm localhost/{{ morla_gandi_ddns_container_image }}"
-  register: check_cron_dns
+    - name: Install cronjob to check DNS twice a day
+      ansible.builtin.cron:
+          name: Check DNS for {{ morla_domain }}
+          minute: 12
+          hour: 10,22
+          job: /usr/bin/podman run --rm localhost/{{ morla_gandi_ddns_container_image }}
+      register: check_cron_dns
 
-- name: Restart service cron, also issue daemon-reload
-  become: true
-  ansible.builtin.systemd:
-    state: restarted
-    daemon_reload: yes
-    name: crond
-  when: check_cron_dns.changed
+    - name: Restart service cron, also issue daemon-reload
+      become: true
+      ansible.builtin.systemd:
+          state: restarted
+          daemon_reload: yes
+          name: crond
+      when: check_cron_dns.changed

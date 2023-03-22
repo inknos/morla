@@ -1,3 +1,4 @@
+---
 morla_grav_enabled: true
 morla_grav_become: true
 
@@ -6,36 +7,36 @@ morla_grav_flag_autostart: true
 morla_grav_flag_wireguard: true
 morla_grav_flag_firewall: true # replace with if port list non empty
 
-morla_grav_long_name: "Grav"
+morla_grav_long_name: Grav
 morla_grav_short_name: grav
 
-morla_grav_container_short_name: "{{ morla_grav_short_name }}"
-morla_grav_container_name: "{{ morla_user_username }}-{{ morla_grav_container_short_name }}"
+morla_grav_container_short_name: '{{ morla_grav_short_name }}'
+morla_grav_container_name: '{{ morla_user_username }}-{{ morla_grav_container_short_name }}'
 
-morla_grav_public_url: "{{ morla_grav_short_name }}.{{ morla_public_url }}"
+morla_grav_public_url: '{{ morla_grav_short_name }}.{{ morla_public_url }}'
 
-morla_grav_container_image_base: "lscr.io/linuxserver/grav"
-morla_grav_container_image_tag: "latest"
-morla_grav_container_image: "{{ morla_grav_container_image_base }}:{{ morla_grav_container_image_tag }}"
+morla_grav_container_image_base: lscr.io/linuxserver/grav
+morla_grav_container_image_tag: latest
+morla_grav_container_image: '{{ morla_grav_container_image_base }}:{{ morla_grav_container_image_tag }}'
 
 # volumes
 
-morla_grav_config_dir: "{{ morla_config_dir }}/{{ morla_grav_long_name }}"
-morla_grav_data_dir: "{{ morla_data_dir }}"
+morla_grav_config_dir: '{{ morla_config_dir }}/{{ morla_grav_long_name }}'
+morla_grav_data_dir: '{{ morla_data_dir }}'
 
 morla_grav_volumes:
-  - "{{ morla_grav_config_dir }}:/config:Z"
-  - "{{ morla_grav_data_dir }}:/data:z"
+    - '{{ morla_grav_config_dir }}:/config:Z'
+    - '{{ morla_grav_data_dir }}:/data:z'
 
 # networking
-morla_grav_internal_ip: "172.20.0.223"
+morla_grav_internal_ip: 172.20.0.223
 
-morla_grav_reverse_proxy_port: "22331"
+morla_grav_reverse_proxy_port: '22331'
 
 morla_grav_fw_ports:
-  tcp:
-    - "{{ morla_grav_reverse_proxy_port }}"
-  udp:
+    tcp:
+        - '{{ morla_grav_reverse_proxy_port }}'
+    udp:
 
 morla_grav_ports:
-  - "{{ morla_grav_reverse_proxy_port }}:80"
+    - '{{ morla_grav_reverse_proxy_port }}:80'

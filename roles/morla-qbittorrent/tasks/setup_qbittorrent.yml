@@ -1,34 +1,35 @@
-- name: Check if Config dir exists
-  stat:
-    path: "{{ morla_qbittorrent_config_dir }}"
-  register: check_qbittorrent_config_dir
+---
+    - name: Check if Config dir exists
+      stat:
+          path: '{{ morla_qbittorrent_config_dir }}'
+      register: check_qbittorrent_config_dir
 
-- name: Create config directory
-  ansible.builtin.file:
-    path: "{{ morla_qbittorrent_config_dir }}"
-    state: directory
-    owner: "{{ morla_user_username }}"
-    group: "{{ morla_user_groupname }}"
-  when: not check_qbittorrent_config_dir.stat.exists
+    - name: Create config directory
+      ansible.builtin.file:
+          path: '{{ morla_qbittorrent_config_dir }}'
+          state: directory
+          owner: '{{ morla_user_username }}'
+          group: '{{ morla_user_groupname }}'
+      when: not check_qbittorrent_config_dir.stat.exists
 
-- name: Create container
-  containers.podman.podman_container:
-    name: "{{ morla_qbittorrent_container_name }}"
-    image: "{{ morla_qbittorrent_container_image}}"
-    volumes: "{{ morla_qbittorrent_volumes }}"
-    ports: "{{ morla_qbittorrent_ports }}"
-    env:
-      PUID: "{{ morla_root_puid }}"
-      PGID: "{{ morla_root_pgid }}"
-      TZ: "{{ morla_tz }}"
-      WEBUI_PORT: "{{ morla_qbittorrent_env_webui_port }}"
-    network: morla-wireguard-network
-    ip: "{{ morla_qbittorrent_internal_ip }}"
-    network_aliases: "{{ morla_qbittorrent_short_name }}"
-    state: started
-    restart_policy: unless-stopped
-    generate_systemd:
-      path: "{{ morla_home_config_systemd_dir }}"
-      restart_policy: always
-      names: true
-      container_prefix: "{{ morla_systemd_service_prefix }}"
+    - name: Create container
+      containers.podman.podman_container:
+          name: '{{ morla_qbittorrent_container_name }}'
+          image: '{{ morla_qbittorrent_container_image}}'
+          volumes: '{{ morla_qbittorrent_volumes }}'
+          ports: '{{ morla_qbittorrent_ports }}'
+          env:
+              PUID: '{{ morla_root_puid }}'
+              PGID: '{{ morla_root_pgid }}'
+              TZ: '{{ morla_tz }}'
+              WEBUI_PORT: '{{ morla_qbittorrent_env_webui_port }}'
+          network: morla-wireguard-network
+          ip: '{{ morla_qbittorrent_internal_ip }}'
+          network_aliases: '{{ morla_qbittorrent_short_name }}'
+          state: started
+          restart_policy: unless-stopped
+          generate_systemd:
+              path: '{{ morla_home_config_systemd_dir }}'
+              restart_policy: always
+              names: true
+              container_prefix: '{{ morla_systemd_service_prefix }}'

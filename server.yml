@@ -1,66 +1,66 @@
 ---
-- name: "Setup a container environment for morla"
-  hosts: "{{ target if target is defined else 'localhost' }}"
+    - name: Setup a container environment for morla
+      hosts: "{{ target if target is defined else 'localhost' }}"
   #connection: local
-  vars:
-    - morla_user_username: morla
-    - morla_user_groupname: "{{ morla_user_username }}"
-    - morla_root_username: root
-    - morla_root_groupname: "{{ morla_root_username }}"
+      vars:
+          - morla_user_username: morla
+          - morla_user_groupname: '{{ morla_user_username }}'
+          - morla_root_username: root
+          - morla_root_groupname: '{{ morla_root_username }}'
 
-    - morla_internal_ip: "192.168.1.166"
-    - morla_domain: "{{ morla_main_domain }}"
-    - morla_subdomain: "morla"
-    - morla_public_url: "{{ morla_subdomain }}.{{ morla_domain }}"
+          - morla_internal_ip: 192.168.1.166
+          - morla_domain: '{{ morla_main_domain }}'
+          - morla_subdomain: morla
+          - morla_public_url: '{{ morla_subdomain }}.{{ morla_domain }}'
 
-    - morla_user_puid: 1000
-    - morla_user_pgid: 1000
-    - morla_root_puid: 0
-    - morla_root_pgid: 0
-    - morla_fake_puid: 911
-    - morla_fake_pgid: 911
-    - morla_subuid_size: 65536
-    - morla_subgid_size: 65536
-    - morla_tz: "Europe/Prague"
+          - morla_user_puid: 1000
+          - morla_user_pgid: 1000
+          - morla_root_puid: 0
+          - morla_root_pgid: 0
+          - morla_fake_puid: 911
+          - morla_fake_pgid: 911
+          - morla_subuid_size: 65536
+          - morla_subgid_size: 65536
+          - morla_tz: Europe/Prague
 
-    - morla_home_dir: "/home/{{ morla_user_username }}"
-    - morla_home_config_systemd_dir: "{{ morla_home_dir }}/.config/systemd/user"
-    - morla_config_dir: "{{ morla_home_dir }}/Config"
+          - morla_home_dir: /home/{{ morla_user_username }}
+          - morla_home_config_systemd_dir: '{{ morla_home_dir }}/.config/systemd/user'
+          - morla_config_dir: '{{ morla_home_dir }}/Config'
 
-    - morla_one_media: "/one/media"
-    - morla_one_vault: "/one/vault"
+          - morla_one_media: /one/media
+          - morla_one_vault: /one/vault
 
-    - morla_data_dir: "{{ morla_one_media }}/data"
-    - morla_media_dir: "{{ morla_one_media }}/data/media"
-    - morla_torrents_dir: "{{ morla_one_media }}/data/torrents"
+          - morla_data_dir: '{{ morla_one_media }}/data'
+          - morla_media_dir: '{{ morla_one_media }}/data/media'
+          - morla_torrents_dir: '{{ morla_one_media }}/data/torrents'
 
-    - morla_vault_dir: "{{ morla_one_vault }}/Vault"
+          - morla_vault_dir: '{{ morla_one_vault }}/Vault'
 
-  vars_files:
-    - group_vars/vault.yml
-    - inventory/vars.yml
+      vars_files:
+          - group_vars/vault.yml
+          - inventory/vars.yml
 
-  roles:
-    - morla-base            # setup base environment for containers
-    - morla-wireguard       # setup wireguard wpn and keys
-    - morla-filebrowser     # setup filebrowser container
-    - morla-jellyfin        # setup jellyfin container
-    - morla-radarr          # setup servarr stack
-    - morla-sonarr          #
-    - morla-prowlarr        #
-    - morla-lidarr          #
-    - morla-navidrome
-    - morla-piwigo
-    - morla-photoprism
-    - morla-ghost
-    - morla-grav
-    - morla-readarr         #
-    - morla-hedgedoc
-    - morla-qbittorrent
-    - morla-wordle          # setup wordle
-    - morla-nginx           # setup server for public containers
-    - morla-gandi-ddns      # setup python script to update gandi dns
-    - morla-letsencrypt     # manage certificates for public containers
-    - morla-wireguard-config
-    - morla-firewall        # manage firewall services and open ports
-    - morla-systemd         # manage containers autostart
+      roles:
+          - morla-base      # setup base environment for containers
+          - morla-wireguard # setup wireguard wpn and keys
+          - morla-filebrowser # setup filebrowser container
+          - morla-jellyfin  # setup jellyfin container
+          - morla-radarr    # setup servarr stack
+          - morla-sonarr    #
+          - morla-prowlarr  #
+          - morla-lidarr    #
+          - morla-navidrome
+          - morla-piwigo
+          - morla-photoprism
+          - morla-ghost
+          - morla-grav
+          - morla-readarr   #
+          - morla-hedgedoc
+          - morla-qbittorrent
+          - morla-wordle    # setup wordle
+          - morla-nginx     # setup server for public containers
+          - morla-gandi-ddns # setup python script to update gandi dns
+          - morla-letsencrypt # manage certificates for public containers
+          - morla-wireguard-config
+          - morla-firewall  # manage firewall services and open ports
+          - morla-systemd   # manage containers autostart

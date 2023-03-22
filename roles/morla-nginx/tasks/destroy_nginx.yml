@@ -1,4 +1,5 @@
-- name: Destroy Nginx
-  containers.podman.podman_container:
-    name: "{{ morla_nginx_container_name }}"
-    state: absent
+---
+    - name: Destroy Nginx
+      containers.podman.podman_container:
+          name: '{{ morla_nginx_container_name }}'
+          state: absent

@@ -1,4 +1,5 @@
-- name: Pull Hedgedoc image
-  containers.podman.podman_image:
-    name: "{{ morla_hedgedoc_container_image }}"
-    tag: latest
+---
+    - name: Pull Hedgedoc image
+      containers.podman.podman_image:
+          name: '{{ morla_hedgedoc_container_image }}'
+          tag: latest

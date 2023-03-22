@@ -1,20 +1,21 @@
 ---
-- name: Add Container to the list of public domains
-  ansible.builtin.set_fact:
-    morla_public_domains: "{{ morla_public_domains + [ morla_hedgedoc_short_name ] }}"
-  when: ( morla_hedgedoc_flag_public is defined ) and ( morla_hedgedoc_flag_public|bool == True )
+    - name: Add Container to the list of public domains
+      ansible.builtin.set_fact:
+          morla_public_domains: '{{ morla_public_domains + [ morla_hedgedoc_short_name ] }}'
+      when: ( morla_hedgedoc_flag_public is defined ) and ( morla_hedgedoc_flag_public|bool == True )
 
-- name: Add Container to the list of Wireguard accessible containers
-  ansible.builtin.set_fact:
-    morla_wireguard_domains: "{{ morla_wireguard_domains + [ { 'name': morla_hedgedoc_short_name, 'port': morla_hedgedoc_reverse_proxy_port, 'ip': morla_hedgedoc_internal_ip } ] }}"
-  when: ( morla_hedgedoc_flag_wireguard is defined ) and ( morla_hedgedoc_flag_wireguard|bool == True )
+    - name: Add Container to the list of Wireguard accessible containers
+      ansible.builtin.set_fact:
+          morla_wireguard_domains: "{{ morla_wireguard_domains + [ { 'name': morla_hedgedoc_short_name, 'port': morla_hedgedoc_reverse_proxy_port, 'ip':\
+              \ morla_hedgedoc_internal_ip } ] }}"
+      when: ( morla_hedgedoc_flag_wireguard is defined ) and ( morla_hedgedoc_flag_wireguard|bool == True )
 
-- name: Add Container to the list of autostart pods
-  ansible.builtin.set_fact:
-    morla_systemd_autostart_pods: "{{ morla_systemd_autostart_pods + [ morla_hedgedoc_pod_name ] }} "
-  when: ( morla_hedgedoc_flag_autostart is defined ) and ( morla_hedgedoc_flag_autostart|bool == True )
+    - name: Add Container to the list of autostart pods
+      ansible.builtin.set_fact:
+          morla_systemd_autostart_pods: '{{ morla_systemd_autostart_pods + [ morla_hedgedoc_pod_name ] }} '
+      when: ( morla_hedgedoc_flag_autostart is defined ) and ( morla_hedgedoc_flag_autostart|bool == True )
 
-- name: Add Container to the list of Firewall Services
-  ansible.builtin.set_fact:
-    morla_firewall_services: "{{ morla_firewall_services + [ { 'name': morla_hedgedoc_short_name, 'ports': morla_hedgedoc_fw_ports } ]}}"
-  when: ( morla_hedgedoc_flag_firewall is defined ) and ( morla_hedgedoc_flag_firewall|bool == True )
+    - name: Add Container to the list of Firewall Services
+      ansible.builtin.set_fact:
+          morla_firewall_services: "{{ morla_firewall_services + [ { 'name': morla_hedgedoc_short_name, 'ports': morla_hedgedoc_fw_ports } ]}}"
+      when: ( morla_hedgedoc_flag_firewall is defined ) and ( morla_hedgedoc_flag_firewall|bool == True )

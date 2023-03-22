@@ -1,28 +1,29 @@
+---
 # roles/jellyfin/tasks/main.yml
-- ansible.builtin.import_tasks: "{{ role_path }}/tasks/init.yml"
-  tags:
-    - always
+    - ansible.builtin.import_tasks: '{{ role_path }}/tasks/init.yml'
+      tags:
+          - always
 
-- ansible.builtin.import_tasks: "{{ role_path }}/tasks/init_flag.yml"
-  tags:
-    - setup-all
-    - setup-jellyfin
+    - ansible.builtin.import_tasks: '{{ role_path }}/tasks/init_flag.yml'
+      tags:
+          - setup-all
+          - setup-jellyfin
 
-- ansible.builtin.import_tasks: "{{ role_path }}/tasks/pull_jellyfin.yml"
-  when: "morla_jellyfin_enabled | bool"
-  tags:
-    - setup-all
-    - setup-jellyfin
+    - ansible.builtin.import_tasks: '{{ role_path }}/tasks/pull_jellyfin.yml'
+      when: morla_jellyfin_enabled | bool
+      tags:
+          - setup-all
+          - setup-jellyfin
 
-- ansible.builtin.import_tasks: "{{ role_path }}/tasks/destroy_jellyfin.yml"
-  when: "morla_jellyfin_enabled | bool"
-  tags:
-    - never
-    - destroy-all
-    - destroy-jellyfin
+    - ansible.builtin.import_tasks: '{{ role_path }}/tasks/destroy_jellyfin.yml'
+      when: morla_jellyfin_enabled | bool
+      tags:
+          - never
+          - destroy-all
+          - destroy-jellyfin
 
-- ansible.builtin.import_tasks: "{{ role_path }}/tasks/setup_jellyfin.yml"
-  when: "morla_jellyfin_enabled | bool"
-  tags:
-    - setup-all
-    - setup-jellyfin
+    - ansible.builtin.import_tasks: '{{ role_path }}/tasks/setup_jellyfin.yml'
+      when: morla_jellyfin_enabled | bool
+      tags:
+          - setup-all
+          - setup-jellyfin

@@ -1,13 +1,14 @@
-- name: Check if Git Wordle exist
-  stat:
-    path: "{{ morla_wordle_git_dir }}"
-  register: check_wordle_git_dir
+---
+    - name: Check if Git Wordle exist
+      stat:
+          path: '{{ morla_wordle_git_dir }}'
+      register: check_wordle_git_dir
 
-- name: Clone Wordle if Git dir does not exsist
-  ansible.builtin.git:
-    repo: "{{ morla_wordle_git_repo }}"
-    dest: "{{ morla_wordle_git_dir }}"
-    update: yes
+    - name: Clone Wordle if Git dir does not exsist
+      ansible.builtin.git:
+          repo: '{{ morla_wordle_git_repo }}'
+          dest: '{{ morla_wordle_git_dir }}'
+          update: yes
   # when: not check_wordle_git_dir.stat.exists
 
 

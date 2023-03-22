@@ -1,14 +1,15 @@
-- name: Pull Wireguard image
-  containers.podman.podman_image:
-    name: "{{ morla_wireguard_container_image }}"
-    tag: latest
+---
+    - name: Pull Wireguard image
+      containers.podman.podman_image:
+          name: '{{ morla_wireguard_container_image }}'
+          tag: latest
 
-- name: Pull NginxWireguard image
-  containers.podman.podman_image:
-    name: "{{ morla_nginx_wireguard_container_image }}"
-    tag: latest
+    - name: Pull NginxWireguard image
+      containers.podman.podman_image:
+          name: '{{ morla_nginx_wireguard_container_image }}'
+          tag: latest
 
-- name: Pull CoreDNS image
-  containers.podman.podman_image:
-    name: "docker.io/coredns/coredns"
-    tag: latest
+    - name: Pull CoreDNS image
+      containers.podman.podman_image:
+          name: docker.io/coredns/coredns
+          tag: latest

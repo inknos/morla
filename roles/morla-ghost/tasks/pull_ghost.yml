@@ -1,4 +1,5 @@
-- name: Pull Ghost image
-  containers.podman.podman_image:
-    name: "{{ morla_ghost_container_image }}"
-    tag: latest
+---
+    - name: Pull Ghost image
+      containers.podman.podman_image:
+          name: '{{ morla_ghost_container_image }}'
+          tag: latest

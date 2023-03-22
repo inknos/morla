@@ -1,3 +1,4 @@
+---
 morla_navidrome_enabled: true
 morla_navidrome_become: true
 
@@ -6,41 +7,41 @@ morla_navidrome_flag_autostart: true
 morla_navidrome_flag_wireguard: true
 morla_navidrome_flag_firewall: true # replace with if port list non empty
 
-morla_navidrome_long_name: "Navidrome"
+morla_navidrome_long_name: Navidrome
 morla_navidrome_short_name: navidrome
 
-morla_navidrome_container_short_name: "{{ morla_navidrome_short_name }}"
-morla_navidrome_container_name: "{{ morla_user_username }}-{{ morla_navidrome_container_short_name }}"
+morla_navidrome_container_short_name: '{{ morla_navidrome_short_name }}'
+morla_navidrome_container_name: '{{ morla_user_username }}-{{ morla_navidrome_container_short_name }}'
 
-morla_navidrome_public_url: "{{ morla_navidrome_short_name }}.{{ morla_public_url }}"
+morla_navidrome_public_url: '{{ morla_navidrome_short_name }}.{{ morla_public_url }}'
 
-morla_navidrome_container_image_base: "docker.io/deluan/navidrome"
-morla_navidrome_container_image_tag: "latest"
-morla_navidrome_container_image: "{{ morla_navidrome_container_image_base }}:{{ morla_navidrome_container_image_tag }}"
+morla_navidrome_container_image_base: docker.io/deluan/navidrome
+morla_navidrome_container_image_tag: latest
+morla_navidrome_container_image: '{{ morla_navidrome_container_image_base }}:{{ morla_navidrome_container_image_tag }}'
 
 # volumes
 
-morla_navidrome_config_dir: "{{ morla_config_dir }}/{{ morla_navidrome_long_name }}"
-morla_navidrome_music_dir: "{{ morla_media_dir }}/music"
+morla_navidrome_config_dir: '{{ morla_config_dir }}/{{ morla_navidrome_long_name }}'
+morla_navidrome_music_dir: '{{ morla_media_dir }}/music'
 
 morla_navidrome_volumes:
-  - "{{ morla_navidrome_config_dir }}:/data:Z"
-  - "{{ morla_navidrome_music_dir }}:/music:ro,z"
+    - '{{ morla_navidrome_config_dir }}:/data:Z'
+    - '{{ morla_navidrome_music_dir }}:/music:ro,z'
 
 morla_navidrome_env_nd_scanschedule: 1h
 morla_navidrome_env_nd_loglevel: info
 morla_navidrome_env_nd_sessiontimeout: 24h
-morla_navidrome_env_nd_baseurl: ""
+morla_navidrome_env_nd_baseurl: ''
 
 # networking
-morla_navidrome_internal_ip: "172.20.0.43"
+morla_navidrome_internal_ip: 172.20.0.43
 
-morla_navidrome_reverse_proxy_port: "4533"
+morla_navidrome_reverse_proxy_port: '4533'
 
 morla_navidrome_fw_ports:
-  tcp:
-    - "{{ morla_navidrome_reverse_proxy_port }}"
-  udp:
+    tcp:
+        - '{{ morla_navidrome_reverse_proxy_port }}'
+    udp:
 
 morla_navidrome_ports:
-  - "{{ morla_navidrome_reverse_proxy_port }}:{{ morla_navidrome_reverse_proxy_port }}"
+    - '{{ morla_navidrome_reverse_proxy_port }}:{{ morla_navidrome_reverse_proxy_port }}'

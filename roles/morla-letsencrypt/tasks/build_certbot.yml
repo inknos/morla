@@ -1,8 +1,9 @@
-- name: Build certbot with gandi plugin
-  containers.podman.podman_image:
-    name: "{{ morla_letsencrypt_certbot_container_image}}"
-    path: "{{ role_path }}/files/certbot-gandi"
-    build:
-      annotation:
-        app: "{{ morla_letsencrypt_certbot_container_name }}"
-        info: certbot with gandi plugin
+---
+    - name: Build certbot with gandi plugin
+      containers.podman.podman_image:
+          name: '{{ morla_letsencrypt_certbot_container_image}}'
+          path: '{{ role_path }}/files/certbot-gandi'
+          build:
+              annotation:
+                  app: '{{ morla_letsencrypt_certbot_container_name }}'
+                  info: certbot with gandi plugin

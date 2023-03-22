@@ -1,4 +1,5 @@
-- name: Destroy Wireguard
-  containers.podman.podman_pod:
-    name: morla-wireguard-pod
-    state: absent
+---
+    - name: Destroy Wireguard
+      containers.podman.podman_pod:
+          name: morla-wireguard-pod
+          state: absent

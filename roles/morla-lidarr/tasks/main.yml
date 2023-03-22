@@ -1,28 +1,29 @@
+---
 # roles/lidarr/tasks/main.yml
-- ansible.builtin.import_tasks: "{{ role_path }}/tasks/init.yml"
-  tags:
-    - always
+    - ansible.builtin.import_tasks: '{{ role_path }}/tasks/init.yml'
+      tags:
+          - always
 
-- ansible.builtin.import_tasks: "{{ role_path }}/tasks/init_flag.yml"
-  tags:
-    - setup-all
-    - setup-lidarr
+    - ansible.builtin.import_tasks: '{{ role_path }}/tasks/init_flag.yml'
+      tags:
+          - setup-all
+          - setup-lidarr
 
-- ansible.builtin.import_tasks: "{{ role_path }}/tasks/pull_lidarr.yml"
-  when: "morla_lidarr_enabled | bool"
-  tags:
-    - setup-all
-    - setup-lidarr
+    - ansible.builtin.import_tasks: '{{ role_path }}/tasks/pull_lidarr.yml'
+      when: morla_lidarr_enabled | bool
+      tags:
+          - setup-all
+          - setup-lidarr
 
-- ansible.builtin.import_tasks: "{{ role_path }}/tasks/destroy_lidarr.yml"
-  when: "morla_lidarr_enabled | bool"
-  tags:
-    - never
-    - destroy-all
-    - destroy-lidarr
+    - ansible.builtin.import_tasks: '{{ role_path }}/tasks/destroy_lidarr.yml'
+      when: morla_lidarr_enabled | bool
+      tags:
+          - never
+          - destroy-all
+          - destroy-lidarr
 
-- ansible.builtin.import_tasks: "{{ role_path }}/tasks/setup_lidarr.yml"
-  when: "morla_lidarr_enabled | bool"
-  tags:
-    - setup-all
-    - setup-lidarr
+    - ansible.builtin.import_tasks: '{{ role_path }}/tasks/setup_lidarr.yml'
+      when: morla_lidarr_enabled | bool
+      tags:
+          - setup-all
+          - setup-lidarr

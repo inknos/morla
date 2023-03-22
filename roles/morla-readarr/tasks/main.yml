@@ -1,28 +1,29 @@
+---
 # roles/readarr/tasks/main.yml
-- ansible.builtin.import_tasks: "{{ role_path }}/tasks/init.yml"
-  tags:
-    - always
+    - ansible.builtin.import_tasks: '{{ role_path }}/tasks/init.yml'
+      tags:
+          - always
 
-- ansible.builtin.import_tasks: "{{ role_path }}/tasks/init_flag.yml"
-  tags:
-    - setup-all
-    - setup-readarr
+    - ansible.builtin.import_tasks: '{{ role_path }}/tasks/init_flag.yml'
+      tags:
+          - setup-all
+          - setup-readarr
 
-- ansible.builtin.import_tasks: "{{ role_path }}/tasks/pull_readarr.yml"
-  when: "morla_readarr_enabled | bool"
-  tags:
-    - setup-all
-    - setup-readarr
+    - ansible.builtin.import_tasks: '{{ role_path }}/tasks/pull_readarr.yml'
+      when: morla_readarr_enabled | bool
+      tags:
+          - setup-all
+          - setup-readarr
 
-- ansible.builtin.import_tasks: "{{ role_path }}/tasks/destroy_readarr.yml"
-  when: "morla_readarr_enabled | bool"
-  tags:
-    - never
-    - destroy-all
-    - destroy-readarr
+    - ansible.builtin.import_tasks: '{{ role_path }}/tasks/destroy_readarr.yml'
+      when: morla_readarr_enabled | bool
+      tags:
+          - never
+          - destroy-all
+          - destroy-readarr
 
-- ansible.builtin.import_tasks: "{{ role_path }}/tasks/setup_readarr.yml"
-  when: "morla_readarr_enabled | bool"
-  tags:
-    - setup-all
-    - setup-readarr
+    - ansible.builtin.import_tasks: '{{ role_path }}/tasks/setup_readarr.yml'
+      when: morla_readarr_enabled | bool
+      tags:
+          - setup-all
+          - setup-readarr

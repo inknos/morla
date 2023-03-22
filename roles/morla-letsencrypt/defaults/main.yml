@@ -1,19 +1,20 @@
+---
 morla_letsencrypt_enabled: true
 
-morla_letsencrypt_long_name: "Letsencrypt"
+morla_letsencrypt_long_name: Letsencrypt
 morla_letsencrypt_short_name: letsencrypt
 
 morla_certbot_gandi_short_name: certbot-gandi
 # filesystem dir for configs
-morla_letsencrypt_config_dir: "{{ morla_config_dir }}/Letsencrypt"
-morla_letsencrypt_dir: "{{ morla_letsencrypt_config_dir }}/etc/letsencrypt"
-morla_letsencrypt_gandi_dir: "{{ morla_letsencrypt_dir }}/gandi"
+morla_letsencrypt_config_dir: '{{ morla_config_dir }}/Letsencrypt'
+morla_letsencrypt_dir: '{{ morla_letsencrypt_config_dir }}/etc/letsencrypt'
+morla_letsencrypt_gandi_dir: '{{ morla_letsencrypt_dir }}/gandi'
 
-morla_letsencrypt_certbot_container_name: "{{ morla_user_username }}-{{morla_letsencrypt_short_name}}-{{ morla_certbot_gandi_short_name }}"
-morla_letsencrypt_certbot_container_image_base: "{{ morla_certbot_gandi_short_name }}"
+morla_letsencrypt_certbot_container_name: '{{ morla_user_username }}-{{morla_letsencrypt_short_name}}-{{ morla_certbot_gandi_short_name }}'
+morla_letsencrypt_certbot_container_image_base: '{{ morla_certbot_gandi_short_name }}'
 morla_letsencrypt_certbot_container_image_tag: latest
-morla_letsencrypt_certbot_container_image: "{{ morla_letsencrypt_certbot_container_image_base }}:{{ morla_letsencrypt_certbot_container_image_tag }}"
+morla_letsencrypt_certbot_container_image: '{{ morla_letsencrypt_certbot_container_image_base }}:{{ morla_letsencrypt_certbot_container_image_tag }}'
 
 
 morla_letsencrypt_certbot_volumes:
-  - "{{ morla_letsencrypt_dir }}:/etc/letsencrypt:z"
+    - '{{ morla_letsencrypt_dir }}:/etc/letsencrypt:z'

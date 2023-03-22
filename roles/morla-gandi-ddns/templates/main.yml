@@ -1,9 +1,10 @@
-- name: Create Config File
-  ansible.builtin.template:
-    src: config.txt.j2
-    dest: "{{ morla_gandi_ddns_git_dir }}/config.txt"
+---
+    - name: Create Config File
+      ansible.builtin.template:
+          src: config.txt.j2
+          dest: '{{ morla_gandi_ddns_git_dir }}/config.txt'
 
-- name: Create Dockerfile
-  ansible.builtin.template:
-    src: Dockerfile.j2
-    dest: "{{ morla_gandi_ddns_git_dir }}/Dockerfile"
+    - name: Create Dockerfile
+      ansible.builtin.template:
+          src: Dockerfile.j2
+          dest: '{{ morla_gandi_ddns_git_dir }}/Dockerfile'

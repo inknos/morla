@@ -1,4 +1,5 @@
-- name: Destroy Ghost
-  containers.podman.podman_container:
-    name: "{{ morla_ghost_container_name }}"
-    state: absent
+---
+    - name: Destroy Ghost
+      containers.podman.podman_container:
+          name: '{{ morla_ghost_container_name }}'
+          state: absent

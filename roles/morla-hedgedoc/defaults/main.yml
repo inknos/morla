@@ -1,3 +1,4 @@
+---
 morla_hedgedoc_enabled: true
 morla_hedgedoc_become: true
 
@@ -8,59 +9,59 @@ morla_hedgedoc_flag_firewall: true # replace with if port list non empty
 
 morla_hedgedoc_pod_name: morla-hedgedoc-pod
 
-morla_hedgedoc_long_name: "Hedgedoc"
+morla_hedgedoc_long_name: Hedgedoc
 morla_hedgedoc_short_name: hedgedoc
 
-morla_hedgedoc_container_short_name: "{{ morla_hedgedoc_short_name }}"
-morla_hedgedoc_container_name: "{{ morla_user_username }}-{{ morla_hedgedoc_container_short_name }}"
+morla_hedgedoc_container_short_name: '{{ morla_hedgedoc_short_name }}'
+morla_hedgedoc_container_name: '{{ morla_user_username }}-{{ morla_hedgedoc_container_short_name }}'
 
-morla_hedgedoc_public_url: "{{ morla_hedgedoc_short_name }}.{{ morla_public_url }}"
+morla_hedgedoc_public_url: '{{ morla_hedgedoc_short_name }}.{{ morla_public_url }}'
 
-morla_hedgedoc_container_image_base: "quay.io/hedgedoc/hedgedoc"
-morla_hedgedoc_container_image_tag: "1.9.6"
-morla_hedgedoc_container_image: "{{ morla_hedgedoc_container_image_base }}:{{ morla_hedgedoc_container_image_tag }}"
+morla_hedgedoc_container_image_base: quay.io/hedgedoc/hedgedoc
+morla_hedgedoc_container_image_tag: 1.9.6
+morla_hedgedoc_container_image: '{{ morla_hedgedoc_container_image_base }}:{{ morla_hedgedoc_container_image_tag }}'
 
 # db
-morla_hedgedoc_db_long_name: "HedgedocDB"
-morla_hedgedoc_db_short_name: "hedgedoc-db"
+morla_hedgedoc_db_long_name: HedgedocDB
+morla_hedgedoc_db_short_name: hedgedoc-db
 
-morla_hedgedoc_db_container_short_name: "{{ morla_hedgedoc_db_short_name }}"
-morla_hedgedoc_db_container_name: "{{ morla_user_username }}-{{ morla_hedgedoc_db_container_short_name }}"
-morla_hedgedoc_db_container_image_base: "docker.io/library/postgres"
-morla_hedgedoc_db_container_image_tag: "13.4-alpine"
-morla_hedgedoc_db_container_image: "{{ morla_hedgedoc_db_container_image_base }}:{{ morla_hedgedoc_db_container_image_tag }}"
+morla_hedgedoc_db_container_short_name: '{{ morla_hedgedoc_db_short_name }}'
+morla_hedgedoc_db_container_name: '{{ morla_user_username }}-{{ morla_hedgedoc_db_container_short_name }}'
+morla_hedgedoc_db_container_image_base: docker.io/library/postgres
+morla_hedgedoc_db_container_image_tag: 13.4-alpine
+morla_hedgedoc_db_container_image: '{{ morla_hedgedoc_db_container_image_base }}:{{ morla_hedgedoc_db_container_image_tag }}'
 
 # env
 #env db
 morla_hedgedoc_db_env_user: hedgedoc
 morla_hedgedoc_db_env_port: 5432
-morla_hedgedoc_db_env_password: "{{ morla_hedgedoc_db_password }}"
+morla_hedgedoc_db_env_password: '{{ morla_hedgedoc_db_password }}'
 morla_hedgedoc_db_env_db: hedgedoc-db
 
 # volumes
-morla_hedgedoc_config_dir: "{{ morla_config_dir }}/{{ morla_hedgedoc_long_name }}"
+morla_hedgedoc_config_dir: '{{ morla_config_dir }}/{{ morla_hedgedoc_long_name }}'
 
 morla_hedgedoc_volumes:
-  - "{{ morla_hedgedoc_config_dir }}:/hedgedoc/public/uploads:Z"
+    - '{{ morla_hedgedoc_config_dir }}:/hedgedoc/public/uploads:Z'
 
 # volumes db
-morla_hedgedoc_db_config_dir: "{{ morla_config_dir }}/{{ morla_hedgedoc_db_long_name }}"
+morla_hedgedoc_db_config_dir: '{{ morla_config_dir }}/{{ morla_hedgedoc_db_long_name }}'
 
 morla_hedgedoc_db_volumes:
-  - "{{ morla_hedgedoc_db_config_dir }}:/var/lib/postgresql/data:Z"
+    - '{{ morla_hedgedoc_db_config_dir }}:/var/lib/postgresql/data:Z'
 
 # networking
-morla_hedgedoc_internal_ip: "172.20.0.30"
+morla_hedgedoc_internal_ip: 172.20.0.30
 
-morla_hedgedoc_reverse_proxy_port: "3000"
+morla_hedgedoc_reverse_proxy_port: '3000'
 
 morla_hedgedoc_fw_ports:
-  tcp:
-    - "{{ morla_hedgedoc_reverse_proxy_port }}"
-  udp:
+    tcp:
+        - '{{ morla_hedgedoc_reverse_proxy_port }}'
+    udp:
 
 morla_hedgedoc_ports:
-  - "{{ morla_hedgedoc_reverse_proxy_port }}:{{ morla_hedgedoc_reverse_proxy_port }}"
+    - '{{ morla_hedgedoc_reverse_proxy_port }}:{{ morla_hedgedoc_reverse_proxy_port }}'
 
 # networking db
-morla_hedgedoc_db_internal_ip: "{{ morla_hedgedoc_env_db_host }}"
+morla_hedgedoc_db_internal_ip: '{{ morla_hedgedoc_env_db_host }}'

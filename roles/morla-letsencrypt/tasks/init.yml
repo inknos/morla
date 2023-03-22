@@ -1,17 +1,16 @@
 ---
-- name: Check if Letsencrypt dir exists
-  stat:
-    path: "{{ morla_letsencrypt_dir }}"
-  register: check_letsencrypt_dir
+    - name: Check if Letsencrypt dir exists
+      stat:
+          path: '{{ morla_letsencrypt_dir }}'
+      register: check_letsencrypt_dir
 
-- name: Check if Gandi dir exists
-  stat:
-    path: "{{ morla_letsencrypt_gandi_dir }}"
-  register: check_letsencrypt_gandi_dir
+    - name: Check if Gandi dir exists
+      stat:
+          path: '{{ morla_letsencrypt_gandi_dir }}'
+      register: check_letsencrypt_gandi_dir
 
-- name: Create Gandi directory
-  ansible.builtin.file:
-    path: "{{ morla_letsencrypt_gandi_dir }}"
-    state: directory
-  when: ( not check_letsencrypt_dir.stat.exists ) or
-    ( not check_letsencrypt_gandi_dir.stat.exists )
+    - name: Create Gandi directory
+      ansible.builtin.file:
+          path: '{{ morla_letsencrypt_gandi_dir }}'
+          state: directory
+      when: ( not check_letsencrypt_dir.stat.exists ) or ( not check_letsencrypt_gandi_dir.stat.exists )

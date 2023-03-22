@@ -1,5 +1,5 @@
 ---
-- name: Force systemd to reread configs
-  ansible.builtin.systemd:
-    scope: user
-    daemon_reload: yes
+    - name: Force systemd to reread configs
+      ansible.builtin.systemd:
+          scope: user
+          daemon_reload: yes

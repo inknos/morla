@@ -1,4 +1,5 @@
-- name: Destroy Navidrome
-  containers.podman.podman_container:
-    name: "{{ morla_navidrome_container_name }}"
-    state: absent
+---
+    - name: Destroy Navidrome
+      containers.podman.podman_container:
+          name: '{{ morla_navidrome_container_name }}'
+          state: absent

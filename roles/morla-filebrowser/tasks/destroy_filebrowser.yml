@@ -1,4 +1,5 @@
-- name: Destroy Filebrowser
-  containers.podman.podman_container:
-    name: "{{ morla_filebrowser_container_name }}"
-    state: absent
+---
+    - name: Destroy Filebrowser
+      containers.podman.podman_container:
+          name: '{{ morla_filebrowser_container_name }}'
+          state: absent

@@ -1,34 +1,35 @@
+---
 # roles/filebrowser/tasks/main.yml
 
-- ansible.builtin.import_tasks: "{{ role_path }}/tasks/init.yml"
-  tags:
-    - always
+    - ansible.builtin.import_tasks: '{{ role_path }}/tasks/init.yml'
+      tags:
+          - always
 
-- ansible.builtin.import_tasks: "{{ role_path }}/tasks/init_flag.yml"
-  tags:
-    - setup-all
-    - setup-filebrowser
+    - ansible.builtin.import_tasks: '{{ role_path }}/tasks/init_flag.yml'
+      tags:
+          - setup-all
+          - setup-filebrowser
 
-- ansible.builtin.import_tasks: "{{ role_path }}/tasks/pull_filebrowser.yml"
-  when: "morla_filebrowser_enabled | bool"
-  tags:
-    - setup-all
-    - setup-filebrowser
+    - ansible.builtin.import_tasks: '{{ role_path }}/tasks/pull_filebrowser.yml'
+      when: morla_filebrowser_enabled | bool
+      tags:
+          - setup-all
+          - setup-filebrowser
 
-- ansible.builtin.import_tasks: "{{ role_path }}/tasks/destroy_filebrowser.yml"
-  when: "morla_filebrowser_enabled | bool"
-  tags:
-    - never
-    - destroy-all
-    - destroy-filebrowser
+    - ansible.builtin.import_tasks: '{{ role_path }}/tasks/destroy_filebrowser.yml'
+      when: morla_filebrowser_enabled | bool
+      tags:
+          - never
+          - destroy-all
+          - destroy-filebrowser
 
-- ansible.builtin.import_tasks: "{{ role_path }}/tasks/setup_filebrowser.yml"
-  when: "morla_filebrowser_enabled | bool"
-  tags:
-    - setup-all
-    - setup-filebrowser
+    - ansible.builtin.import_tasks: '{{ role_path }}/tasks/setup_filebrowser.yml'
+      when: morla_filebrowser_enabled | bool
+      tags:
+          - setup-all
+          - setup-filebrowser
 
-- ansible.builtin.import_tasks: "{{ role_path }}/templates/main.yml"
-  tags:
-    - setup-all
-    - setup-filebrowser
+    - ansible.builtin.import_tasks: '{{ role_path }}/templates/main.yml'
+      tags:
+          - setup-all
+          - setup-filebrowser

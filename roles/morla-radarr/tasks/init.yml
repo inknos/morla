@@ -1,5 +1,5 @@
 ---
-- name: Check if Config dir exists
-  stat:
-    path: "{{ morla_radarr_config_dir }}"
-  register: check_radarr_config_dir
+    - name: Check if Config dir exists
+      stat:
+          path: '{{ morla_radarr_config_dir }}'
+      register: check_radarr_config_dir

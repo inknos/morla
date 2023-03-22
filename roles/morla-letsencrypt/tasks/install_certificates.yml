@@ -1,23 +1,23 @@
 ---
-- name: Restart Nginx
-  containers.podman.podman_container:
-    name: "{{ morla_nginx_container_name }}"
-    image: "{{ morla_nginx_container_image}}"
-    volumes: "{{ morla_nginx_volumes }}"
-    ports: "{{ morla_nginx_ports }}"
-    env:
-      PUID: "{{ morla_fake_puid }}"
-      PGID: "{{ morla_fake_pgid }}"
-      TZ: "{{ morla_tz }}"
-    uidmap:
-      - "{{ morla_fake_puid }}:0:1"
-      - "0:1:{{ morla_fake_puid }}"
-      - "{{ morla_fake_puid + 1 }}:{{ morla_fake_puid + 1 }}:{{ morla_subuid_size - morla_fake_puid }}"
-    gidmap:
-      - "{{ morla_fake_pgid }}:0:1"
-      - "0:1:{{ morla_fake_pgid }}"
-      - "{{ morla_fake_pgid + 1 }}:{{ morla_fake_pgid + 1 }}:{{ morla_subgid_size - morla_fake_pgid }}"
-    state: started
-    restart: yes
-    restart_policy: unless-stopped
-  when: new_certificate.changed
+    - name: Restart Nginx
+      containers.podman.podman_container:
+          name: '{{ morla_nginx_container_name }}'
+          image: '{{ morla_nginx_container_image}}'
+          volumes: '{{ morla_nginx_volumes }}'
+          ports: '{{ morla_nginx_ports }}'
+          env:
+              PUID: '{{ morla_fake_puid }}'
+              PGID: '{{ morla_fake_pgid }}'
+              TZ: '{{ morla_tz }}'
+          uidmap:
+              - '{{ morla_fake_puid }}:0:1'
+              - 0:1:{{ morla_fake_puid }}
+              - '{{ morla_fake_puid + 1 }}:{{ morla_fake_puid + 1 }}:{{ morla_subuid_size - morla_fake_puid }}'
+          gidmap:
+              - '{{ morla_fake_pgid }}:0:1'
+              - 0:1:{{ morla_fake_pgid }}
+              - '{{ morla_fake_pgid + 1 }}:{{ morla_fake_pgid + 1 }}:{{ morla_subgid_size - morla_fake_pgid }}'
+          state: started
+          restart: yes
+          restart_policy: unless-stopped
+      when: new_certificate.changed

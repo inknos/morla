@@ -1,4 +1,5 @@
-- name: Pull Navidrome image
-  containers.podman.podman_image:
-    name: "{{ morla_navidrome_container_image }}"
-    tag: latest
+---
+    - name: Pull Navidrome image
+      containers.podman.podman_image:
+          name: '{{ morla_navidrome_container_image }}'
+          tag: latest

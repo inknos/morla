@@ -1,28 +1,29 @@
+---
 # roles/qbittorrent/tasks/main.yml
-- ansible.builtin.import_tasks: "{{ role_path }}/tasks/init.yml"
-  tags:
-    - always
+    - ansible.builtin.import_tasks: '{{ role_path }}/tasks/init.yml'
+      tags:
+          - always
 
-- ansible.builtin.import_tasks: "{{ role_path }}/tasks/init_flag.yml"
-  tags:
-    - setup-all
-    - setup-qbittorrent
+    - ansible.builtin.import_tasks: '{{ role_path }}/tasks/init_flag.yml'
+      tags:
+          - setup-all
+          - setup-qbittorrent
 
-- ansible.builtin.import_tasks: "{{ role_path }}/tasks/pull_qbittorrent.yml"
-  when: "morla_qbittorrent_enabled | bool"
-  tags:
-    - setup-all
-    - setup-qbittorrent
+    - ansible.builtin.import_tasks: '{{ role_path }}/tasks/pull_qbittorrent.yml'
+      when: morla_qbittorrent_enabled | bool
+      tags:
+          - setup-all
+          - setup-qbittorrent
 
-- ansible.builtin.import_tasks: "{{ role_path }}/tasks/destroy_qbittorrent.yml"
-  when: "morla_qbittorrent_enabled | bool"
-  tags:
-    - never
-    - destroy-all
-    - destroy-qbittorrent
+    - ansible.builtin.import_tasks: '{{ role_path }}/tasks/destroy_qbittorrent.yml'
+      when: morla_qbittorrent_enabled | bool
+      tags:
+          - never
+          - destroy-all
+          - destroy-qbittorrent
 
-- ansible.builtin.import_tasks: "{{ role_path }}/tasks/setup_qbittorrent.yml"
-  when: "morla_qbittorrent_enabled | bool"
-  tags:
-    - setup-all
-    - setup-qbittorrent
+    - ansible.builtin.import_tasks: '{{ role_path }}/tasks/setup_qbittorrent.yml'
+      when: morla_qbittorrent_enabled | bool
+      tags:
+          - setup-all
+          - setup-qbittorrent

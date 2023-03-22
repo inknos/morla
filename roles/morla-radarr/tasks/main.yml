@@ -1,28 +1,29 @@
+---
 # roles/radarr/tasks/main.yml
-- ansible.builtin.import_tasks: "{{ role_path }}/tasks/init.yml"
-  tags:
-    - always
+    - ansible.builtin.import_tasks: '{{ role_path }}/tasks/init.yml'
+      tags:
+          - always
 
-- ansible.builtin.import_tasks: "{{ role_path }}/tasks/init_flag.yml"
-  tags:
-    - setup-all
-    - setup-radarr
+    - ansible.builtin.import_tasks: '{{ role_path }}/tasks/init_flag.yml'
+      tags:
+          - setup-all
+          - setup-radarr
 
-- ansible.builtin.import_tasks: "{{ role_path }}/tasks/pull_radarr.yml"
-  when: "morla_radarr_enabled | bool"
-  tags:
-    - setup-all
-    - setup-radarr
+    - ansible.builtin.import_tasks: '{{ role_path }}/tasks/pull_radarr.yml'
+      when: morla_radarr_enabled | bool
+      tags:
+          - setup-all
+          - setup-radarr
 
-- ansible.builtin.import_tasks: "{{ role_path }}/tasks/destroy_radarr.yml"
-  when: "morla_radarr_enabled | bool"
-  tags:
-    - never
-    - destroy-all
-    - destroy-radarr
+    - ansible.builtin.import_tasks: '{{ role_path }}/tasks/destroy_radarr.yml'
+      when: morla_radarr_enabled | bool
+      tags:
+          - never
+          - destroy-all
+          - destroy-radarr
 
-- ansible.builtin.import_tasks: "{{ role_path }}/tasks/setup_radarr.yml"
-  when: "morla_radarr_enabled | bool"
-  tags:
-    - setup-all
-    - setup-radarr
+    - ansible.builtin.import_tasks: '{{ role_path }}/tasks/setup_radarr.yml'
+      when: morla_radarr_enabled | bool
+      tags:
+          - setup-all
+          - setup-radarr

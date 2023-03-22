@@ -1,4 +1,5 @@
-- name: Create Settings Json
-  ansible.builtin.template:
-    src: settings.json.j2
-    dest: "{{ morla_filebrowser_settings_json }}"
+---
+    - name: Create Settings Json
+      ansible.builtin.template:
+          src: settings.json.j2
+          dest: '{{ morla_filebrowser_settings_json }}'

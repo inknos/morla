@@ -1,10 +1,10 @@
 ---
-- name: Check if Config dir exists
-  stat:
-    path: "{{ morla_piwigo_config_dir }}"
-  register: check_piwigo_config_dir
+    - name: Check if Config dir exists
+      stat:
+          path: '{{ morla_piwigo_config_dir }}'
+      register: check_piwigo_config_dir
 
-- name: Check if Config dir for DB exists
-  stat:
-    path: "{{ morla_piwigo_db_config_dir }}"
-  register: check_piwigo_db_config_dir
+    - name: Check if Config dir for DB exists
+      stat:
+          path: '{{ morla_piwigo_db_config_dir }}'
+      register: check_piwigo_db_config_dir

@@ -1,2 +1,2 @@
 ---
-- ansible.builtin.import_tasks: "{{ role_path }}/templates/main.yml"
+    - ansible.builtin.import_tasks: '{{ role_path }}/templates/main.yml'

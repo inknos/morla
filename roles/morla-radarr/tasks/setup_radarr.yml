@@ -1,38 +1,38 @@
 ---
-- name: Create config directory
-  ansible.builtin.file:
-    path: "{{ morla_radarr_config_dir }}"
-    state: directory
-    owner: "{{ morla_user_username }}"
-    group: "{{ morla_user_groupname }}"
-  when: not check_radarr_config_dir.stat.exists
+    - name: Create config directory
+      ansible.builtin.file:
+          path: '{{ morla_radarr_config_dir }}'
+          state: directory
+          owner: '{{ morla_user_username }}'
+          group: '{{ morla_user_groupname }}'
+      when: not check_radarr_config_dir.stat.exists
 
-- name: Create container
-  containers.podman.podman_container:
-    name: "{{ morla_radarr_container_name }}"
-    image: "{{ morla_radarr_container_image}}"
-    volumes: "{{ morla_radarr_volumes }}"
-    ports: "{{ morla_radarr_ports }}"
-    ip: "{{ morla_radarr_internal_ip }}"
-    network:
-      - morla-wireguard-network
-    network_aliases: "{{ morla_radarr_short_name }}"
-    env:
-      PUID: "{{ morla_fake_puid }}"
-      PGID: "{{ morla_fake_pgid }}"
-      TZ: "{{ morla_tz }}"
-    uidmap:
-      - "{{ morla_fake_puid }}:0:1"
-      - "0:1:{{ morla_fake_puid }}"
-      - "{{ morla_fake_puid + 1 }}:{{ morla_fake_puid + 1 }}:{{ morla_subuid_size - morla_fake_puid }}"
-    gidmap:
-      - "{{ morla_fake_pgid }}:0:1"
-      - "0:1:{{ morla_fake_pgid }}"
-      - "{{ morla_fake_pgid + 1 }}:{{ morla_fake_pgid + 1 }}:{{ morla_subgid_size - morla_fake_pgid }}"
-    state: started
-    restart_policy: unless-stopped
-    generate_systemd:
-      path: "{{ morla_home_config_systemd_dir }}"
-      restart_policy: always
-      names: true
-      container_prefix: "{{ morla_systemd_service_prefix }}"
+    - name: Create container
+      containers.podman.podman_container:
+          name: '{{ morla_radarr_container_name }}'
+          image: '{{ morla_radarr_container_image}}'
+          volumes: '{{ morla_radarr_volumes }}'
+          ports: '{{ morla_radarr_ports }}'
+          ip: '{{ morla_radarr_internal_ip }}'
+          network:
+              - morla-wireguard-network
+          network_aliases: '{{ morla_radarr_short_name }}'
+          env:
+              PUID: '{{ morla_fake_puid }}'
+              PGID: '{{ morla_fake_pgid }}'
+              TZ: '{{ morla_tz }}'
+          uidmap:
+              - '{{ morla_fake_puid }}:0:1'
+              - 0:1:{{ morla_fake_puid }}
+              - '{{ morla_fake_puid + 1 }}:{{ morla_fake_puid + 1 }}:{{ morla_subuid_size - morla_fake_puid }}'
+          gidmap:
+              - '{{ morla_fake_pgid }}:0:1'
+              - 0:1:{{ morla_fake_pgid }}
+              - '{{ morla_fake_pgid + 1 }}:{{ morla_fake_pgid + 1 }}:{{ morla_subgid_size - morla_fake_pgid }}'
+          state: started
+          restart_policy: unless-stopped
+          generate_systemd:
+              path: '{{ morla_home_config_systemd_dir }}'
+              restart_policy: always
+              names: true
+              container_prefix: '{{ morla_systemd_service_prefix }}'

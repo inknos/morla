@@ -1,4 +1,5 @@
-- name: Pull Prowlarr image
-  containers.podman.podman_image:
-    name: "{{ morla_prowlarr_container_image }}"
-    tag: latest
+---
+    - name: Pull Prowlarr image
+      containers.podman.podman_image:
+          name: '{{ morla_prowlarr_container_image }}'
+          tag: latest

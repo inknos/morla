@@ -1,34 +1,34 @@
 ---
-- name: Create config directory
-  ansible.builtin.file:
-    path: "{{ morla_photoprism_config_dir }}"
-    state: directory
-    owner: "{{ morla_user_username }}"
-    group: "{{ morla_user_groupname }}"
-  when: not check_photoprism_config_dir.stat.exists
+    - name: Create config directory
+      ansible.builtin.file:
+          path: '{{ morla_photoprism_config_dir }}'
+          state: directory
+          owner: '{{ morla_user_username }}'
+          group: '{{ morla_user_groupname }}'
+      when: not check_photoprism_config_dir.stat.exists
 
-- name: Create container
-  containers.podman.podman_container:
-    name: "{{ morla_photoprism_container_name }}"
-    image: "{{ morla_photoprism_container_image}}"
-    volumes: "{{ morla_photoprism_volumes }}"
-    ports: "{{ morla_photoprism_ports }}"
-    security_opt:
-      - "seccomp=unconfined"
-      - "apparmor=unconfined"
-    privileged: true
-    env:
-      PUID: 0
-      PGID: 0
-      TZ: "{{ morla_tz }}"
-      PHOTOPRISM_ADMIN_PASSWORD: "{{ morla_photoprism_admin_password }}"
-    network: morla-wireguard-network
-    ip: "{{ morla_photoprism_internal_ip }}"
-    network_aliases: "{{ morla_photoprism_short_name }}"
-    state: started
-    restart_policy: unless-stopped
-    generate_systemd:
-      path: "{{ morla_home_config_systemd_dir }}"
-      restart_policy: always
-      names: true
-      container_prefix: "{{ morla_systemd_service_prefix }}"
+    - name: Create container
+      containers.podman.podman_container:
+          name: '{{ morla_photoprism_container_name }}'
+          image: '{{ morla_photoprism_container_image}}'
+          volumes: '{{ morla_photoprism_volumes }}'
+          ports: '{{ morla_photoprism_ports }}'
+          security_opt:
+              - seccomp=unconfined
+              - apparmor=unconfined
+          privileged: true
+          env:
+              PUID: 0
+              PGID: 0
+              TZ: '{{ morla_tz }}'
+              PHOTOPRISM_ADMIN_PASSWORD: '{{ morla_photoprism_admin_password }}'
+          network: morla-wireguard-network
+          ip: '{{ morla_photoprism_internal_ip }}'
+          network_aliases: '{{ morla_photoprism_short_name }}'
+          state: started
+          restart_policy: unless-stopped
+          generate_systemd:
+              path: '{{ morla_home_config_systemd_dir }}'
+              restart_policy: always
+              names: true
+              container_prefix: '{{ morla_systemd_service_prefix }}'

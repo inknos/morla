@@ -1,4 +1,5 @@
-- name: Pull Jellyfin image
-  containers.podman.podman_image:
-    name: "{{ morla_jellyfin_container_image }}"
-    tag: latest
+---
+    - name: Pull Jellyfin image
+      containers.podman.podman_image:
+          name: '{{ morla_jellyfin_container_image }}'
+          tag: latest

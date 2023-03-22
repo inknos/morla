@@ -1,3 +1,4 @@
+---
 morla_wireguard_enabled: true
 
 # Wireguard Container
@@ -6,76 +7,76 @@ morla_wireguard_flag_autostart: true
 morla_wireguard_flag_wireguard: false
 morla_wireguard_flag_firewall: true # replace with if port list non empty
 
-morla_wireguard_long_name: "Wireguard"
+morla_wireguard_long_name: Wireguard
 morla_wireguard_short_name: wireguard
 
-morla_wireguard_pod_name: "morla-wireguard-pod"
-morla_wireguard_network_name: "morla-wireguard-network"
+morla_wireguard_pod_name: morla-wireguard-pod
+morla_wireguard_network_name: morla-wireguard-network
 
-morla_wireguard_container_short_name: "{{ morla_wireguard_short_name }}"
-morla_wireguard_container_name: "{{ morla_user_username }}-{{ morla_wireguard_container_short_name }}"
+morla_wireguard_container_short_name: '{{ morla_wireguard_short_name }}'
+morla_wireguard_container_name: '{{ morla_user_username }}-{{ morla_wireguard_container_short_name }}'
 
-morla_wireguard_public_url: "{{ morla_wireguard_short_name }}.{{ morla_public_url }}"
+morla_wireguard_public_url: '{{ morla_wireguard_short_name }}.{{ morla_public_url }}'
 
 # filesystem dir for configs
-morla_wireguard_config_dir: "{{ morla_config_dir }}/{{ morla_wireguard_long_name }}"
+morla_wireguard_config_dir: '{{ morla_config_dir }}/{{ morla_wireguard_long_name }}'
 
-morla_wireguard_container_image_base: "lscr.io/linuxserver/wireguard"
-morla_wireguard_container_image_tag: "latest"
-morla_wireguard_container_image: "{{ morla_wireguard_container_image_base }}:{{ morla_wireguard_container_image_tag }}"
+morla_wireguard_container_image_base: lscr.io/linuxserver/wireguard
+morla_wireguard_container_image_tag: latest
+morla_wireguard_container_image: '{{ morla_wireguard_container_image_base }}:{{ morla_wireguard_container_image_tag }}'
 
 morla_wireguard_cap_add:
-  - NET_ADMIN
-  - NET_RAW
-  - SYS_MODULE
+    - NET_ADMIN
+    - NET_RAW
+    - SYS_MODULE
 
 morla_wireguard_privileged: true
-morla_wireguard_env_serverurl: "{{ morla_domain }}"
-morla_wireguard_env_allowedips: "10.13.13.1/24,192.168.1.1/24,172.20.0.0/24"
-morla_wireguard_env_peers: "nik_phone,nik_pc_work,nik_pc_home,nik_pc_gaming,leo_phone,leo_pc_home"
+morla_wireguard_env_serverurl: '{{ morla_domain }}'
+morla_wireguard_env_allowedips: 10.13.13.1/24,192.168.1.1/24,172.20.0.0/24
+morla_wireguard_env_peers: nik_phone,nik_pc_work,nik_pc_home,nik_pc_gaming,leo_phone,leo_pc_home
 # used inside container config
-morla_wireguard_external_server_port: "12882"
-morla_wireguard_reverse_proxy_port: "51820"
+morla_wireguard_external_server_port: '12882'
+morla_wireguard_reverse_proxy_port: '51820'
 
 morla_wireguard_fw_ports:
-  tcp:
-  udp:
-    - "{{ morla_wireguard_reverse_proxy_port }}"
+    tcp:
+    udp:
+        - '{{ morla_wireguard_reverse_proxy_port }}'
 
 morla_wireguard_ports:
-  - "{{ morla_wireguard_fw_ports.udp[0] }}:{{ morla_wireguard_fw_ports.udp[0] }}/udp"
+    - '{{ morla_wireguard_fw_ports.udp[0] }}:{{ morla_wireguard_fw_ports.udp[0] }}/udp'
 
 morla_wireguard_volumes:
-  - "{{ morla_wireguard_config_dir }}:/config:Z"
-  - "/lib/modules:/lib/modules"
+    - '{{ morla_wireguard_config_dir }}:/config:Z'
+    - /lib/modules:/lib/modules
 
 # Wireguard Nginx Reverse Proxy
-morla_nginx_wireguard_long_name: "NginxWireguard"
+morla_nginx_wireguard_long_name: NginxWireguard
 
 morla_nginx_wireguard_container_short_name: nginx-wireguard
-morla_nginx_wireguard_container_name: "{{ morla_user_username }}-{{ morla_nginx_wireguard_container_short_name }}"
+morla_nginx_wireguard_container_name: '{{ morla_user_username }}-{{ morla_nginx_wireguard_container_short_name }}'
 
-morla_nginx_wireguard_config_dir: "{{ morla_config_dir }}/{{ morla_nginx_wireguard_long_name}}"
-morla_nginx_wireguard_www_dir: "{{ morla_nginx_wireguard_config_dir }}/www"
-morla_nginx_wireguard_site_confs: "{{ morla_nginx_wireguard_config_dir }}/nginx/site-confs/"
-morla_nginx_wireguard_etc_letsencrypt: "{{ morla_nginx_wireguard_config_dir }}/etc/letsencrypt"
-morla_nginx_wireguard_etc_nginx_wireguard_sites_enabled: "{{ morla_nginx_wireguard_etc_nginx_wireguard }}/sites-enabled"
+morla_nginx_wireguard_config_dir: '{{ morla_config_dir }}/{{ morla_nginx_wireguard_long_name}}'
+morla_nginx_wireguard_www_dir: '{{ morla_nginx_wireguard_config_dir }}/www'
+morla_nginx_wireguard_site_confs: '{{ morla_nginx_wireguard_config_dir }}/nginx/site-confs/'
+morla_nginx_wireguard_etc_letsencrypt: '{{ morla_nginx_wireguard_config_dir }}/etc/letsencrypt'
+morla_nginx_wireguard_etc_nginx_wireguard_sites_enabled: '{{ morla_nginx_wireguard_etc_nginx_wireguard }}/sites-enabled'
 
-morla_nginx_wireguard_container_image_base: "lscr.io/linuxserver/nginx"
-morla_nginx_wireguard_container_image_tag: "latest"
-morla_nginx_wireguard_container_image: "{{ morla_nginx_wireguard_container_image_base }}:{{ morla_nginx_wireguard_container_image_tag }}"
+morla_nginx_wireguard_container_image_base: lscr.io/linuxserver/nginx
+morla_nginx_wireguard_container_image_tag: latest
+morla_nginx_wireguard_container_image: '{{ morla_nginx_wireguard_container_image_base }}:{{ morla_nginx_wireguard_container_image_tag }}'
 
 morla_nginx_wireguard_puid: 101
 morla_nginx_wireguard_pgid: 101
 
-morla_nginx_wireguard_http_port: "80"
-morla_nginx_wireguard_https_port: "443"
+morla_nginx_wireguard_http_port: '80'
+morla_nginx_wireguard_https_port: '443'
 
 morla_nginx_wireguard_ports:
-  - "80:80"
-  - "443:443"
+    - 80:80
+    - 443:443
 
 morla_nginx_wireguard_volumes:
-  - "{{ morla_nginx_wireguard_config_dir }}:/config:Z"
+    - '{{ morla_nginx_wireguard_config_dir }}:/config:Z'
 
 # Wireguard DNS

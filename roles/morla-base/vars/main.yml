@@ -3,13 +3,13 @@
 # # Each component is expected to append its service name to this list.
 #
 # list of containers that should be accessed from the public network
-morla_public_domains: [ ]
+morla_public_domains: []
 
 # list of containers that should be added to the internal accessible wireguard network
-morla_wireguard_domains: [ ]
+morla_wireguard_domains: []
 
 # list of containers for which a firewall configuration is required
-morla_firewall_services: [ ]
+morla_firewall_services: []
 
 # list of containers/pods that should start on boot
 morla_systemd_autostart_containers: []
