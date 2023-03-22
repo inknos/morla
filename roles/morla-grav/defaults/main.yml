@@ -27,7 +27,7 @@ morla_grav_volumes:
   - "{{ morla_grav_config_dir }}:/config:Z"
   - "{{ morla_grav_data_dir }}:/data:z"
 
-# networking 
+# networking
 morla_grav_internal_ip: "172.20.0.223"
 
 morla_grav_reverse_proxy_port: "22331"

@@ -3,5 +3,3 @@
   stat:
     path: "{{ morla_photoprism_config_dir }}"
   register: check_photoprism_config_dir
-
-

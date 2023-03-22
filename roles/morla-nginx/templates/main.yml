@@ -14,4 +14,3 @@
     src: "{{ item }}.conf.j2"
     dest: "{{ morla_nginx_site_confs }}/{{ item }}.{{ morla_subdomain }}.{{ morla_domain }}.conf"
   loop: "{{ morla_public_domains }}"
-

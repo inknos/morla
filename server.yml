@@ -64,4 +64,3 @@
     - morla-wireguard-config
     - morla-firewall        # manage firewall services and open ports
     - morla-systemd         # manage containers autostart
-

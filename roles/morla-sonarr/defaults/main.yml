@@ -37,5 +37,3 @@ morla_sonarr_fw_ports:
 
 morla_sonarr_ports:
   - "{{ morla_sonarr_reverse_proxy_port }}:{{ morla_sonarr_reverse_proxy_port }}"
-
-

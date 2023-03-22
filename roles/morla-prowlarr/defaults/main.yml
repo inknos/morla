@@ -34,5 +34,3 @@ morla_prowlarr_fw_ports:
 
 morla_prowlarr_ports:
   - "{{ morla_prowlarr_reverse_proxy_port }}:{{ morla_prowlarr_reverse_proxy_port }}"
-
-

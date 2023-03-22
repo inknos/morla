@@ -8,9 +8,9 @@ server {
 
         location / {
                 proxy_pass http://{{ morla_internal_ip }}:{{ morla_piwigo_reverse_proxy_port }};
-                proxy_set_header Host $host; 
-                proxy_set_header X-Real-IP $remote_addr; 
-                proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for; 
+                proxy_set_header Host $host;
+                proxy_set_header X-Real-IP $remote_addr;
+                proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
                 proxy_set_header X-Forwarded-Proto $scheme;
         }
 
@@ -21,11 +21,9 @@ server {
 
     # include /config/letsencrypt/options-ssl-nginx.conf; # managed by Certbot
     #ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem;
-    
+
     #add_header Strict-Transport-Security "max-age=31536000" always;
     ssl_trusted_certificate /certs/live/{{ morla_piwigo_public_url }}/chain.pem;
     #ssl_stapling on;
     #ssl_stapling_verify on;
 }
-
-

@@ -3,4 +3,3 @@
   stat:
     path: "{{ morla_sonarr_config_dir }}"
   register: check_sonarr_config_dir
-

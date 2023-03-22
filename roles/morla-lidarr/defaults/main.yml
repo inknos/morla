@@ -36,5 +36,3 @@ morla_lidarr_fw_ports:
 
 morla_lidarr_ports:
   - "{{ morla_lidarr_reverse_proxy_port }}:{{ morla_lidarr_reverse_proxy_port }}"
-
-

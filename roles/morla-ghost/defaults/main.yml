@@ -48,7 +48,7 @@ morla_ghost_db_config_dir: "{{ morla_config_dir }}/{{ morla_ghost_db_long_name }
 morla_ghost_db_volumes:
   - "{{ morla_ghost_db_config_dir }}:/config:Z"
 
-# networking 
+# networking
 morla_ghost_internal_ip: "172.20.0.236"
 
 morla_ghost_reverse_proxy_port: "2368"

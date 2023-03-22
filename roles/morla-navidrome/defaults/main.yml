@@ -28,11 +28,11 @@ morla_navidrome_volumes:
   - "{{ morla_navidrome_music_dir }}:/music:ro,z"
 
 morla_navidrome_env_nd_scanschedule: 1h
-morla_navidrome_env_nd_loglevel: info  
+morla_navidrome_env_nd_loglevel: info
 morla_navidrome_env_nd_sessiontimeout: 24h
 morla_navidrome_env_nd_baseurl: ""
 
-# networking 
+# networking
 morla_navidrome_internal_ip: "172.20.0.43"
 
 morla_navidrome_reverse_proxy_port: "4533"

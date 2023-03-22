@@ -15,4 +15,3 @@
     state: directory
   when: ( not check_letsencrypt_dir.stat.exists ) or
     ( not check_letsencrypt_gandi_dir.stat.exists )
-

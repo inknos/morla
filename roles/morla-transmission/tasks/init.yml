@@ -3,5 +3,3 @@
   stat:
     path: "{{ morla_transmission_config_dir }}"
   register: check_transmission_config_dir
-
-

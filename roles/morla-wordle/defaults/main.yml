@@ -11,7 +11,7 @@ morla_wordle_git_dir: "{{ role_path }}/files/wordle-git"
 
 morla_wordle_git_repo: "https://github.com/cwackerfuss/react-wordle.git"
 
-morla_wordle_container_name: "{{ morla_user_username }}-{{morla_wordle_short_name}}" 
+morla_wordle_container_name: "{{ morla_user_username }}-{{morla_wordle_short_name}}"
 morla_wordle_container_image_base: "{{ morla_wordle_short_name }}"
 morla_wordle_container_image_tag: prod
 morla_wordle_container_image: "{{ morla_wordle_container_image_base }}:{{ morla_wordle_container_image_tag }}"

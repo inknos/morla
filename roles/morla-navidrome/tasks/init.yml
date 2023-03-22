@@ -3,4 +3,3 @@
   stat:
     path: "{{ morla_navidrome_config_dir }}"
   register: check_navidrome_config_dir
-

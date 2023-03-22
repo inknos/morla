@@ -36,5 +36,3 @@ morla_readarr_fw_ports:
 
 morla_readarr_ports:
   - "{{ morla_readarr_reverse_proxy_port }}:{{ morla_readarr_reverse_proxy_port }}"
-
-

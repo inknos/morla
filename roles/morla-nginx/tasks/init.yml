@@ -11,4 +11,3 @@
     owner: "{{ morla_user_username }}"
     group: "{{ morla_user_groupname }}"
   when: not check_nginx_config_dir.stat.exists
-

@@ -50,16 +50,15 @@ server {
 #     listen       {{ morla_nginx_wireguard_https_port }} ssl;
 #     listen       [::]:{{ morla_nginx_wireguard_https_port }} ssl;
 #     server_name  {{ morla_domain }} www.{{ morla_domain }};
-# 
+#
 # 	location / {
 # 	     root   html;
 # 	     index  index.html index.htm;
 # 	}
-# 
+#
 #     ssl_certificate      /config/letsencrypt/live/{{ morla_domain }}/fullchain.pem;
 #     ssl_certificate_key  /config/letsencrypt/live/{{ morla_domain }}/privkey.pem;
-# 
+#
 #     # include /config/letsencrypt/options-ssl-nginx_wireguard.conf; # managed by Certbot
 #
 # }
-

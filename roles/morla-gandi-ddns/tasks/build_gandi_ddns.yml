@@ -20,4 +20,3 @@
       annotation:
         app: "{{ morla_gandi_ddns_container_name }}"
         info: Gandi-DDNS in React
-

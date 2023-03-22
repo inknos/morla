@@ -10,4 +10,3 @@
     owner: "{{ morla_user_username }}"
     group: "{{ morla_user_groupname }}"
   when: not check_config_dir.stat.exists
-

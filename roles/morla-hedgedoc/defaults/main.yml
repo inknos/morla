@@ -49,7 +49,7 @@ morla_hedgedoc_db_config_dir: "{{ morla_config_dir }}/{{ morla_hedgedoc_db_long_
 morla_hedgedoc_db_volumes:
   - "{{ morla_hedgedoc_db_config_dir }}:/var/lib/postgresql/data:Z"
 
-# networking 
+# networking
 morla_hedgedoc_internal_ip: "172.20.0.30"
 
 morla_hedgedoc_reverse_proxy_port: "3000"

@@ -3,4 +3,3 @@
   stat:
     path: "{{ morla_lidarr_config_dir }}"
   register: check_lidarr_config_dir
-

@@ -60,7 +60,7 @@
     image:  "{{ morla_ghost_db_container_image }}"
     volumes: "{{ morla_ghost_db_volumes }}"
     pod: "{{ morla_ghost_pod_name }}"
-    network: 
+    network:
       - container:morla-ghost
     env:
       PUID: "{{ morla_user_puid }}"
@@ -70,4 +70,3 @@
       MYSQL_ROOT_PASSWORD: "{{ morla_ghost_db_env_mysql_root_password }}"
     state: started
     restart_policy: unless-stopped
-

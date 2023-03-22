@@ -3,5 +3,3 @@
   stat:
     path: "{{ morla_qbittorrent_config_dir }}"
   register: check_qbittorrent_config_dir
-
-

@@ -18,4 +18,3 @@
       - "{{ morla_fake_pgid }}:0:1"
       - "0:1:{{ morla_fake_pgid }}"
       - "{{ morla_fake_pgid + 1 }}:{{ morla_fake_pgid + 1 }}:{{ morla_subgid_size - morla_fake_pgid }}"
-

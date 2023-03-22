@@ -2,20 +2,19 @@
 # - name: Add Container to the list of public domains
 #   ansible.builtin.set_fact:
 #     morla_public_domains: "{{ morla_public_domains + [ morla_nginx_public_url ] }}"
-#   when: ( morla_nginx_flag_public is defined ) and ( morla_nginx_flag_public|bool == True ) 
- 
+#   when: ( morla_nginx_flag_public is defined ) and ( morla_nginx_flag_public|bool == True )
+
 - name: Add Container to the list of Wireguard accessible containers
   ansible.builtin.set_fact:
     morla_wireguard_domains: "{{ morla_wireguard_domains + [ { 'name': morla_nginx_short_name, 'port': morla_nginx_reverse_proxy_port } ] }}"
-  when: ( morla_nginx_flag_wireguard is defined ) and ( morla_nginx_flag_wireguard|bool == True ) 
+  when: ( morla_nginx_flag_wireguard is defined ) and ( morla_nginx_flag_wireguard|bool == True )
 
 - name: Add Container to the list of autostart containers
   ansible.builtin.set_fact:
     morla_systemd_autostart_containers: "{{ morla_systemd_autostart_containers + [ morla_nginx_container_name ] }} "
-  when: ( morla_nginx_flag_autostart is defined ) and ( morla_nginx_flag_autostart|bool == True ) 
+  when: ( morla_nginx_flag_autostart is defined ) and ( morla_nginx_flag_autostart|bool == True )
 
 - name: Add Container to the list of Firewall Services
   ansible.builtin.set_fact:
     morla_firewall_services: "{{ morla_firewall_services + [ { 'name': morla_nginx_short_name, 'ports': morla_nginx_fw_ports } ]}}"
   when: ( morla_nginx_flag_firewall is defined ) and ( morla_nginx_flag_firewall|bool == True )
-

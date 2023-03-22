@@ -72,7 +72,7 @@
       path: "{{ morla_home_config_systemd_dir }}"
       restart_policy: always
       names: true
-      container_prefix: "{{ morla_systemd_service_prefix }}" 
+      container_prefix: "{{ morla_systemd_service_prefix }}"
 
         # - name: Create DNS Server
         #   containers.podman.podman_container:
@@ -93,5 +93,4 @@
         #       path: "{{ morla_home_config_systemd_dir }}"
         #       restart_policy: always
         #       names: true
-        #       container_prefix: "{{ morla_systemd_service_prefix }}" 
-
+        #       container_prefix: "{{ morla_systemd_service_prefix }}"

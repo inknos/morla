@@ -66,7 +66,7 @@
     image:  "{{ morla_hedgedoc_db_container_image }}"
     volumes: "{{ morla_hedgedoc_db_volumes }}"
     pod: "{{ morla_hedgedoc_pod_name }}"
-    network: 
+    network:
       - container:morla-hedgedoc
     env:
       PUID: "{{ morla_root_puid }}"

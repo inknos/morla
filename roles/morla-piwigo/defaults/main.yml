@@ -50,7 +50,7 @@ morla_piwigo_db_config_dir: "{{ morla_config_dir }}/{{ morla_piwigo_db_long_name
 morla_piwigo_db_volumes:
   - "{{ morla_piwigo_db_config_dir }}:/config:Z"
 
-# networking 
+# networking
 morla_piwigo_internal_ip: "172.20.0.55"
 
 morla_piwigo_reverse_proxy_port: "5050"
@@ -62,4 +62,3 @@ morla_piwigo_fw_ports:
 
 morla_piwigo_ports:
   - "{{ morla_piwigo_reverse_proxy_port }}:80"
-

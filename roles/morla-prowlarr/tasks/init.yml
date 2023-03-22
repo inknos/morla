@@ -3,4 +3,3 @@
   stat:
     path: "{{ morla_prowlarr_config_dir }}"
   register: check_prowlarr_config_dir
-

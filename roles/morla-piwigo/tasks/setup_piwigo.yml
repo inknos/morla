@@ -56,7 +56,7 @@
     image:  "{{ morla_piwigo_db_container_image }}"
     volumes: "{{ morla_piwigo_db_volumes }}"
     pod: "{{ morla_piwigo_pod_name }}"
-    network: 
+    network:
       - container:morla-piwigo
     env:
       PUID: "{{ morla_fake_puid }}"

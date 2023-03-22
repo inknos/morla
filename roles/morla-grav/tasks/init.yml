@@ -3,4 +3,3 @@
   stat:
     path: "{{ morla_grav_config_dir }}"
   register: check_grav_config_dir
-

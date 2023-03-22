@@ -22,4 +22,4 @@
       path: "{{ morla_home_config_systemd_dir }}"
       restart_policy: always
       names: true
-      container_prefix: "{{ morla_systemd_service_prefix }}" 
+      container_prefix: "{{ morla_systemd_service_prefix }}"

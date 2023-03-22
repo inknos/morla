@@ -6,4 +6,3 @@
       annotation:
         app: "{{ morla_letsencrypt_certbot_container_name }}"
         info: certbot with gandi plugin
-

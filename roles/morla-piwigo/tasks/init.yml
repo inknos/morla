@@ -8,4 +8,3 @@
   stat:
     path: "{{ morla_piwigo_db_config_dir }}"
   register: check_piwigo_db_config_dir
-

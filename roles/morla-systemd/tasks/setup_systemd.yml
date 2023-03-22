@@ -39,4 +39,3 @@
   # https://docs.podman.io/en/latest/markdown/podman-generate-systemd.1.html
   ansible.builtin.shell: "loginctl enable-linger {{ morla_user_username }}"
   when: check_linger_equals_yes.stdout != "Linger=yes"
-

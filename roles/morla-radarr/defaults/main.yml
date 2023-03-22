@@ -27,7 +27,7 @@ morla_radarr_volumes:
   - "{{ morla_radarr_config_dir }}:/config:Z"
   - "{{ morla_radarr_data_dir }}:/data:z"
 
-# networking 
+# networking
 morla_radarr_internal_ip: "172.20.0.78"
 
 morla_radarr_reverse_proxy_port: "7878"
