@@ -1,8 +1,8 @@
 ---
-- name: Add Container to the list of public domains
-  ansible.builtin.set_fact:
-    morla_public_domains: "{{ morla_public_domains + [ morla_nginx_public_url ] }}"
-  when: ( morla_nginx_flag_public is defined ) and ( morla_nginx_flag_public|bool == True ) 
+# - name: Add Container to the list of public domains
+#   ansible.builtin.set_fact:
+#     morla_public_domains: "{{ morla_public_domains + [ morla_nginx_public_url ] }}"
+#   when: ( morla_nginx_flag_public is defined ) and ( morla_nginx_flag_public|bool == True ) 
  
 - name: Add Container to the list of Wireguard accessible containers
   ansible.builtin.set_fact:

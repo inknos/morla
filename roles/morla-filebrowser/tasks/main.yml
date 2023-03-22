@@ -4,6 +4,11 @@
   tags:
     - always
 
+- ansible.builtin.import_tasks: "{{ role_path }}/tasks/init_flag.yml"
+  tags:
+    - setup-all
+    - setup-filebrowser
+
 - ansible.builtin.import_tasks: "{{ role_path }}/tasks/pull_filebrowser.yml"
   when: "morla_filebrowser_enabled | bool"
   tags:

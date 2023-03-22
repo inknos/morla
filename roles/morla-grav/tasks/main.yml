@@ -1,8 +1,12 @@
 # roles/grav/tasks/main.yml
-
 - ansible.builtin.import_tasks: "{{ role_path }}/tasks/init.yml"
   tags:
     - always
+
+- ansible.builtin.import_tasks: "{{ role_path }}/tasks/init_flag.yml"
+  tags:
+    - setup-all
+    - setup-grav
 
 - ansible.builtin.import_tasks: "{{ role_path }}/tasks/pull_grav.yml"
   when: "morla_grav_enabled | bool"

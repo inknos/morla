@@ -1,8 +1,12 @@
 # roles/prowlarr/tasks/main.yml
-
 - ansible.builtin.import_tasks: "{{ role_path }}/tasks/init.yml"
   tags:
     - always
+
+- ansible.builtin.import_tasks: "{{ role_path }}/tasks/init_flag.yml"
+  tags:
+    - setup-all
+    - setup-prowlarr
 
 - ansible.builtin.import_tasks: "{{ role_path }}/tasks/pull_prowlarr.yml"
   when: "morla_prowlarr_enabled | bool"

@@ -1,6 +1,4 @@
 ---
-- ansible.builtin.import_tasks: "{{ role_path }}/tasks/init_flag.yml"
-
 - name: Add the ip_tables module
   community.general.modprobe:
     name: ip_tables

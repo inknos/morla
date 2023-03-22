@@ -1,8 +1,12 @@
 # roles/navidrome/tasks/main.yml
-
 - ansible.builtin.import_tasks: "{{ role_path }}/tasks/init.yml"
   tags:
     - always
+
+- ansible.builtin.import_tasks: "{{ role_path }}/tasks/init_flag.yml"
+  tags:
+    - setup-all
+    - setup-navidrome
 
 - ansible.builtin.import_tasks: "{{ role_path }}/tasks/pull_navidrome.yml"
   when: "morla_navidrome_enabled | bool"

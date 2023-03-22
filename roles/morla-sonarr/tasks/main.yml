@@ -1,8 +1,12 @@
 # roles/sonarr/tasks/main.yml
-
 - ansible.builtin.import_tasks: "{{ role_path }}/tasks/init.yml"
   tags:
     - always
+
+- ansible.builtin.import_tasks: "{{ role_path }}/tasks/init_flag.yml"
+  tags:
+    - setup-all
+    - setup-sonarr
 
 - ansible.builtin.import_tasks: "{{ role_path }}/tasks/pull_sonarr.yml"
   when: "morla_sonarr_enabled | bool"

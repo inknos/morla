@@ -38,6 +38,7 @@
 
   vars_files:
     - group_vars/vault.yml
+    - inventory/vars.yml
 
   roles:
     - morla-base            # setup base environment for containers
@@ -53,10 +54,10 @@
     - morla-photoprism
     - morla-ghost
     - morla-grav
-      #- morla-readarr         #
-      # - morla-hedgedoc
+    - morla-readarr         #
+    - morla-hedgedoc
     - morla-qbittorrent
-      # - morla-wordle          # setup wordle
+    - morla-wordle          # setup wordle
     - morla-nginx           # setup server for public containers
     - morla-gandi-ddns      # setup python script to update gandi dns
     - morla-letsencrypt     # manage certificates for public containers

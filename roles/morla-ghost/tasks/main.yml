@@ -1,4 +1,8 @@
 # roles/ghost/tasks/main.yml
+- ansible.builtin.import_tasks: "{{ role_path }}/tasks/init_flag.yml"
+  tags:
+    - setup-all
+    - setup-ghost
 
 - ansible.builtin.import_tasks: "{{ role_path }}/tasks/init.yml"
   tags:

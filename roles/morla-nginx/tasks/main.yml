@@ -1,8 +1,12 @@
 # roles/nginx/tasks/main.yml
-
 - ansible.builtin.import_tasks: "{{ role_path }}/tasks/init.yml"
   tags:
     - always
+
+- ansible.builtin.import_tasks: "{{ role_path }}/tasks/init_flag.yml"
+  tags:
+    - setup-all
+    - setup-nginx
 
 - ansible.builtin.import_tasks: "{{ role_path }}/tasks/pull_nginx.yml"
   tags:
