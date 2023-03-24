@@ -1,0 +1,75 @@
+---
+    - name: Create config directory
+      ansible.builtin.file:
+          path: '{{ morla_lychee_config_dir }}'
+          state: directory
+          owner: '{{ morla_user_username }}'
+          group: '{{ morla_user_groupname }}'
+      when: not check_lychee_config_dir.stat.exists
+
+    - name: Create DB config directory
+      ansible.builtin.file:
+          path: '{{ morla_lychee_db_config_dir }}'
+          state: directory
+          owner: '{{ morla_user_username }}'
+          group: '{{ morla_user_groupname }}'
+      when: not check_lychee_db_config_dir.stat.exists
+
+    - name: Create pod
+      containers.podman.podman_pod:
+          name: '{{ morla_lychee_pod_name }}'
+          state: started
+          network:
+              - morla-wireguard-network
+          network_aliases: '{{ morla_lychee_short_name }}'
+          ip: '{{ morla_lychee_internal_ip }}'
+          ports: '{{ morla_lychee_ports }}'
+          uidmap:
+              - '{{ morla_fake_puid }}:0:1'
+              - 0:1:{{ morla_fake_puid }}
+              - '{{ morla_fake_puid + 1 }}:{{ morla_fake_puid + 1 }}:{{ morla_subuid_size - morla_fake_puid }}'
+          gidmap:
+              - '{{ morla_fake_pgid }}:0:1'
+              - 0:1:{{ morla_fake_pgid }}
+              - '{{ morla_fake_pgid + 1 }}:{{ morla_fake_pgid + 1 }}:{{ morla_subgid_size - morla_fake_pgid }}'
+          generate_systemd:
+              path: '{{ morla_home_config_systemd_dir }}'
+              restart_policy: always
+              names: true
+
+    - name: Create container
+      containers.podman.podman_container:
+          name: '{{ morla_lychee_container_name }}'
+          image: '{{ morla_lychee_container_image}}'
+          volumes: '{{ morla_lychee_volumes }}'
+          pod: '{{ morla_lychee_pod_name }}'
+          env:
+              PUID: '{{ morla_fake_puid }}'
+              PGID: '{{ morla_fake_pgid }}'
+              TZ: '{{ morla_tz }}'
+              DB_DATABASE: '{{ morla_lychee_db_env_mysql_database }}'
+              DB_USERNAME: '{{ morla_lychee_db_env_mysql_user }}'
+              DB_PASSWORD: '{{ morla_lychee_db_env_mysql_password }}'
+              DB_HOST: '{{ morla_lychee_internal_ip }}'
+              DB_PORT: 3306
+          state: started
+          restart_policy: unless-stopped
+
+    - name: Create Database
+      containers.podman.podman_container:
+          name: '{{ morla_lychee_db_container_name }}'
+          image: '{{ morla_lychee_db_container_image }}'
+          volumes: '{{ morla_lychee_db_volumes }}'
+          pod: '{{ morla_lychee_pod_name }}'
+          network:
+              - container:morla-lychee
+          env:
+              PUID: '{{ morla_fake_puid }}'
+              PGID: '{{ morla_fake_pgid }}'
+              TZ: '{{ morla_tz }}'
+              MYSQL_USER: '{{ morla_lychee_db_env_mysql_user }}'
+              MYSQL_PASSWORD: '{{ morla_lychee_db_env_mysql_password }}'
+              MYSQL_DATABASE: '{{ morla_lychee_db_env_mysql_database }}'
+              MYSQL_ROOT_PASSWORD: '{{ morla_lychee_db_env_mysql_root_password }}'
+          state: started
+          restart_policy: unless-stopped

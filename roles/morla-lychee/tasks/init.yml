@@ -1,0 +1,10 @@
+---
+    - name: Check if Config dir exists
+      stat:
+          path: '{{ morla_lychee_config_dir }}'
+      register: check_lychee_config_dir
+
+    - name: Check if Config dir for DB exists
+      stat:
+          path: '{{ morla_lychee_db_config_dir }}'
+      register: check_lychee_db_config_dir

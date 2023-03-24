@@ -1,0 +1,5 @@
+---
+    - name: Pull Lychee image
+      containers.podman.podman_image:
+          name: '{{ morla_lychee_container_image }}'
+          tag: latest
