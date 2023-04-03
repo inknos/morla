@@ -22,6 +22,14 @@ morla_jellyfin_container_image_base: lscr.io/linuxserver/jellyfin
 morla_jellyfin_container_image_tag: latest
 morla_jellyfin_container_image: '{{ morla_jellyfin_container_image_base }}:{{ morla_radarr_container_image_tag }}'
 
+morla_jellyfin_labels:
+    traefik.enable: true
+    traefik.http.services.jellyfin.loadbalancer.server.port: '{{ morla_jellyfin_reverse_proxy_port }}'
+    traefik.http.routers.jellyfin.tls: true
+    traefik.http.routers.jellyfin.rule: Host(`{{ morla_jellyfin_public_url }}`)
+    traefik.http.routers.jellyfin.entrypoints: websecure
+    traefik.http.routers.jellyfin.tls.certresolver: myresolver
+
 # used inside container config
 morla_jellyfin_reverse_proxy_port: '8096'
 morla_jellyfin_internal_ip: 172.20.0.80

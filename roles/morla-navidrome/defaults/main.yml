@@ -19,6 +19,14 @@ morla_navidrome_container_image_base: docker.io/deluan/navidrome
 morla_navidrome_container_image_tag: latest
 morla_navidrome_container_image: '{{ morla_navidrome_container_image_base }}:{{ morla_navidrome_container_image_tag }}'
 
+morla_navidrome_labels:
+    traefik.enable: true
+    traefik.http.routers.navidrome.rule: Host(`{{ morla_navidrome_public_url }}`)
+    traefik.http.routers.navidrome.entrypoints: websecure
+    traefik.http.routers.navidrome.tls: true
+    traefik.http.routers.navidrome.tls.certresolver: myresolver
+    traefik.http.services.navidrome.loadbalancer.server.port: '{{ morla_navidrome_reverse_proxy_port }}'
+
 # volumes
 
 morla_navidrome_config_dir: '{{ morla_config_dir }}/{{ morla_navidrome_long_name }}'

@@ -21,6 +21,14 @@ morla_piwigo_container_image_base: lscr.io/linuxserver/piwigo
 morla_piwigo_container_image_tag: latest
 morla_piwigo_container_image: '{{ morla_piwigo_container_image_base }}:{{ morla_piwigo_container_image_tag }}'
 
+morla_piwigo_labels:
+    traefik.enable: true
+    traefik.http.services.piwigo.loadbalancer.server.port: '{{ morla_piwigo_reverse_proxy_port }}'
+    traefik.http.routers.piwigo.tls: true
+    traefik.http.routers.piwigo.rule: Host(`{{ morla_piwigo_public_url }}`)
+    traefik.http.routers.piwigo.entrypoints: websecure
+    traefik.http.routers.piwigo.tls.certresolver: myresolver
+
 # db
 morla_piwigo_db_long_name: PiwigoDB
 morla_piwigo_db_short_name: piwigo-db

@@ -1,0 +1,26 @@
+---
+    - name: Check if Traefik Config dir exists
+      stat:
+          path: '{{ morla_traefik_config_dir }}'
+      register: check_traefik_config_dir
+
+    - name: Create config directory
+      ansible.builtin.file:
+          path: '{{ morla_traefik_config_dir }}'
+          state: directory
+          owner: '{{ morla_user_username }}'
+          group: '{{ morla_user_groupname }}'
+      when: not check_traefik_config_dir.stat.exists
+
+    - name: Check if Traefik Letsencypt dir exists
+      stat:
+          path: '{{ morla_traefik_letsencrypt_dir }}'
+      register: check_traefik_letsencrypt_dir
+
+    - name: Create Letsencrypt directory
+      ansible.builtin.file:
+          path: '{{ morla_traefik_letsencrypt_dir }}'
+          state: directory
+          owner: '{{ morla_user_username }}'
+          group: '{{ morla_user_groupname }}'
+      when: not check_traefik_letsencrypt_dir.stat.exists

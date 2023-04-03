@@ -1,0 +1,65 @@
+---
+morla_traefik_long_name: Traefik
+
+morla_traefik_flag_public: false
+morla_traefik_flag_autostart: true
+morla_traefik_flag_wireguard: false
+morla_traefik_flag_firewall: true # replace with if port list non empty
+
+morla_traefik_short_name: traefik
+
+morla_traefik_container_short_name: traefik
+morla_traefik_container_name: '{{ morla_user_username }}-{{ morla_traefik_container_short_name }}'
+
+morla_traefik_config_dir: '{{ morla_config_dir }}/{{ morla_traefik_long_name}}'
+morla_traefik_letsencrypt_dir: '{{ morla_config_dir }}/{{ morla_traefik_long_name}}Letsencrypt'
+
+morla_traefik_container_image_base: docker.io/library/traefik
+morla_traefik_container_image_tag: v3.0
+morla_traefik_container_image: '{{ morla_traefik_container_image_base }}:{{ morla_traefik_container_image_tag }}'
+
+morla_traefik_command:
+    - --log.level=DEBUG
+    - --api.insecure=true
+    - --providers.docker=true
+    - --providers.docker.exposedbydefault=false
+    - --entrypoints.web.address=:80
+    - --entrypoints.websecure.address=:443
+    - --entrypoints.web.http.redirections.entryPoint.to=websecure
+    - --entrypoints.web.http.redirections.entryPoint.scheme=https
+    - --certificatesresolvers.myresolver.acme.dnschallenge=true
+    - --certificatesresolvers.myresolver.acme.dnschallenge.provider=gandiv5
+      #- "--certificatesresolvers.myresolver.acme.caserver=https://acme-staging-v02.api.letsencrypt.org/directory"
+    - --certificatesresolvers.myresolver.acme.email={{ morla_letsencrypt_email }}
+    - --certificatesresolvers.myresolver.acme.storage=/letsencrypt/acme.json
+
+morla_traefik_security_opt:
+    - label=disable
+
+morla_traefik_puid: 101
+morla_traefik_pgid: 101
+
+morla_traefik_internal_ip: 172.20.0.166
+
+morla_traefik_http_port: '1680'
+morla_traefik_https_port: '1643'
+morla_traefik_dashboard_port: '8080'
+
+morla_traefik_env_gandiv5_api_key: '{{ morla_letsencrypt_gandi_api_key }}'
+
+morla_traefik_fw_ports:
+    tcp:
+        - '{{ morla_traefik_http_port }}'
+        - '{{ morla_traefik_https_port }}'
+        - '{{ morla_traefik_dashboard_port }}'
+    udp:
+
+morla_traefik_ports:
+    - '{{ morla_traefik_http_port }}:80'
+    - '{{ morla_traefik_https_port }}:443'
+    - '{{ morla_traefik_dashboard_port }}:8080'
+
+morla_traefik_volumes:
+    - '{{ morla_traefik_config_dir }}:/config:Z'
+    - '{{ morla_traefik_letsencrypt_dir }}:/letsencrypt:Z'
+    - /run/user/{{ morla_user_puid }}/podman/podman.sock:/var/run/docker.sock:Z

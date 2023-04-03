@@ -1,0 +1,5 @@
+---
+    - name: Destroy Traefik
+      containers.podman.podman_container:
+          name: '{{ morla_traefik_container_name }}'
+          state: absent

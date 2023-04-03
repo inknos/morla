@@ -19,10 +19,8 @@
       containers.podman.podman_pod:
           name: '{{ morla_piwigo_pod_name }}'
           state: started
-          network:
-              - morla-wireguard-network
-          network_aliases: '{{ morla_piwigo_short_name }}'
-          ip: '{{ morla_piwigo_internal_ip }}'
+          label: '{{ morla_piwigo_labels }}'
+          network: morla-wireguard-network
           ports: '{{ morla_piwigo_ports }}'
           uidmap:
               - '{{ morla_fake_puid }}:0:1'

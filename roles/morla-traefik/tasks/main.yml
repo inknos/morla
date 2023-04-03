@@ -1,0 +1,26 @@
+---
+# roles/traefik/tasks/main.yml
+    - ansible.builtin.import_tasks: '{{ role_path }}/tasks/init.yml'
+      tags:
+          - always
+
+    - ansible.builtin.import_tasks: '{{ role_path }}/tasks/init_flag.yml'
+      tags:
+          - setup-all
+          - setup-traefik
+
+    - ansible.builtin.import_tasks: '{{ role_path }}/tasks/pull_traefik.yml'
+      tags:
+          - setup-all
+          - setup-traefik
+
+    - ansible.builtin.import_tasks: '{{ role_path }}/tasks/destroy_traefik.yml'
+      tags:
+          - never
+          - destroy-all
+          - destroy-traefik
+
+    - ansible.builtin.import_tasks: '{{ role_path }}/tasks/setup_traefik.yml'
+      tags:
+          - setup-all
+          - setup-traefik
