@@ -1,0 +1,5 @@
+---
+    - name: Pull Syncthing image
+      containers.podman.podman_image:
+          name: '{{ morla_syncthing_container_image }}'
+          tag: latest

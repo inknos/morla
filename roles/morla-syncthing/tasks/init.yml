@@ -1,0 +1,5 @@
+---
+    - name: Check if Config dir exists
+      stat:
+          path: '{{ morla_syncthing_config_dir }}'
+      register: check_syncthing_config_dir

@@ -1,0 +1,48 @@
+---
+morla_syncthing_enabled: true
+morla_syncthing_become: true
+
+morla_syncthing_flag_public: false
+morla_syncthing_flag_autostart: true
+morla_syncthing_flag_wireguard: true
+morla_syncthing_flag_firewall: true # replace with if port list non empty
+
+morla_syncthing_long_name: Syncthing
+morla_syncthing_short_name: syncthing
+
+morla_syncthing_container_short_name: '{{ morla_syncthing_short_name }}'
+morla_syncthing_container_name: '{{ morla_user_username }}-{{ morla_syncthing_container_short_name }}'
+
+morla_syncthing_public_url: '{{ morla_syncthing_short_name }}.{{ morla_public_url }}'
+
+morla_syncthing_container_image_base: lscr.io/linuxserver/syncthing
+morla_syncthing_container_image_tag: latest
+morla_syncthing_container_image: '{{ morla_syncthing_container_image_base }}:{{ morla_syncthing_container_image_tag }}'
+
+# volumes
+
+morla_syncthing_config_dir: '{{ morla_config_dir }}/{{ morla_syncthing_long_name }}'
+morla_syncthing_data_dir: '{{ morla_media_dir }}'
+
+morla_syncthing_volumes:
+    - '{{ morla_syncthing_config_dir }}:/config:Z'
+    - '{{ morla_syncthing_data_dir }}:/data1:z'
+
+# networking
+morla_syncthing_internal_ip: 172.20.0.84
+
+morla_syncthing_reverse_proxy_port: '8384'
+
+morla_syncthing_fw_ports:
+    tcp:
+        - '{{ morla_syncthing_reverse_proxy_port }}'
+        - '22000'
+    udp:
+        - '22000'
+        - '21027'
+
+morla_syncthing_ports:
+    - '{{ morla_syncthing_reverse_proxy_port }}:{{ morla_syncthing_fw_ports.tcp[0] }}'
+    - '{{ morla_syncthing_fw_ports.tcp[1] }}:{{ morla_syncthing_fw_ports.tcp[1] }}'
+    - '{{ morla_syncthing_fw_ports.udp[0] }}:{{ morla_syncthing_fw_ports.udp[0] }}'
+    - '{{ morla_syncthing_fw_ports.udp[1] }}:{{ morla_syncthing_fw_ports.udp[1] }}'

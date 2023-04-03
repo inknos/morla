@@ -1,0 +1,29 @@
+---
+# roles/syncthing/tasks/main.yml
+    - ansible.builtin.import_tasks: '{{ role_path }}/tasks/init.yml'
+      tags:
+          - always
+
+    - ansible.builtin.import_tasks: '{{ role_path }}/tasks/init_flag.yml'
+      tags:
+          - setup-all
+          - setup-syncthing
+
+    - ansible.builtin.import_tasks: '{{ role_path }}/tasks/pull_syncthing.yml'
+      when: morla_syncthing_enabled | bool
+      tags:
+          - setup-all
+          - setup-syncthing
+
+    - ansible.builtin.import_tasks: '{{ role_path }}/tasks/destroy_syncthing.yml'
+      when: morla_syncthing_enabled | bool
+      tags:
+          - never
+          - destroy-all
+          - destroy-syncthing
+
+    - ansible.builtin.import_tasks: '{{ role_path }}/tasks/setup_syncthing.yml'
+      when: morla_syncthing_enabled | bool
+      tags:
+          - setup-all
+          - setup-syncthing

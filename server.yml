@@ -60,8 +60,10 @@
           - morla-qbittorrent
           - morla-wordle    # setup wordle
           - morla-nginx     # setup server for public containers
+          - morla-traefik   # support for traefik. since it's experimental it's using v3 beta
           - morla-gandi-ddns # setup python script to update gandi dns
           - morla-letsencrypt # manage certificates for public containers
+          - morla-syncthing
           - morla-wireguard-config
           - morla-firewall  # manage firewall services and open ports
           - morla-systemd   # manage containers autostart

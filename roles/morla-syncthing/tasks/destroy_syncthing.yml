@@ -1,0 +1,5 @@
+---
+    - name: Destroy Syncthing
+      containers.podman.podman_container:
+          name: '{{ morla_syncthing_container_name }}'
+          state: absent
