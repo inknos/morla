@@ -5,7 +5,6 @@
 
 # configuration file for ghost
 morla_ghost_enabled: true
-morla_ghost_become: true
 
 morla_ghost_flag_public: true
 morla_ghost_flag_autostart: true

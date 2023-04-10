@@ -5,7 +5,6 @@
 
 # configuration file for lidarr
 morla_lidarr_enabled: true
-morla_lidarr_become: true
 
 morla_lidarr_flag_public: false
 morla_lidarr_flag_autostart: true

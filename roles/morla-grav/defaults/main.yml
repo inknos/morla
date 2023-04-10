@@ -5,7 +5,6 @@
 
 # configuration file for grav
 morla_grav_enabled: true
-morla_grav_become: true
 
 morla_grav_flag_public: false
 morla_grav_flag_autostart: true

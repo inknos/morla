@@ -5,7 +5,6 @@
 
 # configuration file for prowlarr
 morla_prowlarr_enabled: true
-morla_prowlarr_become: true
 
 morla_prowlarr_flag_public: false
 morla_prowlarr_flag_autostart: true

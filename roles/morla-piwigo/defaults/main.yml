@@ -5,7 +5,6 @@
 
 # configuration file for piwigo
 morla_piwigo_enabled: true
-morla_piwigo_become: true
 
 morla_piwigo_flag_public: true
 morla_piwigo_flag_autostart: true

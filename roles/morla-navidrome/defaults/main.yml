@@ -5,7 +5,6 @@
 
 # configuration file for navidrome
 morla_navidrome_enabled: true
-morla_navidrome_become: true
 
 morla_navidrome_flag_public: true
 morla_navidrome_flag_autostart: true

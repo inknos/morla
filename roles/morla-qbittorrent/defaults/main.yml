@@ -5,7 +5,6 @@
 
 # configuration file for qbittorrent
 morla_qbittorrent_enabled: true
-morla_qbittorrent_become: true
 
 morla_qbittorrent_flag_public: false
 morla_qbittorrent_flag_autostart: true

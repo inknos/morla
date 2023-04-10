@@ -5,7 +5,6 @@
 
 # configuration file for lychee
 morla_lychee_enabled: true
-morla_lychee_become: true
 
 morla_lychee_flag_public: true
 morla_lychee_flag_autostart: true
