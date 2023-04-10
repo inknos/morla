@@ -1,4 +1,9 @@
 ---
+# SPDX-FileCopyrightText: Nicola Sella
+#
+# SPDX-License-Identifier: GPL-3.0-or-later
+
+# configuration file for lychee
 morla_lychee_enabled: true
 morla_lychee_become: true
 
@@ -7,21 +12,54 @@ morla_lychee_flag_autostart: true
 morla_lychee_flag_wireguard: true
 morla_lychee_flag_firewall: true # replace with if port list non empty
 
-morla_lychee_pod_name: morla-lychee-pod
-
+# Name
 morla_lychee_long_name: Lychee
 morla_lychee_short_name: lychee
 
 morla_lychee_container_short_name: '{{ morla_lychee_short_name }}'
 morla_lychee_container_name: '{{ morla_user_username }}-{{ morla_lychee_container_short_name }}'
-
 morla_lychee_public_url: '{{ morla_lychee_short_name }}.{{ morla_public_url }}'
+
+morla_lychee_pod_name: '{{ morla_lychee_container_name }}-pod'
 
 morla_lychee_container_image_base: lscr.io/linuxserver/lychee
 morla_lychee_container_image_tag: latest
 morla_lychee_container_image: '{{ morla_lychee_container_image_base }}:{{ morla_lychee_container_image_tag }}'
 
-# db
+# Networking
+morla_lychee_reverse_proxy_port: '8800'
+morla_lychee_exposed_proxy_port: '{{ morla_lychee_reverse_proxy_port }}'
+morla_lychee_internal_ip: 172.20.0.88
+
+# Networking/Firewall
+morla_lychee_fw_ports:
+    tcp:
+        - '{{ morla_lychee_reverse_proxy_port }}'
+    udp:
+
+# Networking/Port Forwarding
+morla_lychee_ports:
+    - '{{ morla_lychee_reverse_proxy_port }}:80'
+
+# Storage/Host
+morla_lychee_config_dir: '{{ morla_config_dir }}/{{ morla_lychee_long_name }}'
+
+# Storage/Mount
+morla_lychee_volumes:
+    - '{{ morla_lychee_config_dir }}:/config:Z'
+    - '{{ morla_media_dir }}/pictures/Lychee:/pictures:Z'
+
+# Labels/Traefik
+morla_lychee_labels:
+    traefik.enable: '{{ morla_lychee_flag_public }}'
+    traefik.http.services.lychee.loadbalancer.server.port: '{{ morla_lychee_exposed_proxy_port }}'
+    traefik.http.routers.lychee.tls: true
+    traefik.http.routers.lychee.rule: Host(`{{ morla_lychee_public_url }}`)
+    traefik.http.routers.lychee.entrypoints: websecure
+    traefik.http.routers.lychee.tls.certresolver: myresolver
+
+# DB
+# Name
 morla_lychee_db_long_name: LycheeDB
 morla_lychee_db_short_name: lychee-db
 
@@ -31,35 +69,15 @@ morla_lychee_db_container_image_base: lscr.io/linuxserver/mariadb
 morla_lychee_db_container_image_tag: 10.6.12
 morla_lychee_db_container_image: '{{ morla_lychee_db_container_image_base }}:{{ morla_lychee_db_container_image_tag }}'
 
-# env
-#env db
+# Environment
 morla_lychee_db_env_mysql_user: lychee
 morla_lychee_db_env_mysql_password: '{{ morla_lychee_db_password }}'
 morla_lychee_db_env_mysql_database: lychee-db
 morla_lychee_db_env_mysql_root_password: '{{ morla_lychee_db_root_password }}'
 
-# volumes
-morla_lychee_config_dir: '{{ morla_config_dir }}/{{ morla_lychee_long_name }}'
-
-morla_lychee_volumes:
-    - '{{ morla_lychee_config_dir }}:/config:Z'
-    - '{{ morla_media_dir }}/pictures/Lychee:/pictures:Z'
-
-# volumes db
+# Storage/Host
 morla_lychee_db_config_dir: '{{ morla_config_dir }}/{{ morla_lychee_db_long_name }}'
 
+# Storage/Mount
 morla_lychee_db_volumes:
     - '{{ morla_lychee_db_config_dir }}:/config:Z'
-
-# networking
-morla_lychee_internal_ip: 172.20.0.88
-
-morla_lychee_reverse_proxy_port: '8800'
-
-morla_lychee_fw_ports:
-    tcp:
-        - '{{ morla_lychee_reverse_proxy_port }}'
-    udp:
-
-morla_lychee_ports:
-    - '{{ morla_lychee_reverse_proxy_port }}:80'

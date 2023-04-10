@@ -1,4 +1,9 @@
 ---
+# SPDX-FileCopyrightText: Nicola Sella
+#
+# SPDX-License-Identifier: GPL-3.0-or-later
+
+# configuration file for lidarr
 morla_lidarr_enabled: true
 morla_lidarr_become: true
 
@@ -7,33 +12,48 @@ morla_lidarr_flag_autostart: true
 morla_lidarr_flag_wireguard: true
 morla_lidarr_flag_firewall: true # replace with if port list non empty
 
+# Name
 morla_lidarr_long_name: Lidarr
 morla_lidarr_short_name: lidarr
 
 morla_lidarr_container_short_name: '{{ morla_lidarr_short_name }}'
 morla_lidarr_container_name: '{{ morla_user_username }}-{{ morla_lidarr_container_short_name }}'
-
 morla_lidarr_public_url: '{{ morla_lidarr_short_name }}.{{ morla_public_url }}'
-
-# filesystem dir for configs
-morla_lidarr_config_dir: '{{ morla_config_dir }}/{{ morla_lidarr_long_name }}'
-morla_lidarr_data_dir: '{{ morla_data_dir }}'
 
 morla_lidarr_container_image_base: cr.hotio.dev/hotio/lidarr
 morla_lidarr_container_image_tag: latest
 morla_lidarr_container_image: '{{ morla_lidarr_container_image_base }}:{{ morla_lidarr_container_image_tag }}'
 
-# used inside container config
+# Networking
+morla_lidarr_reverse_proxy_port: '8686'
+morla_lidarr_exposed_proxy_port: '{{ morla_lidarr_reverse_proxy_port }}'
+morla_lidarr_internal_ip: 172.20.0.86
+
+# Networking/Firewall
+morla_lidarr_fw_ports:
+    tcp:
+        - '{{ morla_lidarr_reverse_proxy_port }}'
+    udp:
+
+# Networking/Port Forwarding
+morla_lidarr_ports:
+    - '{{ morla_lidarr_reverse_proxy_port }}:{{ morla_lidarr_exposed_proxy_port }}'
+
+# Storage/Host
+morla_lidarr_config_dir: '{{ morla_config_dir }}/{{ morla_lidarr_long_name }}'
+morla_lidarr_data_dir: '{{ morla_data_dir }}'
+
+# Storage/Mount
 morla_lidarr_volumes:
     - '{{ morla_lidarr_config_dir }}:/config:Z'
     - '{{ morla_lidarr_data_dir }}:/data:z'
 
-morla_lidarr_internal_ip: 172.20.0.86
-morla_lidarr_reverse_proxy_port: '8686'
-
-morla_lidarr_fw_ports:
-    tcp:
-        - '{{ morla_lidarr_reverse_proxy_port }}'
-
-morla_lidarr_ports:
-    - '{{ morla_lidarr_reverse_proxy_port }}:{{ morla_lidarr_reverse_proxy_port }}'
+# Labels/Traefik
+morla_lidarr_labels:
+    traefik.enable: '{{ morla_lidarr_flag_public }}'
+    traefik.http.services.lidarr.loadbalancer.server.port: '{{ morla_lidarr_exposed_proxy_port }}'
+    traefik.http.routers.lidarr.tls: true
+    traefik.http.routers.lidarr.rule: Host(`{{ morla_lidarr_public_url }}`)
+    traefik.http.routers.lidarr.entrypoints: websecure
+    traefik.http.routers.lidarr.tls.certresolver: myresolver
+    traefik.http.routers.lidarr.tls.domains: '{{ morla_lidarr_public_url }}'

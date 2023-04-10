@@ -1,4 +1,9 @@
 ---
+# SPDX-FileCopyrightText: Nicola Sella
+#
+# SPDX-License-Identifier: GPL-3.0-or-later
+
+# configuration file for jellyfin
 morla_jellyfin_enabled: true
 
 morla_jellyfin_flag_public: true
@@ -6,35 +11,24 @@ morla_jellyfin_flag_autostart: true
 morla_jellyfin_flag_wireguard: true
 morla_jellyfin_flag_firewall: true # replace with if port list non empty
 
+# Name
 morla_jellyfin_long_name: Jellyfin
 morla_jellyfin_short_name: jellyfin
 
 morla_jellyfin_container_short_name: '{{ morla_jellyfin_short_name }}'
 morla_jellyfin_container_name: '{{ morla_user_username }}-{{ morla_jellyfin_container_short_name }}'
-
 morla_jellyfin_public_url: '{{ morla_jellyfin_short_name }}.{{ morla_public_url }}'
-
-# filesystem dir for configs
-morla_jellyfin_config_dir: '{{ morla_config_dir }}/{{ morla_jellyfin_long_name }}'
-morla_jellyfin_media_dir: '{{ morla_media_dir }}'
 
 morla_jellyfin_container_image_base: lscr.io/linuxserver/jellyfin
 morla_jellyfin_container_image_tag: latest
 morla_jellyfin_container_image: '{{ morla_jellyfin_container_image_base }}:{{ morla_radarr_container_image_tag }}'
 
-morla_jellyfin_labels:
-    traefik.enable: true
-    traefik.http.services.jellyfin.loadbalancer.server.port: '{{ morla_jellyfin_reverse_proxy_port }}'
-    traefik.http.routers.jellyfin.tls: true
-    traefik.http.routers.jellyfin.rule: Host(`{{ morla_jellyfin_public_url }}`)
-    traefik.http.routers.jellyfin.entrypoints: websecure
-    traefik.http.routers.jellyfin.tls.certresolver: myresolver
-    traefik.http.routers.jellyfin.tls.domains: '{{ morla_jellyfin_public_url }}'
-
-# used inside container config
+# Networking
 morla_jellyfin_reverse_proxy_port: '8096'
+morla_jellyfin_exposed_proxy_port: '{{ morla_jellyfin_reverse_proxy_port }}'
 morla_jellyfin_internal_ip: 172.20.0.80
 
+# Networking/Firewall
 morla_jellyfin_fw_ports:
     tcp:
         - '{{ morla_jellyfin_reverse_proxy_port }}'
@@ -43,12 +37,28 @@ morla_jellyfin_fw_ports:
         - '7359'
         - '1900'
 
+# Networking/Port Forwarding
 morla_jellyfin_ports:
-    - '{{ morla_jellyfin_reverse_proxy_port }}:{{ morla_jellyfin_reverse_proxy_port }}'
-    - 8920:8920
-    - 7359:7359/udp
-    - 1900:1900/udp
+    - '{{ morla_jellyfin_reverse_proxy_port }}:{{ morla_jellyfin_exposed_proxy_port }}'
+    - '{{ morla_jellyfin_fw_ports.tcp[1] }}:{{ morla_jellyfin_fw_ports.tcp[1] }}'
+    - '{{ morla_jellyfin_fw_ports.udp[0] }}:{{ morla_jellyfin_fw_ports.udp[0] }}/udp'
+    - '{{ morla_jellyfin_fw_ports.udp[1] }}:{{ morla_jellyfin_fw_ports.udp[1] }}/udp'
 
+# Storage/Host
+morla_jellyfin_config_dir: '{{ morla_config_dir }}/{{ morla_jellyfin_long_name }}'
+morla_jellyfin_media_dir: '{{ morla_media_dir }}'
+
+# Storage/Mount
 morla_jellyfin_volumes:
     - '{{ morla_jellyfin_config_dir }}:/config:Z'
     - '{{ morla_jellyfin_media_dir }}:/data/media:z'
+
+# Labels/Traefik
+morla_jellyfin_labels:
+    traefik.enable: '{{ morla_jellyfin_flag_public }}'
+    traefik.http.services.jellyfin.loadbalancer.server.port: '{{ morla_jellyfin_reverse_proxy_port }}'
+    traefik.http.routers.jellyfin.tls: true
+    traefik.http.routers.jellyfin.rule: Host(`{{ morla_jellyfin_public_url }}`)
+    traefik.http.routers.jellyfin.entrypoints: websecure
+    traefik.http.routers.jellyfin.tls.certresolver: myresolver
+    traefik.http.routers.jellyfin.tls.domains: '{{ morla_jellyfin_public_url }}'

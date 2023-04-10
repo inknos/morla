@@ -1,4 +1,9 @@
 ---
+# SPDX-FileCopyrightText: Nicola Sella
+#
+# SPDX-License-Identifier: GPL-3.0-or-later
+
+# configuration file for syncthing
 morla_syncthing_enabled: true
 morla_syncthing_become: true
 
@@ -7,32 +12,33 @@ morla_syncthing_flag_autostart: true
 morla_syncthing_flag_wireguard: true
 morla_syncthing_flag_firewall: true # replace with if port list non empty
 
+# Name
 morla_syncthing_long_name: Syncthing
 morla_syncthing_short_name: syncthing
 
 morla_syncthing_container_short_name: '{{ morla_syncthing_short_name }}'
 morla_syncthing_container_name: '{{ morla_user_username }}-{{ morla_syncthing_container_short_name }}'
-
 morla_syncthing_public_url: '{{ morla_syncthing_short_name }}.{{ morla_public_url }}'
 
 morla_syncthing_container_image_base: lscr.io/linuxserver/syncthing
 morla_syncthing_container_image_tag: latest
 morla_syncthing_container_image: '{{ morla_syncthing_container_image_base }}:{{ morla_syncthing_container_image_tag }}'
 
-# volumes
-
+# Storage/Host
 morla_syncthing_config_dir: '{{ morla_config_dir }}/{{ morla_syncthing_long_name }}'
 morla_syncthing_data_dir: '{{ morla_media_dir }}'
 
+# Storage/Mount
 morla_syncthing_volumes:
     - '{{ morla_syncthing_config_dir }}:/config:Z'
     - '{{ morla_syncthing_data_dir }}:/data1:z'
 
-# networking
+# Networking
+morla_syncthing_reverse_proxy_port: '8384'
+morla_syncthing_exposed_proxy_port: '{{ morla_syncthing_reverse_proxy_port }}'
 morla_syncthing_internal_ip: 172.20.0.84
 
-morla_syncthing_reverse_proxy_port: '8384'
-
+# Networking/Firewall
 morla_syncthing_fw_ports:
     tcp:
         - '{{ morla_syncthing_reverse_proxy_port }}'
@@ -41,8 +47,18 @@ morla_syncthing_fw_ports:
         - '22000'
         - '21027'
 
+# Networking/Port Forwarding
 morla_syncthing_ports:
-    - '{{ morla_syncthing_reverse_proxy_port }}:{{ morla_syncthing_fw_ports.tcp[0] }}'
+    - '{{ morla_syncthing_reverse_proxy_port }}:{{ morla_syncthing_exposed_proxy_port }}'
     - '{{ morla_syncthing_fw_ports.tcp[1] }}:{{ morla_syncthing_fw_ports.tcp[1] }}'
     - '{{ morla_syncthing_fw_ports.udp[0] }}:{{ morla_syncthing_fw_ports.udp[0] }}'
     - '{{ morla_syncthing_fw_ports.udp[1] }}:{{ morla_syncthing_fw_ports.udp[1] }}'
+
+# Labels/Traefik
+morla_syncthing_labels:
+    traefik.enable: '{{ morla_syncthing_flag_public }}'
+    traefik.http.services.syncthing.loadbalancer.server.port: '{{ morla_syncthing_exposed_proxy_port }}'
+    traefik.http.routers.syncthing.tls: true
+    traefik.http.routers.syncthing.rule: Host(`{{ morla_syncthing_public_url }}`)
+    traefik.http.routers.syncthing.entrypoints: websecure
+    traefik.http.routers.syncthing.tls.certresolver: myresolver

@@ -1,4 +1,9 @@
 ---
+# SPDX-FileCopyrightText: Nicola Sella
+#
+# SPDX-License-Identifier: GPL-3.0-or-later
+
+# configuration file for filebrowser
 morla_filebrowser_enabled: true
 
 morla_filebrowser_flag_public: false
@@ -6,40 +11,53 @@ morla_filebrowser_flag_autostart: true
 morla_filebrowser_flag_wireguard: true
 morla_filebrowser_flag_firewall: true # replace with if port list non empty
 
+# Name
 morla_filebrowser_long_name: Filebrowser
 morla_filebrowser_short_name: filebrowser
 
 morla_filebrowser_container_short_name: '{{ morla_filebrowser_short_name }}'
 morla_filebrowser_container_name: '{{ morla_user_username }}-{{ morla_filebrowser_container_short_name }}'
-
 morla_filebrowser_public_url: '{{ morla_filebrowser_short_name }}.{{ morla_public_url }}'
-
-# filesystem dir for configs
-morla_filebrowser_config_dir: '{{ morla_config_dir }}/{{ morla_filebrowser_long_name }}'
-morla_filebrowser_config_config_dir: '{{ morla_filebrowser_config_dir }}/config'
-morla_filebrowser_database_dir: '{{ morla_filebrowser_config_dir }}/database'
-morla_filebrowser_db: '{{ morla_filebrowser_database_dir }}/filebrowser.db'
-morla_filebrowser_settings_json: '{{ morla_filebrowser_config_config_dir }}/settings.json'
-
-morla_filebrowser_srv_dir: '{{ morla_data_dir }}'
 
 morla_filebrowser_container_image_base: docker.io/filebrowser/filebrowser
 morla_filebrowser_container_image_tag: s6
 morla_filebrowser_container_image: '{{ morla_filebrowser_container_image_base }}:{{ morla_filebrowser_container_image_tag }}'
 
-# used inside container config
+# Networking
 morla_filebrowser_reverse_proxy_port: '27765'
-
+morla_filebrowser_exposed_proxy_port: '27765'
 morla_filebrowser_internal_ip: 172.20.0.27
+
+# Networking/Firewall
 morla_filebrowser_fw_ports:
     tcp:
         - '{{ morla_filebrowser_reverse_proxy_port }}'
     udp:
 
+# Networking/Port Forwarding
 morla_filebrowser_ports:
-    - '{{ morla_filebrowser_fw_ports.tcp[0] }}:{{ morla_filebrowser_fw_ports.tcp[0] }}'
+    - '{{ morla_filebrowser_reverse_proxy_port }}:{{ morla_filebrowser_exposed_proxy_port }}'
 
+# Storage/Host
+morla_filebrowser_config_dir: '{{ morla_config_dir }}/{{ morla_filebrowser_long_name }}'
+morla_filebrowser_config_config_dir: '{{ morla_filebrowser_config_dir }}/config'
+morla_filebrowser_database_dir: '{{ morla_filebrowser_config_dir }}/database'
+morla_filebrowser_db: '{{ morla_filebrowser_database_dir }}/filebrowser.db'
+morla_filebrowser_settings_json: '{{ morla_filebrowser_config_config_dir }}/settings.json'
+morla_filebrowser_srv_dir: '{{ morla_data_dir }}'
+
+# Storage/Mount
 morla_filebrowser_volumes:
     - '{{ morla_filebrowser_db }}:/database/filebrowser.db:Z'
     - '{{ morla_filebrowser_settings_json }}:/config/settings.json:Z'
     - '{{ morla_filebrowser_srv_dir }}:/srv:z'
+
+# Labels/Traefik
+morla_filebrowser_labels:
+    traefik.enable: '{{ morla_filebrowser_flag_public }}'
+    traefik.http.services.filebrowser.loadbalancer.server.port: '{{ morla_filebrowser_exposed_proxy_port }}'
+    traefik.http.routers.filebrowser.tls: true
+    traefik.http.routers.filebrowser.rule: Host(`{{ morla_filebrowser_public_url }}`)
+    traefik.http.routers.filebrowser.entrypoints: websecure
+    traefik.http.routers.filebrowser.tls.certresolver: myresolver
+    traefik.http.routers.filebrowser.tls.domains: '{{ morla_filebrowser_public_url }}'

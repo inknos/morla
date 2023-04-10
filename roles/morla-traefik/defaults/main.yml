@@ -1,23 +1,64 @@
 ---
-morla_traefik_long_name: Traefik
+# SPDX-FileCopyrightText: Nicola Sella
+#
+# SPDX-License-Identifier: GPL-3.0-or-later
+
+# configuration file for traefik
 
 morla_traefik_flag_public: false
 morla_traefik_flag_autostart: true
 morla_traefik_flag_wireguard: false
 morla_traefik_flag_firewall: true # replace with if port list non empty
 
+# Name
+morla_traefik_long_name: Traefik
 morla_traefik_short_name: traefik
 
 morla_traefik_container_short_name: traefik
 morla_traefik_container_name: '{{ morla_user_username }}-{{ morla_traefik_container_short_name }}'
 
-morla_traefik_config_dir: '{{ morla_config_dir }}/{{ morla_traefik_long_name}}'
-morla_traefik_letsencrypt_dir: '{{ morla_config_dir }}/{{ morla_traefik_long_name}}Letsencrypt'
-
 morla_traefik_container_image_base: docker.io/library/traefik
 morla_traefik_container_image_tag: v3.0
 morla_traefik_container_image: '{{ morla_traefik_container_image_base }}:{{ morla_traefik_container_image_tag }}'
 
+# Network
+morla_traefik_http_port: '1680'
+morla_traefik_https_port: '1643'
+morla_traefik_dashboard_port: '8080'
+morla_traefik_internal_ip: 172.20.0.166
+
+# Network/Firewall
+morla_traefik_fw_ports:
+    tcp:
+        - '{{ morla_traefik_http_port }}'
+        - '{{ morla_traefik_https_port }}'
+        - '{{ morla_traefik_dashboard_port }}'
+    udp:
+
+# Network/Port Forwarding
+morla_traefik_ports:
+    - '{{ morla_traefik_http_port }}:80'
+    - '{{ morla_traefik_https_port }}:443'
+    - '{{ morla_traefik_dashboard_port }}:8080'
+
+# Storage/Host
+morla_traefik_config_dir: '{{ morla_config_dir }}/{{ morla_traefik_long_name}}'
+morla_traefik_letsencrypt_dir: '{{ morla_config_dir }}/{{ morla_traefik_long_name}}Letsencrypt'
+
+# Storage/Mount
+morla_traefik_volumes:
+    # TOML Configuration with global options
+    # - '{{ morla_traefik_config_dir }}/traefik.toml:/traefik.toml:Z'
+    # Configuration for the file provider (needed for host networking and default TLS Options)
+    # - '{{ morla_traefik_config_dir }}/traefik-provider.toml:/traefik-provider.toml:Z'
+    # LetsEncrypt ACME Configuration
+    # - '{{ morla_traefik_config_dir }}/acme.json:/acme.json:Z'
+    # Log File (optional)
+    # - '{{ morla_traefik_config_dir }}/traefik.log:/traefik.log:Z'
+    - '{{ morla_traefik_letsencrypt_dir }}:/letsencrypt:Z'
+    - /run/user/{{ morla_user_puid }}/podman/podman.sock:/var/run/docker.sock:Z,ro
+
+# Command
 morla_traefik_command:
     - --log.level=DEBUG
     - --api.insecure=true
@@ -33,40 +74,13 @@ morla_traefik_command:
     - --certificatesresolvers.myresolver.acme.email={{ morla_letsencrypt_email }}
     - --certificatesresolvers.myresolver.acme.storage=/letsencrypt/acme.json
 
+# Sec Opt
 morla_traefik_security_opt:
     - label=disable
 
+# PUID/PGID
 morla_traefik_puid: 101
 morla_traefik_pgid: 101
 
-morla_traefik_internal_ip: 172.20.0.166
-
-morla_traefik_http_port: '1680'
-morla_traefik_https_port: '1643'
-morla_traefik_dashboard_port: '8080'
-
+# Environment
 morla_traefik_env_gandiv5_api_key: '{{ morla_letsencrypt_gandi_api_key }}'
-
-morla_traefik_fw_ports:
-    tcp:
-        - '{{ morla_traefik_http_port }}'
-        - '{{ morla_traefik_https_port }}'
-        - '{{ morla_traefik_dashboard_port }}'
-    udp:
-
-morla_traefik_ports:
-    - '{{ morla_traefik_http_port }}:80'
-    - '{{ morla_traefik_https_port }}:443'
-    - '{{ morla_traefik_dashboard_port }}:8080'
-
-morla_traefik_volumes:
-    # TOML Configuration with global options
-    # - '{{ morla_traefik_config_dir }}/traefik.toml:/traefik.toml:Z'
-    # Configuration for the file provider (needed for host networking and default TLS Options)
-    # - '{{ morla_traefik_config_dir }}/traefik-provider.toml:/traefik-provider.toml:Z'
-    # LetsEncrypt ACME Configuration
-    # - '{{ morla_traefik_config_dir }}/acme.json:/acme.json:Z'
-    # Log File (optional)
-    # - '{{ morla_traefik_config_dir }}/traefik.log:/traefik.log:Z'
-    - '{{ morla_traefik_letsencrypt_dir }}:/letsencrypt:Z'
-    - /run/user/{{ morla_user_puid }}/podman/podman.sock:/var/run/docker.sock:Z,ro

@@ -22,7 +22,7 @@
               PUID: '{{ morla_root_puid }}'
               PGID: '{{ morla_root_pgid }}'
               TZ: '{{ morla_tz }}'
-              TRANSMISSION_WEB_HOME: '{{ morla_transmission_web_home }}'
+              TRANSMISSION_WEB_HOME: '{{ morla_transmission_env_web_home }}'
           state: started
           restart_policy: unless-stopped
           generate_systemd:

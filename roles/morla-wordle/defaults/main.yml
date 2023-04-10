@@ -1,6 +1,12 @@
 ---
+# SPDX-FileCopyrightText: Nicola Sella
+#
+# SPDX-License-Identifier: GPL-3.0-or-later
+
+# configuration file for wordle
 morla_wordle_enabled: true
 
+# Name
 morla_wordle_long_name: Wordle
 morla_wordle_short_name: wordle
 
@@ -18,12 +24,16 @@ morla_wordle_container_image_tag: prod
 morla_wordle_container_image: '{{ morla_wordle_container_image_base }}:{{ morla_wordle_container_image_tag }}'
 morla_wordle_container_extra_args: --target=prod
 
+# Networking
 morla_wordle_reverse_proxy_port: 32123
+morla_wordle_exposed_proxy_port: '{{ morla_wordle_reverse_proxy_port }}'
 
+# Networking/Firewall
 morla_wordle_fw_ports:
     tcp:
         - '{{ morla_wordle_reverse_proxy_port }}'
     udp:
 
+# Networking/Port Forwarding
 morla_wordle_ports:
     - '{{ morla_wordle_reverse_proxy_port }}:8080'

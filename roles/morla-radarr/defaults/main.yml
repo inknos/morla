@@ -1,4 +1,9 @@
 ---
+# SPDX-FileCopyrightText: Nicola Sella
+#
+# SPDX-License-Identifier: GPL-3.0-or-later
+
+# configuration file for radarr
 morla_radarr_enabled: true
 morla_radarr_become: true
 
@@ -7,36 +12,48 @@ morla_radarr_flag_autostart: true
 morla_radarr_flag_wireguard: true
 morla_radarr_flag_firewall: true # replace with if port list non empty
 
+# Name
 morla_radarr_long_name: Radarr
 morla_radarr_short_name: radarr
 
 morla_radarr_container_short_name: '{{ morla_radarr_short_name }}'
 morla_radarr_container_name: '{{ morla_user_username }}-{{ morla_radarr_container_short_name }}'
-
 morla_radarr_public_url: '{{ morla_radarr_short_name }}.{{ morla_public_url }}'
 
 morla_radarr_container_image_base: cr.hotio.dev/hotio/radarr
 morla_radarr_container_image_tag: latest
 morla_radarr_container_image: '{{ morla_radarr_container_image_base }}:{{ morla_radarr_container_image_tag }}'
 
-# volumes
+# Networking
+morla_radarr_reverse_proxy_port: '7878'
+morla_radarr_exposed_proxy_port: '{{ morla_radarr_reverse_proxy_port }}'
+morla_radarr_internal_ip: 172.20.0.78
 
+# Networking/Firewall
+morla_radarr_fw_ports:
+    tcp:
+        - '{{ morla_radarr_reverse_proxy_port }}'
+    udp:
+
+# Networking/Port Forwarding
+morla_radarr_ports:
+    - '{{ morla_radarr_reverse_proxy_port }}:{{ morla_radarr_exposed_proxy_port }}'
+
+# Storage/Host
 morla_radarr_config_dir: '{{ morla_config_dir }}/{{ morla_radarr_long_name }}'
 morla_radarr_data_dir: '{{ morla_data_dir }}'
 
+# Storage/Mount
 morla_radarr_volumes:
     - '{{ morla_radarr_config_dir }}:/config:Z'
     - '{{ morla_radarr_data_dir }}:/data:z'
 
-# networking
-morla_radarr_internal_ip: 172.20.0.78
-
-morla_radarr_reverse_proxy_port: '7878'
-
-morla_radarr_fw_ports:
-    tcp:
-        - '7878'
-    udp:
-
-morla_radarr_ports:
-    - 7878:7878
+# Labels/Traefik
+morla_radarr_labels:
+    traefik.enable: '{{ morla_radarr_flag_public }}'
+    traefik.http.services.radarr.loadbalancer.server.port: '{{ morla_radarr_exposed_proxy_port }}'
+    traefik.http.routers.radarr.tls: true
+    traefik.http.routers.radarr.rule: Host(`{{ morla_radarr_public_url }}`)
+    traefik.http.routers.radarr.entrypoints: websecure
+    traefik.http.routers.radarr.tls.certresolver: myresolver
+    traefik.http.routers.radarr.tls.domains: '{{ morla_radarr_public_url }}'
