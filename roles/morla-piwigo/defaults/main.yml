@@ -23,7 +23,7 @@ morla_piwigo_container_image: '{{ morla_piwigo_container_image_base }}:{{ morla_
 
 morla_piwigo_labels:
     traefik.enable: true
-    traefik.http.services.piwigo.loadbalancer.server.port: '{{ morla_piwigo_reverse_proxy_port }}'
+    traefik.http.services.piwigo.loadbalancer.server.port: 80
     traefik.http.routers.piwigo.tls: true
     traefik.http.routers.piwigo.rule: Host(`{{ morla_piwigo_public_url }}`)
     traefik.http.routers.piwigo.entrypoints: websecure

@@ -60,6 +60,13 @@ morla_traefik_ports:
     - '{{ morla_traefik_dashboard_port }}:8080'
 
 morla_traefik_volumes:
-    - '{{ morla_traefik_config_dir }}:/config:Z'
+    # TOML Configuration with global options
+    # - '{{ morla_traefik_config_dir }}/traefik.toml:/traefik.toml:Z'
+    # Configuration for the file provider (needed for host networking and default TLS Options)
+    # - '{{ morla_traefik_config_dir }}/traefik-provider.toml:/traefik-provider.toml:Z'
+    # LetsEncrypt ACME Configuration
+    # - '{{ morla_traefik_config_dir }}/acme.json:/acme.json:Z'
+    # Log File (optional)
+    # - '{{ morla_traefik_config_dir }}/traefik.log:/traefik.log:Z'
     - '{{ morla_traefik_letsencrypt_dir }}:/letsencrypt:Z'
-    - /run/user/{{ morla_user_puid }}/podman/podman.sock:/var/run/docker.sock:Z
+    - /run/user/{{ morla_user_puid }}/podman/podman.sock:/var/run/docker.sock:Z,ro

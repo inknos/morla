@@ -1,16 +1,26 @@
 ---
-    - name: Check if Traefik Config dir exists
-      stat:
-          path: '{{ morla_traefik_config_dir }}'
-      register: check_traefik_config_dir
-
-    - name: Create config directory
-      ansible.builtin.file:
-          path: '{{ morla_traefik_config_dir }}'
-          state: directory
-          owner: '{{ morla_user_username }}'
-          group: '{{ morla_user_groupname }}'
-      when: not check_traefik_config_dir.stat.exists
+#   - name: Check if Traefik Config dir exists
+#     stat:
+#         path: '{{ morla_traefik_config_dir }}'
+#     register: check_traefik_config_dir
+#
+#   - name: Create config directory
+#     ansible.builtin.file:
+#         path: '{{ morla_traefik_config_dir }}'
+#         state: directory
+#         owner: '{{ morla_user_username }}'
+#         group: '{{ morla_user_groupname }}'
+#     when: not check_traefik_config_dir.stat.exists
+#
+#   - name: Check if Traefik config files exist
+#     ansible.builtin.file:
+#       path: '{{ morla_traefik_config_dir }}/{{ item }}'
+#       state: touch
+#     loop:
+#       - traefik.toml
+#       - traefik-provider.toml
+#       - acme.json
+#       - traefik.log
 
     - name: Check if Traefik Letsencypt dir exists
       stat:

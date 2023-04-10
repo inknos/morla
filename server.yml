@@ -53,8 +53,8 @@
           - morla-piwigo
           - morla-photoprism
           - morla-lychee
-          - morla-ghost
-          - morla-grav
+            # - morla-ghost
+            # - morla-grav
           - morla-readarr   #
           - morla-hedgedoc
           - morla-qbittorrent
