@@ -1,0 +1,75 @@
+---
+# SPDX-FileCopyrightText: Nicola Sella
+#
+# SPDX-License-Identifier: GPL-3.0-or-later
+
+# configuration file for template
+morla_template_enabled: true
+
+morla_template_flag_public: true
+morla_template_flag_autostart: true
+morla_template_flag_wireguard: true
+morla_template_flag_firewall: true # replace with if port list non empty
+
+# Name
+morla_template_long_name: Template
+morla_template_short_name: template
+
+morla_template_container_short_name: '{{ morla_template_short_name }}'
+morla_template_container_name: '{{ morla_user_username }}-{{ morla_template_container_short_name }}'
+morla_template_public_url: '{{ morla_template_short_name }}.{{ morla_public_url }}'
+
+# url of base image
+morla_template_container_image_base: lscr.io/linuxserver/template
+# tag of base image
+morla_template_container_image_tag: latest
+# full url of base image
+morla_template_container_image: '{{ morla_template_container_image_base }}:{{ morla_radarr_container_image_tag }}'
+
+# Networking
+# this is the main port that you will forward on the host network
+morla_template_reverse_proxy_port: '9999' # this is the main port that you will forward
+# this is the port exposed by default by the container
+# usually it is the same as the exposed port or at least that's how I like it forwarded
+morla_template_exposed_proxy_port: '{{ morla_template_reverse_proxy_port }}'
+
+# Networking/Firewall
+# set a dictionary with all the ports that need to be opened in the firewall
+# set all the ports needed. leave blank if no ports need to be forwarded
+morla_template_fw_ports:
+    tcp:
+        - '{{ morla_template_reverse_proxy_port }}'
+    udp:
+
+# Networking/Port Forwarding
+# set all the ports that will be forwarded by the container
+# I like to use variables and not hard code ports but that's not always possible
+morla_template_ports:
+    - '{{ morla_template_reverse_proxy_port }}:{{ morla_template_exposed_proxy_port }}'
+    # here the same port is forwarded using firewall section or reverse proxy port section
+    # - '{{ morla_template_fw_ports.tcp[0] }}:{{ morla_template_fw_ports.tcp[0] }}'
+
+# Storage/Host
+# config directory used mostly by linuxserver containers.
+# ~/Config/Template by default
+# other directories should be set here
+morla_template_config_dir: '{{ morla_config_dir }}/{{ morla_template_long_name }}'
+
+# Storage/Mount
+# set all the volumes that need to be mounted from host. remember to use Z/z if you are using SELinux
+# if no directories should be mounted the dictionary should be defined as empty
+morla_template_volumes:
+    - '{{ morla_template_config_dir }}:/config:Z'
+
+# Labels/Traefik
+# set traefik labels
+# These can be left unchanged usually
+morla_template_labels:
+    traefik.enable: '{{ morla_template_flag_public }}'
+    # necessary if more than one port is mapped
+    traefik.http.services.template.loadbalancer.server.port: '{{ morla_template_exposed_proxy_port }}'
+    traefik.http.routers.template.tls: true
+    traefik.http.routers.template.rule: Host(`{{ morla_template_public_url }}`)
+    traefik.http.routers.template.entrypoints: websecure
+    traefik.http.routers.template.tls.certresolver: myresolver
+    traefik.http.routers.template.tls.domains: '{{ morla_template_public_url }}'
