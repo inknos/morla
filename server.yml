@@ -41,29 +41,27 @@
           - inventory/vars.yml
 
       roles:
-          - morla-base      # setup base environment for containers
-          - morla-wireguard # setup wireguard wpn and keys
+          - morla-base        # setup base environment for containers
+          - morla-wireguard   # setup wireguard wpn and keys
           - morla-filebrowser # setup filebrowser container
-          - morla-jellyfin  # setup jellyfin container
-          - morla-radarr    # setup servarr stack
-          - morla-sonarr    #
-          - morla-prowlarr  #
-          - morla-lidarr    #
-          - morla-navidrome
-          - morla-piwigo
-          - morla-photoprism
-          - morla-lychee
-            # - morla-ghost
-            # - morla-grav
-          - morla-readarr   #
-          - morla-hedgedoc
-          - morla-qbittorrent
-          - morla-wordle    # setup wordle
-          - morla-nginx     # setup server for public containers
-          - morla-traefik   # support for traefik. since it's experimental it's using v3 beta
-          - morla-gandi-ddns # setup python script to update gandi dns
-          - morla-letsencrypt # manage certificates for public containers
-          - morla-syncthing
+          - morla-radarr      # setup radarr
+          - morla-sonarr      # setup sonarr
+          - morla-prowlarr    # setup prowlarr
+          - morla-lidarr      # setup lidarr
+          - morla-readarr     # setup readarr
+          - morla-qbittorrent # setup qbittorrent
+          - morla-syncthing   # setup syncting
+          - morla-jellyfin    # setup jellyfin [public]
+          - morla-navidrome   # setup navidrome [public]
+          - morla-piwigo      # setup piwigo [public]
+          - morla-photoprism  # setup photoprism [public]
+          - morla-lychee      # setup lychee [public]
+          - morla-ghost       # setup ghost [public]
+          - morla-grav        # setup grav [public]
+          - morla-hedgedoc    # setup hedgedoc [public]
+          - morla-wordle      # setup wordle [oublic]
+          - morla-traefik     # support for traefik. since it's experimental it's using v3 beta
+          - morla-gandi-ddns  # setup python script to update gandi dns
           - morla-wireguard-config
           - morla-firewall  # manage firewall services and open ports
           - morla-systemd   # manage containers autostart
