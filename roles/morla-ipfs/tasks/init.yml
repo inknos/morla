@@ -1,0 +1,10 @@
+---
+    - name: Check if Config dir exists
+      stat:
+          path: '{{ morla_ipfs_config_dir }}'
+      register: check_ipfs_config_dir
+
+    - name: Check if Data dir exists
+      stat:
+          path: '{{ morla_ipfs_data_dir }}'
+      register: check_ipfs_data_dir

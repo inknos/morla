@@ -60,6 +60,7 @@
           - morla-grav        # setup grav [public]
           - morla-hedgedoc    # setup hedgedoc [public]
           - morla-wordle      # setup wordle [oublic]
+          - morla-ipfs
           - morla-traefik     # support for traefik. since it's experimental it's using v3 beta
           - morla-gandi-ddns  # setup python script to update gandi dns
           - morla-wireguard-config

@@ -1,0 +1,29 @@
+---
+# roles/ipfs/tasks/main.yml
+    - ansible.builtin.import_tasks: '{{ role_path }}/tasks/init.yml'
+      tags:
+          - always
+
+    - ansible.builtin.import_tasks: '{{ role_path }}/tasks/init_flag.yml'
+      tags:
+          - setup-all
+          - setup-ipfs
+
+    - ansible.builtin.import_tasks: '{{ role_path }}/tasks/pull_ipfs.yml'
+      when: morla_ipfs_enabled | bool
+      tags:
+          - setup-all
+          - setup-ipfs
+
+    - ansible.builtin.import_tasks: '{{ role_path }}/tasks/destroy_ipfs.yml'
+      when: morla_ipfs_enabled | bool
+      tags:
+          - never
+          - destroy-all
+          - destroy-ipfs
+
+    - ansible.builtin.import_tasks: '{{ role_path }}/tasks/setup_ipfs.yml'
+      when: morla_ipfs_enabled | bool
+      tags:
+          - setup-all
+          - setup-ipfs

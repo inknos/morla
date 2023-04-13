@@ -1,0 +1,66 @@
+---
+# SPDX-FileCopyrightText: Nicola Sella
+#
+# SPDX-License-Identifier: GPL-3.0-or-later
+
+# configuration file for ipfs
+morla_ipfs_enabled: true
+
+morla_ipfs_flag_public: false
+morla_ipfs_flag_autostart: true
+morla_ipfs_flag_wireguard: true
+morla_ipfs_flag_firewall: true # replace with if port list non empty
+
+# Name
+morla_ipfs_long_name: Ipfs
+morla_ipfs_short_name: ipfs
+
+morla_ipfs_container_short_name: '{{ morla_ipfs_short_name }}'
+morla_ipfs_container_name: '{{ morla_user_username }}-{{ morla_ipfs_container_short_name }}'
+morla_ipfs_public_url: '{{ morla_ipfs_short_name }}.{{ morla_public_url }}'
+
+morla_ipfs_container_image_base: docker.io/ipfs/kubo
+morla_ipfs_container_image_tag: latest
+morla_ipfs_container_image: '{{ morla_ipfs_container_image_base }}:{{ morla_ipfs_container_image_tag }}'
+
+# Networking
+morla_ipfs_reverse_proxy_port: '8081'
+morla_ipfs_exposed_proxy_port: '8080'
+morla_ipfs_internal_ip: 172.20.0.88
+
+# Networking/Firewall
+morla_ipfs_fw_ports:
+    tcp:
+        - '{{ morla_ipfs_reverse_proxy_port }}'
+        - '4001'
+        - '5001'
+    udp:
+        - '4001'
+
+# Networking/Port Forwarding
+morla_ipfs_ports:
+    - '{{ morla_ipfs_reverse_proxy_port }}:{{ morla_ipfs_exposed_proxy_port }}'
+    - '{{ morla_ipfs_fw_ports.tcp[1] }}:{{ morla_ipfs_fw_ports.tcp[1] }}'
+    - '{{ morla_ipfs_fw_ports.tcp[2] }}:{{ morla_ipfs_fw_ports.tcp[2] }}'
+    - '{{ morla_ipfs_fw_ports.udp[0] }}:{{ morla_ipfs_fw_ports.udp[0] }}/udp'
+
+# Storage/Host
+morla_ipfs_config_dir: '{{ morla_config_dir }}/{{ morla_ipfs_long_name }}'
+morla_ipfs_data_dir: '{{ morla_config_dir }}/{{ morla_ipfs_long_name}}Data'
+
+# Storage/Mount
+morla_ipfs_volumes:
+    - '{{ morla_ipfs_config_dir }}:/data/ipfs:Z'
+    - '{{ morla_ipfs_data_dir }}:/export:Z'
+
+morla_ipfs_env_ipfs_profile: lowpower
+
+# Labels/Traefik
+morla_ipfs_labels:
+    traefik.enable: '{{ morla_ipfs_flag_public }}'
+    traefik.http.services.ipfs.loadbalancer.server.port: '{{ morla_ipfs_exposed_proxy_port }}'
+    traefik.http.routers.ipfs.tls: true
+    traefik.http.routers.ipfs.rule: Host(`{{ morla_ipfs_public_url }}`)
+    traefik.http.routers.ipfs.entrypoints: websecure
+    traefik.http.routers.ipfs.tls.certresolver: myresolver
+    traefik.http.routers.ipfs.tls.domains: '{{ morla_ipfs_public_url }}'

@@ -1,0 +1,35 @@
+---
+    - name: Create config directory
+      ansible.builtin.file:
+          path: '{{ morla_ipfs_config_dir }}'
+          state: directory
+          owner: '{{ morla_user_username }}'
+          group: '{{ morla_user_groupname }}'
+      when: not check_ipfs_config_dir.stat.exists
+
+    - name: Create Data directory
+      ansible.builtin.file:
+          path: '{{ morla_ipfs_data_dir }}'
+          state: directory
+          owner: '{{ morla_user_username }}'
+          group: '{{ morla_user_groupname }}'
+      when: not check_ipfs_data_dir.stat.exists
+
+    - name: Create container
+      containers.podman.podman_container:
+          name: '{{ morla_ipfs_container_name }}'
+          image: '{{ morla_ipfs_container_image}}'
+          volumes: '{{ morla_ipfs_volumes }}'
+          ports: '{{ morla_ipfs_ports }}'
+          network:
+              - morla-wireguard-network
+          network_aliases: '{{ morla_ipfs_short_name }}'
+          env:
+              IPFS_PROFILE: '{{ morla_ipfs_env_ipfs_profile }}'
+          state: started
+          restart_policy: unless-stopped
+          generate_systemd:
+              path: '{{ morla_home_config_systemd_dir }}'
+              restart_policy: always
+              names: true
+              container_prefix: '{{ morla_systemd_service_prefix }}'

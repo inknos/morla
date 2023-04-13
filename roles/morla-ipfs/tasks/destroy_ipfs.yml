@@ -1,0 +1,5 @@
+---
+    - name: Destroy Ipfs
+      containers.podman.podman_container:
+          name: '{{ morla_ipfs_container_name }}'
+          state: absent
