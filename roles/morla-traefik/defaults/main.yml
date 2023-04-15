@@ -62,10 +62,15 @@ morla_traefik_volumes:
 morla_traefik_command:
     - --log.level=DEBUG
     - --api.insecure=true
+    - --api.dashboard=true
     - --providers.docker=true
+    - --providers.docker.network=morla-wireguard-network
     - --providers.docker.exposedbydefault=false
-    - --entrypoints.web.address=:80
-    - --entrypoints.websecure.address=:443
+    - --providers.file.directory=/rules
+    - --providers.file.watch=true
+    - --entrypoints.web.address=:80/tcp
+    - --entrypoints.websecure.address=:443/tcp
+    - --entrypoints.wireguard.address=:443/udp
     - --entrypoints.web.http.redirections.entryPoint.to=websecure
     - --entrypoints.web.http.redirections.entryPoint.scheme=https
     - --certificatesresolvers.myresolver.acme.dnschallenge=true
@@ -73,6 +78,27 @@ morla_traefik_command:
       #- "--certificatesresolvers.myresolver.acme.caserver=https://acme-staging-v02.api.letsencrypt.org/directory"
     - --certificatesresolvers.myresolver.acme.email={{ morla_letsencrypt_email }}
     - --certificatesresolvers.myresolver.acme.storage=/letsencrypt/acme.json
+    - --accesslog=true
+    - --accesslog.filepath=/mnt/logs/access.log
+    - --accesslog.bufferingsize=100
+
+morla_traefik_labels:
+    traefik.enable: true
+    traefik.docker.network: morla-wireguard-network
+    traefik.http.routers.traefik.rule: Host(`traefik.{{ morla_domain }}`) && (PathPrefix(`/api`) || PathPrefix(`/dashboard`))
+    traefik.http.routers.traefik.service: api@internal
+    traefik.http.routers.traefik.entrypoints: websecure
+    traefik.http.routers.traefik.tls.certresolver: myresolver
+    traefik.http.routers.traefik.middlewares: wireguard-ipwhitelist@docker
+    # middleware redirect
+    traefik.http.middlewares.redirect-to-https.redirectscheme.scheme: https
+    # global redirect to https
+    traefik.http.routers.redirs.rule: hostregexp(`{host:.+}`)
+    traefik.http.routers.redirs.entrypoints: web
+    traefik.http.routers.redirs.middlewares: redirect-to-https
+    # private network ip whitelist
+    # need a way to get public ip
+    traefik.http.middlewares.wireguard-ipwhitelist.ipwhitelist.sourcerange: 127.0.0.1/32, 10.0.0.1/24, {{ morla_public_ip }}/32
 
 # Sec Opt
 morla_traefik_security_opt:

@@ -2,3 +2,8 @@
     - ansible.builtin.import_tasks: '{{ role_path }}/tasks/init.yml'
       tags:
           - always
+
+    - ansible.builtin.import_tasks: '{{ role_path }}/tasks/setup_network.yml'
+      tags:
+          - setup-all
+          - setup-network

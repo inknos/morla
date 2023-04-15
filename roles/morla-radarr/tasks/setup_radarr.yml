@@ -17,6 +17,7 @@
           network:
               - morla-wireguard-network
           network_aliases: '{{ morla_radarr_short_name }}'
+          label: '{{ morla_radarr_labels }}'
           env:
               PUID: '{{ morla_fake_puid }}'
               PGID: '{{ morla_fake_pgid }}'

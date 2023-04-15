@@ -1,0 +1,6 @@
+---
+    - name: Create Morla Network
+      containers.podman.podman_network:
+          name: morla-wireguard-network
+          subnet: 172.20.0.0/24
+          driver: bridge

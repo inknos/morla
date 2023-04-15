@@ -79,4 +79,8 @@ morla_nginx_wireguard_ports:
 morla_nginx_wireguard_volumes:
     - '{{ morla_nginx_wireguard_config_dir }}:/config:Z'
 
-# Wireguard DNS
+morla_wireguard_labels:
+    traefik.enable: true
+    traefik.udp.routers.wireguard.entrypoints: wireguard
+    traefik.udp.routers.wireguard.service: wireguard-svc
+    traefik.udp.services.wireguard-svc.loadbalancer.server.port: '{{ morla_wireguard_reverse_proxy_port }}'

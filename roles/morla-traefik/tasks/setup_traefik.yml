@@ -19,6 +19,7 @@
               - 0:1:{{ morla_fake_pgid }}
               - '{{ morla_fake_pgid + 1 }}:{{ morla_fake_pgid + 1 }}:{{ morla_subgid_size - morla_fake_pgid }}'
           command: '{{ morla_traefik_command }}'
+          label: '{{ morla_traefik_labels }}'
           security_opt: '{{ morla_traefik_security_opt }}'
           network: morla-wireguard-network
           state: started

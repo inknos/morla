@@ -43,6 +43,7 @@
       roles:
           - morla-base        # setup base environment for containers
           - morla-wireguard   # setup wireguard wpn and keys
+          - morla-traefik     # support for traefik. since it's experimental it's using v3 beta
           - morla-filebrowser # setup filebrowser container
           - morla-radarr      # setup radarr
           - morla-sonarr      # setup sonarr
@@ -61,8 +62,6 @@
           - morla-hedgedoc    # setup hedgedoc [public]
           - morla-wordle      # setup wordle [oublic]
           - morla-ipfs
-          - morla-traefik     # support for traefik. since it's experimental it's using v3 beta
           - morla-gandi-ddns  # setup python script to update gandi dns
-          - morla-wireguard-config
           - morla-firewall  # manage firewall services and open ports
           - morla-systemd   # manage containers autostart
