@@ -60,7 +60,6 @@
           - morla-ghost       # setup ghost [public]
           - morla-grav        # setup grav [public]
           - morla-hedgedoc    # setup hedgedoc [public]
-          - morla-wordle      # setup wordle [oublic]
           - morla-ipfs
           - morla-gandi-ddns  # setup python script to update gandi dns
           - morla-firewall  # manage firewall services and open ports
