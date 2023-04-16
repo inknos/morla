@@ -28,7 +28,6 @@ morla_piwigo_container_image: '{{ morla_piwigo_container_image_base }}:{{ morla_
 # Networking
 morla_piwigo_reverse_proxy_port: '5050'
 morla_piwigo_exposed_proxy_port: '80'
-morla_piwigo_internal_ip: 172.20.0.55
 
 # Networking/Firewall
 morla_piwigo_fw_ports:

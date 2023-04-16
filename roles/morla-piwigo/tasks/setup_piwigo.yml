@@ -18,10 +18,9 @@
     - name: Create pod
       containers.podman.podman_pod:
           name: '{{ morla_piwigo_pod_name }}'
-          state: started
-          label: '{{ morla_piwigo_labels }}'
           network: morla-wireguard-network
           ports: '{{ morla_piwigo_ports }}'
+          label: '{{ morla_piwigo_labels }}'
           uidmap:
               - '{{ morla_fake_puid }}:0:1'
               - 0:1:{{ morla_fake_puid }}
@@ -34,28 +33,27 @@
               path: '{{ morla_home_config_systemd_dir }}'
               restart_policy: always
               names: true
+          state: started
 
     - name: Create container
       containers.podman.podman_container:
           name: '{{ morla_piwigo_container_name }}'
           image: '{{ morla_piwigo_container_image}}'
-          volumes: '{{ morla_piwigo_volumes }}'
           pod: '{{ morla_piwigo_pod_name }}'
+          volumes: '{{ morla_piwigo_volumes }}'
           env:
               PUID: '{{ morla_fake_puid }}'
               PGID: '{{ morla_fake_pgid }}'
               TZ: '{{ morla_tz }}'
           state: started
-          restart_policy: unless-stopped
 
     - name: Create Database
       containers.podman.podman_container:
           name: '{{ morla_piwigo_db_container_name }}'
           image: '{{ morla_piwigo_db_container_image }}'
-          volumes: '{{ morla_piwigo_db_volumes }}'
           pod: '{{ morla_piwigo_pod_name }}'
-          network:
-              - container:morla-piwigo
+          network: container:morla-piwigo
+          volumes: '{{ morla_piwigo_db_volumes }}'
           env:
               PUID: '{{ morla_fake_puid }}'
               PGID: '{{ morla_fake_pgid }}'
@@ -65,4 +63,3 @@
               MYSQL_DATABASE: '{{ morla_piwigo_db_env_mysql_database }}'
               MYSQL_RANDOM_ROOT_PASSWORD: '{{ morla_piwigo_db_env_mysql_random_root_password }}'
           state: started
-          restart_policy: unless-stopped

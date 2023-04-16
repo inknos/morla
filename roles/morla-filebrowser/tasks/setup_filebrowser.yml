@@ -3,17 +3,16 @@
       containers.podman.podman_container:
           name: '{{ morla_filebrowser_container_name }}'
           image: '{{ morla_filebrowser_container_image}}'
-          volumes: '{{ morla_filebrowser_volumes }}'
+          network: morla-wireguard-network
+          network_aliases: '{{ morla_filebrowser_short_name }}'
           ports: '{{ morla_filebrowser_ports }}'
+          volumes: '{{ morla_filebrowser_volumes }}'
+          labels: '{{ morla_filebrowser_labels }}'
           env:
               PUID: '{{ morla_root_puid }}'
               PGID: '{{ morla_root_pgid }}'
               TZ: '{{ morla_tz }}'
           state: started
-          network: morla-wireguard-network
-          ip: '{{ morla_filebrowser_internal_ip }}'
-          network_aliases: '{{ morla_filebrowser_short_name }}'
-          restart_policy: unless-stopped
           generate_systemd:
               path: '{{ morla_home_config_systemd_dir }}'
               restart_policy: always

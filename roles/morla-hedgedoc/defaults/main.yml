@@ -28,7 +28,6 @@ morla_hedgedoc_container_image: '{{ morla_hedgedoc_container_image_base }}:{{ mo
 # Networking
 morla_hedgedoc_reverse_proxy_port: '3000'
 morla_hedgedoc_exposed_proxy_port: '{{ morla_hedgedoc_reverse_proxy_port }}'
-morla_hedgedoc_internal_ip: 172.20.0.30
 
 # Networking/Firewall
 morla_hedgedoc_fw_ports:
@@ -74,7 +73,6 @@ morla_hedgedoc_db_env_password: '{{ morla_hedgedoc_db_password }}'
 morla_hedgedoc_db_env_db: hedgedoc-db
 
 # Networking
-morla_hedgedoc_db_internal_ip: '{{ morla_hedgedoc_env_db_host }}'
 
 # Storage/Host
 morla_hedgedoc_db_config_dir: '{{ morla_config_dir }}/{{ morla_hedgedoc_db_long_name }}'

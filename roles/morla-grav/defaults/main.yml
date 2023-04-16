@@ -26,7 +26,6 @@ morla_grav_container_image: '{{ morla_grav_container_image_base }}:{{ morla_grav
 # Networking
 morla_grav_reverse_proxy_port: '22331'
 morla_grav_exposed_proxy_port: '{{ morla_grav_reverse_proxy_port }}'
-morla_grav_internal_ip: 172.20.0.223
 
 # Networking/Firewall
 morla_grav_fw_ports:

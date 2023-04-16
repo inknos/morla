@@ -26,7 +26,6 @@ morla_qbittorrent_container_image: '{{ morla_qbittorrent_container_image_base }}
 # Networking
 morla_qbittorrent_reverse_proxy_port: '9092'
 morla_qbittorrent_exposed_proxy_port: '{{ morla_qbittorrent_reverse_proxy_port }}'
-morla_qbittorrent_internal_ip: 172.20.0.92
 
 # Networking/Firewall
 morla_qbittorrent_fw_ports:

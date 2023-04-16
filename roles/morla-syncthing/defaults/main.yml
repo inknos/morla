@@ -36,7 +36,6 @@ morla_syncthing_volumes:
 # Networking
 morla_syncthing_reverse_proxy_port: '8384'
 morla_syncthing_exposed_proxy_port: '{{ morla_syncthing_reverse_proxy_port }}'
-morla_syncthing_internal_ip: 172.20.0.84
 
 # Networking/Firewall
 morla_syncthing_fw_ports:

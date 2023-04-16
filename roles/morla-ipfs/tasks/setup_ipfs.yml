@@ -19,15 +19,14 @@
       containers.podman.podman_container:
           name: '{{ morla_ipfs_container_name }}'
           image: '{{ morla_ipfs_container_image}}'
-          volumes: '{{ morla_ipfs_volumes }}'
-          ports: '{{ morla_ipfs_ports }}'
-          network:
-              - morla-wireguard-network
+          network: morla-wireguard-network
           network_aliases: '{{ morla_ipfs_short_name }}'
+          ports: '{{ morla_ipfs_ports }}'
+          volumes: '{{ morla_ipfs_volumes }}'
+          label: '{{ morla_ipfs_labels }}'
           env:
               IPFS_PROFILE: '{{ morla_ipfs_env_ipfs_profile }}'
           state: started
-          restart_policy: unless-stopped
           generate_systemd:
               path: '{{ morla_home_config_systemd_dir }}'
               restart_policy: always

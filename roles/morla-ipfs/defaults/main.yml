@@ -26,7 +26,6 @@ morla_ipfs_container_image: '{{ morla_ipfs_container_image_base }}:{{ morla_ipfs
 # Networking
 morla_ipfs_reverse_proxy_port: '8081'
 morla_ipfs_exposed_proxy_port: '8080'
-morla_ipfs_internal_ip: 172.20.0.88
 
 # Networking/Firewall
 morla_ipfs_fw_ports:

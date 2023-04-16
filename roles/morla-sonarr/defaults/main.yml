@@ -27,7 +27,6 @@ morla_sonarr_container_image: '{{ morla_sonarr_container_image_base }}:{{ morla_
 # Networking
 morla_sonarr_reverse_proxy_port: '8989'
 morla_sonarr_exposed_proxy_port: '{{ morla_sonarr_reverse_proxy_port }}'
-morla_sonarr_internal_ip: 172.20.0.89
 
 # Networking/Firewall
 morla_sonarr_fw_ports:

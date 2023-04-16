@@ -26,7 +26,6 @@ morla_prowlarr_container_image: '{{ morla_prowlarr_container_image_base }}:{{ mo
 # Networking
 morla_prowlarr_reverse_proxy_port: '9696'
 morla_prowlarr_exposed_proxy_port: '{{ morla_prowlarr_reverse_proxy_port }}'
-morla_prowlarr_internal_ip: 172.20.0.96
 
 # Networking/Firewall
 morla_prowlarr_fw_ports:

@@ -27,7 +27,6 @@ morla_readarr_container_image: '{{ morla_readarr_container_image_base }}:{{ morl
 # Networking
 morla_readarr_reverse_proxy_port: '8787'
 morla_readarr_exposed_proxy_port: '{{ morla_readarr_reverse_proxy_port }}'
-morla_readarr_internal_ip: 172.20.0.87
 
 # Networking/Firewall
 morla_readarr_fw_ports:

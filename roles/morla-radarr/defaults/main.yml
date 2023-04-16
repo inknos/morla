@@ -26,7 +26,6 @@ morla_radarr_container_image: '{{ morla_radarr_container_image_base }}:{{ morla_
 # Networking
 morla_radarr_reverse_proxy_port: '7878'
 morla_radarr_exposed_proxy_port: '{{ morla_radarr_reverse_proxy_port }}'
-morla_radarr_internal_ip: 172.20.0.78
 
 # Networking/Firewall
 morla_radarr_fw_ports:

@@ -18,12 +18,9 @@
     - name: Create pod
       containers.podman.podman_pod:
           name: '{{ morla_ghost_pod_name }}'
-          state: started
-          network:
-              - morla-wireguard-network
-          network_aliases: '{{ morla_ghost_short_name }}'
-          ip: '{{ morla_ghost_internal_ip }}'
+          network: morla-wireguard-network
           ports: '{{ morla_ghost_ports }}'
+          label: '{{ morla_ghost_labels }}'
           uidmap:
               - '{{ morla_user_puid }}:0:1'
               - 0:1:{{ morla_user_puid }}
@@ -36,32 +33,31 @@
               path: '{{ morla_home_config_systemd_dir }}'
               restart_policy: always
               names: true
+          state: started
 
     - name: Create container
       containers.podman.podman_container:
           name: '{{ morla_ghost_container_name }}'
           image: '{{ morla_ghost_container_image}}'
-          volumes: '{{ morla_ghost_volumes }}'
           pod: '{{ morla_ghost_pod_name }}'
+          volumes: '{{ morla_ghost_volumes }}'
           env:
               NODE_ENV: development
               TZ: '{{ morla_tz }}'
               database__client: mysql
-              database__connection__host: '{{ morla_ghost_internal_ip }}'
+              database__connection__host: localhost
               database__connection__user: root
               database__connection__password: '{{ morla_ghost_db_env_mysql_root_password }}'
               database__connection__database: '{{ morla_ghost_db_env_mysql_database }}'
           state: started
-          restart_policy: unless-stopped
 
     - name: Create Database
       containers.podman.podman_container:
           name: '{{ morla_ghost_db_container_name }}'
           image: '{{ morla_ghost_db_container_image }}'
-          volumes: '{{ morla_ghost_db_volumes }}'
           pod: '{{ morla_ghost_pod_name }}'
-          network:
-              - container:morla-ghost
+          network: container:morla-ghost
+          volumes: '{{ morla_ghost_db_volumes }}'
           env:
               PUID: '{{ morla_user_puid }}'
               PGID: '{{ morla_user_pgid }}'
@@ -69,4 +65,3 @@
               MYSQL_DATABASE: '{{ morla_ghost_db_env_mysql_database }}'
               MYSQL_ROOT_PASSWORD: '{{ morla_ghost_db_env_mysql_root_password }}'
           state: started
-          restart_policy: unless-stopped

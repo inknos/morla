@@ -11,16 +11,16 @@
       containers.podman.podman_container:
           name: '{{ morla_jellyfin_container_name }}'
           image: '{{ morla_jellyfin_container_image}}'
-          volumes: '{{ morla_jellyfin_volumes }}'
+          network: morla-wireguard-network
+          network_aliases: '{{ morla_jellyfin_short_name }}'
           ports: '{{ morla_jellyfin_ports }}'
+          volumes: '{{ morla_jellyfin_volumes }}'
+          label: '{{ morla_jellyfin_labels }}'
           env:
               PUID: 0
               PGID: 0
               TZ: '{{ morla_tz }}'
-          labels: '{{ morla_jellyfin_labels }}'
-          network: morla-wireguard-network
           state: started
-          restart_policy: unless-stopped
           generate_systemd:
               path: '{{ morla_home_config_systemd_dir }}'
               restart_policy: always

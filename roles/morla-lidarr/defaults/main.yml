@@ -26,7 +26,6 @@ morla_lidarr_container_image: '{{ morla_lidarr_container_image_base }}:{{ morla_
 # Networking
 morla_lidarr_reverse_proxy_port: '8686'
 morla_lidarr_exposed_proxy_port: '{{ morla_lidarr_reverse_proxy_port }}'
-morla_lidarr_internal_ip: 172.20.0.86
 
 # Networking/Firewall
 morla_lidarr_fw_ports:

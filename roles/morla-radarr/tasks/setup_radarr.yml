@@ -11,12 +11,10 @@
       containers.podman.podman_container:
           name: '{{ morla_radarr_container_name }}'
           image: '{{ morla_radarr_container_image}}'
-          volumes: '{{ morla_radarr_volumes }}'
-          ports: '{{ morla_radarr_ports }}'
-          ip: '{{ morla_radarr_internal_ip }}'
-          network:
-              - morla-wireguard-network
+          network: morla-wireguard-network
           network_aliases: '{{ morla_radarr_short_name }}'
+          ports: '{{ morla_radarr_ports }}'
+          volumes: '{{ morla_radarr_volumes }}'
           label: '{{ morla_radarr_labels }}'
           env:
               PUID: '{{ morla_fake_puid }}'
@@ -31,7 +29,6 @@
               - 0:1:{{ morla_fake_pgid }}
               - '{{ morla_fake_pgid + 1 }}:{{ morla_fake_pgid + 1 }}:{{ morla_subgid_size - morla_fake_pgid }}'
           state: started
-          restart_policy: unless-stopped
           generate_systemd:
               path: '{{ morla_home_config_systemd_dir }}'
               restart_policy: always

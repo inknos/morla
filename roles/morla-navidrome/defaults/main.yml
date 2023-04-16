@@ -32,7 +32,6 @@ morla_navidrome_env_nd_baseurl: ''
 # Networking
 morla_navidrome_reverse_proxy_port: '4533'
 morla_navidrome_exposed_proxy_port: '{{ morla_navidrome_reverse_proxy_port }}'
-morla_navidrome_internal_ip: 172.20.0.43
 
 # Networking/Firewall
 morla_navidrome_fw_ports:

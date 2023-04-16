@@ -1,10 +1,23 @@
 ---
+    - name: Create config directory
+      ansible.builtin.file:
+          path: '{{ morla_traefik_config_dir }}'
+          state: directory
+          owner: '{{ morla_user_username }}'
+          group: '{{ morla_user_groupname }}'
+      when: not check_traefik_config_dir.stat.exists
+
     - name: Create container
       containers.podman.podman_container:
           name: '{{ morla_traefik_container_name }}'
           image: '{{ morla_traefik_container_image}}'
-          volumes: '{{ morla_traefik_volumes }}'
+          network: morla-wireguard-network
+          network_aliases: '{{ morla_traefik_short_name }}'
           ports: '{{ morla_traefik_ports }}'
+          volumes: '{{ morla_traefik_volumes }}'
+          label: '{{ morla_traefik_labels }}'
+          command: '{{ morla_traefik_command }}'
+          security_opt: '{{ morla_traefik_security_opt }}'
           env:
               PUID: '{{ morla_fake_puid }}'
               PGID: '{{ morla_fake_pgid }}'
@@ -18,12 +31,7 @@
               - '{{ morla_fake_pgid }}:0:1'
               - 0:1:{{ morla_fake_pgid }}
               - '{{ morla_fake_pgid + 1 }}:{{ morla_fake_pgid + 1 }}:{{ morla_subgid_size - morla_fake_pgid }}'
-          command: '{{ morla_traefik_command }}'
-          label: '{{ morla_traefik_labels }}'
-          security_opt: '{{ morla_traefik_security_opt }}'
-          network: morla-wireguard-network
           state: started
-          restart_policy: unless-stopped
           generate_systemd:
               path: '{{ morla_home_config_systemd_dir }}'
               restart_policy: always

@@ -3,8 +3,14 @@
       containers.podman.podman_container:
           name: '{{ morla_wireguard_container_name }}'
           image: '{{ morla_wireguard_container_image}}'
+          network: morla-wireguard-network
+          ports: '{{ morla_wireguard_ports }}'
           volumes: '{{ morla_wireguard_volumes }}'
+          label: '{{ morla_wireguard_labels }}'
           privileged: '{{ morla_wireguard_privileged }}'
+          cap_add: '{{ morla_wireguard_cap_add }}'
+          sysctl:
+              net.ipv4.ip_forward: 1
           env:
               PUID: '{{ morla_fake_puid }}'
               PGID: '{{ morla_fake_pgid }}'
@@ -14,13 +20,6 @@
               PEERS: '{{ morla_wireguard_env_peers }}'
               ALLOWEDIPS: '{{ morla_wireguard_env_allowedips }}'
               LOG_CONFS: false
-          cap_add: '{{ morla_wireguard_cap_add }}'
-          network:
-              - morla-wireguard-network
-          ports: '{{ morla_wireguard_ports }}'
-          label: '{{ morla_wireguard_labels }}'
-          sysctl:
-              net.ipv4.ip_forward: 1
           uidmap:
               - '{{ morla_fake_puid }}:0:1'
               - 0:1:{{ morla_fake_puid }}
@@ -30,7 +29,6 @@
               - 0:1:{{ morla_fake_pgid }}
               - '{{ morla_fake_pgid + 1 }}:{{ morla_fake_pgid + 1 }}:{{ morla_subgid_size - morla_fake_pgid }}'
           state: started
-          restart_policy: unless-stopped
           generate_systemd:
               path: '{{ morla_home_config_systemd_dir }}'
               restart_policy: always

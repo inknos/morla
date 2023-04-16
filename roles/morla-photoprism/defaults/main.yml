@@ -26,7 +26,6 @@ morla_photoprism_container_image: '{{ morla_photoprism_container_image_base }}:{
 # Networking
 morla_photoprism_reverse_proxy_port: '2342'
 morla_photoprism_exposed_proxy_port: '{{ morla_photoprism_reverse_proxy_port }}'
-morla_photoprism_internal_ip: 172.20.0.23
 
 # Networking/Firewall
 morla_photoprism_fw_ports:

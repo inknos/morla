@@ -28,7 +28,6 @@ morla_lychee_container_image: '{{ morla_lychee_container_image_base }}:{{ morla_
 # Networking
 morla_lychee_reverse_proxy_port: '8800'
 morla_lychee_exposed_proxy_port: '{{ morla_lychee_reverse_proxy_port }}'
-morla_lychee_internal_ip: 172.20.0.88
 
 # Networking/Firewall
 morla_lychee_fw_ports:

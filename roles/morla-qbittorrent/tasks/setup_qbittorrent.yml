@@ -16,18 +16,17 @@
       containers.podman.podman_container:
           name: '{{ morla_qbittorrent_container_name }}'
           image: '{{ morla_qbittorrent_container_image}}'
-          volumes: '{{ morla_qbittorrent_volumes }}'
+          network: morla-wireguard-network
+          network_aliases: '{{ morla_qbittorrent_short_name }}'
           ports: '{{ morla_qbittorrent_ports }}'
+          volumes: '{{ morla_qbittorrent_volumes }}'
+          label: '{{ morla_qbittorrent_labels }}'
           env:
               PUID: '{{ morla_root_puid }}'
               PGID: '{{ morla_root_pgid }}'
               TZ: '{{ morla_tz }}'
               WEBUI_PORT: '{{ morla_qbittorrent_env_webui_port }}'
-          network: morla-wireguard-network
-          ip: '{{ morla_qbittorrent_internal_ip }}'
-          network_aliases: '{{ morla_qbittorrent_short_name }}'
           state: started
-          restart_policy: unless-stopped
           generate_systemd:
               path: '{{ morla_home_config_systemd_dir }}'
               restart_policy: always

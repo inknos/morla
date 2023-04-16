@@ -25,7 +25,6 @@ morla_traefik_container_image: '{{ morla_traefik_container_image_base }}:{{ morl
 morla_traefik_http_port: '1680'
 morla_traefik_https_port: '1643'
 morla_traefik_dashboard_port: '8080'
-morla_traefik_internal_ip: 172.20.0.166
 
 # Network/Firewall
 morla_traefik_fw_ports:

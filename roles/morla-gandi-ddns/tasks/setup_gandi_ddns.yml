@@ -3,20 +3,12 @@
       containers.podman.podman_container:
           name: '{{ morla_gandi_ddns_container_name }}'
           image: '{{ morla_gandi_ddns_container_image}}'
-      #volumes: "{{ morla_gandi_ddns_volumes }}"
-      # ports: "{{ morla_gandi_ddns_ports }}"
           env:
               PUID: '{{ morla_root_puid }}'
               PGID: '{{ morla_root_pgid }}'
               TZ: '{{ morla_tz }}'
           state: present
-      # pod: morla-wireguard-pod
-      # generate_systemd:
-      #   path: "{{ morla_home_config_systemd_dir }}"
-      #   restart_policy: always
-      #   names: true
-      #   container_prefix: "{{ morla_systemd_service_prefix }}"
-      #
+
     - name: Install cronjob to check DNS twice a day
       ansible.builtin.cron:
           name: Check DNS for {{ morla_domain }}
