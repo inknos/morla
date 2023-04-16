@@ -1,6 +1,0 @@
----
-    - name: Copy config with API KEY
-      ansible.builtin.template:
-          src: gandi.ini.j2
-          dest: '{{ morla_letsencrypt_gandi_dir }}/gandi.ini'
-          mode: 0600
