@@ -4,7 +4,7 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 
 # configuration file for navidrome
-morla_navidrome_enabled: true
+morla_navidrome_enabled: false
 
 morla_navidrome_flag_public: true
 morla_navidrome_flag_autostart: true

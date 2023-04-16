@@ -1,5 +1,5 @@
 ---
-morla_wireguard_enabled: true
+morla_wireguard_enabled: false
 
 # Wireguard Container
 morla_wireguard_flag_public: false

@@ -4,7 +4,7 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 
 # configuration file for qbittorrent
-morla_qbittorrent_enabled: true
+morla_qbittorrent_enabled: false
 
 morla_qbittorrent_flag_public: false
 morla_qbittorrent_flag_autostart: true

@@ -4,7 +4,7 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 
 # configuration file for sonarr
-morla_sonarr_enabled: true
+morla_sonarr_enabled: false
 morla_sonarr_become: true
 
 morla_sonarr_flag_public: false

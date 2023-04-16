@@ -4,7 +4,7 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 
 # configuration file for hedgedoc
-morla_hedgedoc_enabled: true
+morla_hedgedoc_enabled: false
 
 morla_hedgedoc_flag_public: true
 morla_hedgedoc_flag_autostart: true

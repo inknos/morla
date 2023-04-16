@@ -4,7 +4,7 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 
 # configuration file for grav
-morla_grav_enabled: true
+morla_grav_enabled: false
 
 morla_grav_flag_public: false
 morla_grav_flag_autostart: true

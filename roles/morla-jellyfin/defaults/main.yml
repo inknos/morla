@@ -4,7 +4,7 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 
 # configuration file for jellyfin
-morla_jellyfin_enabled: true
+morla_jellyfin_enabled: false
 
 morla_jellyfin_flag_public: true
 morla_jellyfin_flag_autostart: true

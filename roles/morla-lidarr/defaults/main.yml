@@ -4,7 +4,7 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 
 # configuration file for lidarr
-morla_lidarr_enabled: true
+morla_lidarr_enabled: false
 
 morla_lidarr_flag_public: false
 morla_lidarr_flag_autostart: true

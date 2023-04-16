@@ -4,7 +4,7 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 
 # configuration file for syncthing
-morla_syncthing_enabled: true
+morla_syncthing_enabled: false
 morla_syncthing_become: true
 
 morla_syncthing_flag_public: false

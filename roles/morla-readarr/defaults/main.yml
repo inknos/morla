@@ -4,7 +4,7 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 
 # configuration file for readarr
-morla_readarr_enabled: true
+morla_readarr_enabled: false
 morla_readarr_become: true
 
 morla_readarr_flag_public: false

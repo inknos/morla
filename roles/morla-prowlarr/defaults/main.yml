@@ -4,7 +4,7 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 
 # configuration file for prowlarr
-morla_prowlarr_enabled: true
+morla_prowlarr_enabled: false
 
 morla_prowlarr_flag_public: false
 morla_prowlarr_flag_autostart: true

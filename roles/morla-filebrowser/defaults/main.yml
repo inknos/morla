@@ -4,7 +4,7 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 
 # configuration file for filebrowser
-morla_filebrowser_enabled: true
+morla_filebrowser_enabled: false
 
 morla_filebrowser_flag_public: false
 morla_filebrowser_flag_autostart: true

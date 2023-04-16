@@ -4,7 +4,7 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 
 # configuration file for lychee
-morla_lychee_enabled: true
+morla_lychee_enabled: false
 
 morla_lychee_flag_public: true
 morla_lychee_flag_autostart: true

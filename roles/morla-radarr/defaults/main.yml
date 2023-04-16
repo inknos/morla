@@ -4,7 +4,7 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 
 # configuration file for radarr
-morla_radarr_enabled: true
+morla_radarr_enabled: false
 
 morla_radarr_flag_public: true
 morla_radarr_flag_autostart: true
