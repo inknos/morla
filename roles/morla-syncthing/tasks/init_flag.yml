@@ -1,15 +1,4 @@
 ---
-    - name: Add Container to the list of public domains
-      ansible.builtin.set_fact:
-          morla_public_domains: '{{ morla_public_domains + [ morla_syncthing_public_url ] }}'
-      when: ( morla_syncthing_flag_public is defined ) and ( morla_syncthing_flag_public|bool == True )
-
-    - name: Add Container to the list of Wireguard accessible containers
-      ansible.builtin.set_fact:
-          morla_wireguard_domains: "{{ morla_wireguard_domains + [ { 'name': morla_syncthing_short_name, 'port': morla_syncthing_reverse_proxy_port, 'ip':\
-              \ morla_syncthing_internal_ip } ] }}"
-      when: ( morla_syncthing_flag_wireguard is defined ) and ( morla_syncthing_flag_wireguard|bool == True )
-
     - name: Add Container to the list of autostart containers
       ansible.builtin.set_fact:
           morla_systemd_autostart_containers: '{{ morla_systemd_autostart_containers + [ morla_syncthing_container_name ] }} '
