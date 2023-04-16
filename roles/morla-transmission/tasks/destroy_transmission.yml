@@ -1,5 +1,0 @@
----
-    - name: Destroy Transmission
-      containers.podman.podman_container:
-          name: '{{ morla_transmission_container_name }}'
-          state: absent
