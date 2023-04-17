@@ -25,6 +25,7 @@
               path: '{{ morla_home_config_systemd_dir }}'
               restart_policy: always
               names: true
+              pod_prefix: '{{ morla_systemd_service_pod_prefix }}'
           state: started
 
     - name: Create container

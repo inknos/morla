@@ -1,7 +1,7 @@
 ---
-    - name: Add Container to the list of autostart containers
+    - name: Add Container to the list of autostarting pods
       ansible.builtin.set_fact:
-          morla_systemd_autostart_containers: '{{ morla_systemd_autostart_containers + [ morla_ghost_container_name ] }} '
+          morla_systemd_autostart_pods: '{{ morla_systemd_autostart_pods + [ morla_ghost_pod_name ] }} '
       when: ( morla_ghost_flag_autostart is defined ) and ( morla_ghost_flag_autostart|bool == True )
 
     - name: Add Container to the list of Firewall Services

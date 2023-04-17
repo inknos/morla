@@ -1,5 +1,5 @@
 ---
-    - name: Add Container to the list of autostart pods
+    - name: Add Container to the list of autostarting pods
       ansible.builtin.set_fact:
           morla_systemd_autostart_pods: '{{ morla_systemd_autostart_pods + [ morla_lychee_pod_name ] }} '
       when: ( morla_lychee_flag_autostart is defined ) and ( morla_lychee_flag_autostart|bool == True )

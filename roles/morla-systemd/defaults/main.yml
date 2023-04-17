@@ -1,2 +1,3 @@
 ---
 morla_systemd_service_prefix: container
+morla_systemd_service_pod_prefix: pod

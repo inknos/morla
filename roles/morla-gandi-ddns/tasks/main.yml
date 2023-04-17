@@ -3,6 +3,7 @@
 
 
     - ansible.builtin.import_tasks: '{{ role_path }}/tasks/init.yml'
+      when: morla_gandi_ddns_enabled | bool
       tags:
           - always
 

@@ -2,9 +2,11 @@
     - name: Add Container to the list of autostart containers
       ansible.builtin.set_fact:
           morla_systemd_autostart_containers: '{{ morla_systemd_autostart_containers + [ morla_photoprism_container_name ] }} '
-      when: ( morla_photoprism_flag_autostart is defined ) and ( morla_photoprism_flag_autostart|bool == True )
+      when: ( morla_photoprism_flag_autostart is defined ) and ( morla_photoprism_flag_autostart|bool == True ) and ( morla_photoprism_enabled|bool == True
+          )
 
     - name: Add Container to the list of Firewall Services
       ansible.builtin.set_fact:
           morla_firewall_services: "{{ morla_firewall_services + [ { 'name': morla_photoprism_short_name, 'ports': morla_photoprism_fw_ports } ]}}"
-      when: ( morla_photoprism_flag_firewall is defined ) and ( morla_photoprism_flag_firewall|bool == True )
+      when: ( morla_photoprism_flag_firewall is defined ) and ( morla_photoprism_flag_firewall|bool == True ) and ( morla_photoprism_enabled|bool == True
+          )

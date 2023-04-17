@@ -16,14 +16,14 @@
 
     - name: Enable Services for Pods
       ansible.builtin.systemd:
-          name: pod-{{ item }}
+          name: '{{ morla_systemd_service_pod_prefix }}-{{ item }}'
           enabled: yes
           scope: user
       loop: '{{ morla_systemd_autostart_pods }}'
 
     - name: Start Services for Pods
       ansible.builtin.systemd:
-          name: pod-{{ item }}
+          name: '{{ morla_systemd_service_pod_prefix }}-{{ item }}'
           state: started
           scope: user
       loop: '{{ morla_systemd_autostart_pods }}'
