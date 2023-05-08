@@ -1,0 +1,60 @@
+---
+# SPDX-FileCopyrightText: Nicola Sella
+#
+# SPDX-License-Identifier: GPL-3.0-or-later
+
+# configuration file for transfersh
+morla_transfersh_enabled: false
+
+morla_transfersh_flag_public: true
+morla_transfersh_flag_autostart: true
+morla_transfersh_flag_wireguard: true
+morla_transfersh_flag_firewall: true # replace with if port list non empty
+
+# Name
+morla_transfersh_long_name: Transfersh
+morla_transfersh_short_name: transfersh
+
+morla_transfersh_container_short_name: '{{ morla_transfersh_short_name }}'
+morla_transfersh_container_name: '{{ morla_user_username }}-{{ morla_transfersh_container_short_name }}'
+morla_transfersh_public_url: '{{ morla_transfersh_short_name }}.{{ morla_public_url }}'
+
+morla_transfersh_container_image_base: docker.io/dutchcoders/transfer.sh
+morla_transfersh_container_image_tag: latest
+morla_transfersh_container_image: '{{ morla_transfersh_container_image_base }}:{{ morla_transfersh_container_image_tag }}'
+
+# Networking
+morla_transfersh_reverse_proxy_port: '8880'
+morla_transfersh_exposed_proxy_port: '8080'
+
+# Networking/Firewall
+morla_transfersh_fw_ports:
+    tcp:
+        - '{{ morla_transfersh_reverse_proxy_port }}'
+    udp:
+
+# Networking/Port Forwarding
+morla_transfersh_ports:
+    - '{{ morla_transfersh_reverse_proxy_port }}:{{ morla_transfersh_exposed_proxy_port }}'
+
+# Storage/Host
+
+# Storage/Mount
+morla_transfersh_volumes:
+
+# Labels/Traefik
+morla_transfersh_labels:
+    traefik.enable: '{{ morla_transfersh_flag_public }}'
+    traefik.http.services.transfersh.loadbalancer.server.port: '{{ morla_transfersh_exposed_proxy_port }}'
+    traefik.http.routers.transfersh.tls: true
+    traefik.http.routers.transfersh.rule: Host(`{{ morla_transfersh_public_url }}`)
+    traefik.http.routers.transfersh.entrypoints: websecure
+    traefik.http.routers.transfersh.tls.certresolver: myresolver
+    traefik.http.routers.transfersh.tls.domains: '{{ morla_transfersh_public_url }}'
+
+morla_transfersh_env_http_auth_user: admin
+morla_transfersh_env_http_auth_pass: '{{ morla_transfersh_http_auth_pass }}'
+morla_transfersh_env_http_auth_ip_whitelist: '{{ morla_internal_ip }}/24,172.20.0.1/24'
+morla_transfersh_cmd_args:
+    - --provider local
+    - --basedir /tmp/

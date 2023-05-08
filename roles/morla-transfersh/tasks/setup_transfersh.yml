@@ -1,0 +1,29 @@
+---
+#    - name: Create config directory
+#      ansible.builtin.file:
+#          path: '{{ morla_transfersh_config_dir }}'
+#          state: directory
+#          owner: '{{ morla_user_username }}'
+#          group: '{{ morla_user_groupname }}'
+#      when: not check_transfersh_config_dir.stat.exists
+
+    - name: Create container
+      containers.podman.podman_container:
+          name: '{{ morla_transfersh_container_name }}'
+          image: '{{ morla_transfersh_container_image}}'
+          network: morla-wireguard-network
+          network_aliases: '{{ morla_transfersh_short_name }}'
+          ports: '{{ morla_transfersh_ports }}'
+          volumes: '{{ morla_transfersh_volumes }}'
+          label: '{{ morla_transfersh_labels }}'
+          command: --provider local --basedir /tmp/ }}
+          env:
+              HTTP_AUTH_USER: '{{ morla_transfersh_env_http_auth_user }}'
+              HTTP_AUTH_PASS: '{{ morla_transfersh_env_http_auth_pass }}'
+              HTTP_AUTH_IP_WHITELIST: '{{ morla_transfersh_env_http_auth_ip_whitelist }}'
+          state: started
+          generate_systemd:
+              path: '{{ morla_home_config_systemd_dir }}'
+              restart_policy: always
+              names: true
+              container_prefix: '{{ morla_systemd_service_prefix }}'

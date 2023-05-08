@@ -1,0 +1,5 @@
+---
+    - name: Pull Transfer-sh image
+      containers.podman.podman_image:
+          name: '{{ morla_transfersh_container_image_base }}'
+          tag: latest

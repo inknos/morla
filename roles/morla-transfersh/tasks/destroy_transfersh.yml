@@ -1,0 +1,5 @@
+---
+    - name: Destroy Transfer-sh
+      containers.podman.podman_container:
+          name: '{{ morla_transfersh_container_name }}'
+          state: absent
