@@ -55,6 +55,7 @@ morla_transfersh_labels:
 morla_transfersh_env_http_auth_user: admin
 morla_transfersh_env_http_auth_pass: '{{ morla_transfersh_http_auth_pass }}'
 morla_transfersh_env_http_auth_ip_whitelist: '{{ morla_internal_ip }}/24,172.20.0.1/24'
-morla_transfersh_cmd_args:
-    - --provider local
-    - --basedir /tmp/
+morla_transfersh_env_rate_limit: 5
+morla_transfersh_env_purge_days: 7
+
+morla_transfersh_command: --provider local --basedir /tmp/

@@ -16,11 +16,13 @@
           ports: '{{ morla_transfersh_ports }}'
           volumes: '{{ morla_transfersh_volumes }}'
           label: '{{ morla_transfersh_labels }}'
-          command: --provider local --basedir /tmp/ }}
+          command: '{{ morla_transfersh_command }}'
           env:
               HTTP_AUTH_USER: '{{ morla_transfersh_env_http_auth_user }}'
               HTTP_AUTH_PASS: '{{ morla_transfersh_env_http_auth_pass }}'
               HTTP_AUTH_IP_WHITELIST: '{{ morla_transfersh_env_http_auth_ip_whitelist }}'
+              RATE_LIMIT: '{{ morla_transfersh_env_rate_limit }}'
+              PURGE_DAYS: '{{ morla_transfersh_env_purge_days }}'
           state: started
           generate_systemd:
               path: '{{ morla_home_config_systemd_dir }}'
