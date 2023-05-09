@@ -1,4 +1,5 @@
 ---
+# https://dl.photoprism.app/podman/docker-compose.yml
     - name: Create config directory
       ansible.builtin.file:
           path: '{{ morla_photoprism_config_dir }}'
@@ -7,27 +8,104 @@
           group: '{{ morla_user_groupname }}'
       when: not check_photoprism_config_dir.stat.exists
 
+    - name: Create DB config directory
+      ansible.builtin.file:
+          path: '{{ morla_photoprism_db_config_dir }}'
+          state: directory
+          owner: '{{ morla_user_username }}'
+          group: '{{ morla_user_groupname }}'
+      when: not check_photoprism_db_config_dir.stat.exists
+
+    - name: Create pod
+      containers.podman.podman_pod:
+          name: '{{ morla_photoprism_pod_name }}'
+          network: morla-wireguard-network
+          ports: '{{ morla_photoprism_ports }}'
+          label: '{{ morla_photoprism_labels }}'
+          generate_systemd:
+              path: '{{ morla_home_config_systemd_dir }}'
+              restart_policy: always
+              names: true
+              pod_prefix: '{{ morla_systemd_service_pod_prefix }}'
+          state: started
+
     - name: Create container
       containers.podman.podman_container:
           name: '{{ morla_photoprism_container_name }}'
           image: '{{ morla_photoprism_container_image}}'
-          network: morla-wireguard-network
-          network_aliases: '{{ morla_photoprism_short_name }}'
-          ports: '{{ morla_photoprism_ports }}'
+          pod: '{{ morla_photoprism_pod_name }}'
           volumes: '{{ morla_photoprism_volumes }}'
           label: '{{ morla_photoprism_labels }}'
           security_opt:
               - seccomp=unconfined
-              - apparmor=unconfined
           privileged: true
           env:
               PUID: 0
               PGID: 0
               TZ: '{{ morla_tz }}'
+              PHOTOPRISM_ADMIN_USER: admin                   # superadmin username
               PHOTOPRISM_ADMIN_PASSWORD: '{{ morla_photoprism_admin_password }}'
+              PHOTOPRISM_AUTH_MODE: password                 # authentication mode (public, password)
+              PHOTOPRISM_SITE_URL: https://photos.snic.me/    # server URL in the format "http(s)://domain.name(:port)/(path)"
+              PHOTOPRISM_ORIGINALS_LIMIT: 5000               # file size limit for originals in MB (increase for high-res video)
+              PHOTOPRISM_HTTP_COMPRESSION: gzip              # improves transfer speed and bandwidth utilization (none or gzip)
+              PHOTOPRISM_LOG_LEVEL: info                     # log level: trace, debug, info, warning, error, fatal, or panic
+              PHOTOPRISM_READONLY: 'false'                   # do not modify originals directory (reduced functionality)
+              PHOTOPRISM_EXPERIMENTAL: 'true'                # enables experimental features
+              PHOTOPRISM_DISABLE_CHOWN: 'false'              # disables updating storage permissions via chmod and chown on startup
+              PHOTOPRISM_DISABLE_WEBDAV: 'false'             # disables built-in WebDAV server
+              PHOTOPRISM_DISABLE_SETTINGS: 'false'           # disables settings UI and API
+              PHOTOPRISM_DISABLE_TENSORFLOW: 'false'         # disables all features depending on TensorFlow
+              PHOTOPRISM_DISABLE_FACES: 'false'              # disables face detection and recognition (requires TensorFlow)
+              PHOTOPRISM_DISABLE_CLASSIFICATION: 'false'     # disables image classification (requires TensorFlow)
+              PHOTOPRISM_DISABLE_RAW: 'false'                # disables indexing and conversion of RAW files
+              PHOTOPRISM_RAW_PRESETS: 'false'                # enables applying user presets when converting RAW files (reduces performance)
+              PHOTOPRISM_JPEG_QUALITY: 85                    # a higher value increases the quality and file size of JPEG images and thumbnails (25-100)
+              PHOTOPRISM_DETECT_NSFW: 'true'                # automatically flags photos as private that MAY be offensive (requires TensorFlow)
+              PHOTOPRISM_UPLOAD_NSFW: 'true'                 # allows uploads that MAY be offensive (no effect without TensorFlow)
+              PHOTOPRISM_DATABASE_DRIVER: mysql              # use MariaDB 10.5+ or MySQL 8+ instead of SQLite for improved performance
+              PHOTOPRISM_DATABASE_SERVER: localhost:3306       # MariaDB or MySQL database server (hostname:port)
+              PHOTOPRISM_DATABASE_NAME: '{{ morla_photoprism_db_env_mysql_database }}'         # MariaDB or MySQL database schema name
+              PHOTOPRISM_DATABASE_USER: '{{ morla_photoprism_db_env_mysql_user }}'         # MariaDB or MySQL database user name
+              PHOTOPRISM_DATABASE_PASSWORD: '{{ morla_photoprism_db_env_mysql_password }}'       # MariaDB or MySQL database user password
+              PHOTOPRISM_SITE_CAPTION: AI-Powered Photos App
+              PHOTOPRISM_SITE_DESCRIPTION: My photo collection                  # meta site description
+              PHOTOPRISM_SITE_AUTHOR: Nicola Sella                       # meta site author
+              ## Run/install on first startup (options: update https gpu tensorflow davfs clitools clean):
+              # PHOTOPRISM_INIT: "https gpu tensorflow"
+              ## Hardware Video Transcoding:
+              # PHOTOPRISM_FFMPEG_ENCODER: "software"        # FFmpeg encoder ("software", "intel", "nvidia", "apple", "raspberry")
+              # PHOTOPRISM_FFMPEG_BITRATE: "32"              # FFmpeg encoding bitrate limit in Mbit/s (default: 50)
+              ## Run as a non-root user after initialization (supported: 0, 33, 50-99, 500-600, and 900-1200):
+              # PHOTOPRISM_UID: 1000
+              # PHOTOPRISM_GID: 1000
+              # PHOTOPRISM_UMASK: 0000
           state: started
           generate_systemd:
               path: '{{ morla_home_config_systemd_dir }}'
               restart_policy: always
               names: true
               container_prefix: '{{ morla_systemd_service_prefix }}'
+
+    - name: Create Database
+      containers.podman.podman_container:
+          name: '{{ morla_photoprism_db_container_name }}'
+          image: '{{ morla_photoprism_db_container_image }}'
+          pod: '{{ morla_photoprism_pod_name }}'
+          network: container:morla-photoprism
+          volumes: '{{ morla_photoprism_db_volumes }}'
+          security_opt:
+              - seccomp:unconfined
+          env:
+              PUID: '{{ morla_fake_puid }}'
+              PGID: '{{ morla_fake_pgid }}'
+              TZ: '{{ morla_tz }}'
+              MYSQL_AUTO_UPGRADE: '{{ morla_photoprism_db_env_mysql_auto_upgrade }}'
+              MYSQL_INITDB_SKIP_TZINFO: '{{ morla_photoprism_db_env_mysql_initdb_skip_tzinfo }}'
+              MYSQL_DATABASE: '{{ morla_photoprism_db_env_mysql_database }}'
+              MYSQL_USER: '{{ morla_photoprism_db_env_mysql_user }}'
+              MYSQL_PASSWORD: '{{ morla_photoprism_db_env_mysql_password }}'
+              MYSQL_ROOT_PASSWORD: '{{ morla_photoprism_db_env_mysql_root_password }}'
+          state: started
+          command: mysqld --innodb-buffer-pool-size=2G --lower-case-table-names=1 --transaction-isolation=READ-COMMITTED --character-set-server=utf8mb4
+              --collation-server=utf8mb4_unicode_ci --max-connections=512 --innodb-rollback-on-timeout=OFF --innodb-lock-wait-timeout=180

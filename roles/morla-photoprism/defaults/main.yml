@@ -4,7 +4,7 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 
 # configuration file for photoprism
-morla_photoprism_enabled: false
+morla_photoprism_enabled: true
 
 morla_photoprism_flag_public: true
 morla_photoprism_flag_autostart: true
@@ -18,6 +18,8 @@ morla_photoprism_short_name: photoprism
 morla_photoprism_container_short_name: '{{ morla_photoprism_short_name }}'
 morla_photoprism_container_name: '{{ morla_user_username }}-{{ morla_photoprism_container_short_name }}'
 morla_photoprism_public_url: '{{ morla_photoprism_short_name }}.{{ morla_public_url }}'
+
+morla_photoprism_pod_name: '{{ morla_photoprism_container_name }}-pod'
 
 morla_photoprism_container_image_base: docker.io/photoprism/photoprism
 morla_photoprism_container_image_tag: latest
@@ -46,14 +48,44 @@ morla_photoprism_imported_dir: '{{ morla_media_dir }}/pictures/photoprism/import
 morla_photoprism_volumes:
     - '{{ morla_photoprism_config_dir }}:/photoprism/storage:Z'
     - '{{ morla_photoprism_originals_dir }}:/photoprism/originals:z'
-    - '{{ morla_photoprism_imported_dir }}:/photoprism/imported:z'
+    - '{{ morla_photoprism_imported_dir }}:/photoprism/import:z'
 
 # Labels/Traefik
 morla_photoprism_labels:
     traefik.enable: '{{ morla_photoprism_flag_public }}'
     traefik.http.services.photoprism.loadbalancer.server.port: '{{ morla_photoprism_exposed_proxy_port }}'
     traefik.http.routers.photoprism.tls: true
-    traefik.http.routers.photoprism.rule: Host(`{{ morla_photoprism_public_url }}`)
+    traefik.http.routers.photoprism.rule: Host(`photos.{{ morla_main_domain }}`)
     traefik.http.routers.photoprism.entrypoints: websecure
     traefik.http.routers.photoprism.tls.certresolver: myresolver
-    traefik.http.routers.photoprism.tls.domains: '{{ morla_photoprism_public_url }}'
+    traefik.http.routers.photoprism.tls.domains: photos.{{ morla_main_domain }}
+
+# DB
+# Name
+morla_photoprism_db_long_name: PhotoprismDB
+morla_photoprism_db_short_name: photoprism-db
+
+morla_photoprism_db_container_short_name: '{{ morla_photoprism_db_short_name }}'
+morla_photoprism_db_container_name: '{{ morla_user_username }}-{{ morla_photoprism_db_container_short_name }}'
+
+morla_photoprism_db_container_image_base: docker.io/library/mariadb
+morla_photoprism_db_container_image_tag: 10.11
+morla_photoprism_db_container_image: '{{ morla_photoprism_db_container_image_base }}:{{ morla_photoprism_db_container_image_tag }}'
+
+# Environment
+morla_photoprism_db_env_mysql_user: photoprism
+morla_photoprism_db_env_mysql_password: '{{ morla_photoprism_db_mysql_password }}'
+morla_photoprism_db_env_mysql_database: photoprism-db
+morla_photoprism_db_env_mysql_root_password: '{{ morla_photoprism_db_mysql_root_password }}'
+morla_photoprism_db_env_mysql_auto_upgrade: '1'
+morla_photoprism_db_env_mysql_initdb_skip_tzinfo: '1'
+
+# Storage/Host
+morla_photoprism_db_config_dir: '{{ morla_config_dir }}/{{ morla_photoprism_db_long_name }}'
+
+# Storage/Mount
+morla_photoprism_db_volumes:
+    - '{{ morla_photoprism_db_config_dir }}:/var/lib/mysql:Z'
+
+morla_photoprism_db_security_opt:
+    - seccomp:unconfined

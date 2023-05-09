@@ -3,3 +3,8 @@
       stat:
           path: '{{ morla_photoprism_config_dir }}'
       register: check_photoprism_config_dir
+
+    - name: Check if Config dir for DB exists
+      stat:
+          path: '{{ morla_photoprism_db_config_dir }}'
+      register: check_photoprism_db_config_dir
