@@ -45,7 +45,7 @@ morla_piwigo_config_dir: '{{ morla_config_dir }}/{{ morla_piwigo_long_name }}'
 # Storage/Mount
 morla_piwigo_volumes:
     - '{{ morla_piwigo_config_dir }}:/config:Z'
-    - '{{ morla_media_dir }}/pictures/Piwigo:/gallery:Z'
+    - '{{ morla_media_dir }}/pictures/Piwigo:/gallery:z'
 
 # Labels/Traefik
 morla_piwigo_labels:
