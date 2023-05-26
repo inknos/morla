@@ -26,13 +26,15 @@
           - morla_home_dir: /home/{{ morla_user_username }}
           - morla_home_config_systemd_dir: '{{ morla_home_dir }}/.config/systemd/user'
           - morla_config_dir: '{{ morla_home_dir }}/Config'
+          - morla_download_dir: '{{ morla_home_dir }}/downloads'
+          - morla_torrents_dir: '{{ morla_download_dir }}/torrents'
+          - morla_pyload_dir: '{{ morla_download_dir }}/pyload'
 
           - morla_one_media: /one/media
           - morla_one_vault: /one/vault
 
           - morla_data_dir: '{{ morla_one_media }}/data'
           - morla_media_dir: '{{ morla_one_media }}/data/media'
-          - morla_torrents_dir: '{{ morla_one_media }}/data/torrents'
 
           - morla_vault_dir: '{{ morla_one_vault }}/Vault'
 
@@ -51,6 +53,7 @@
           - morla-lidarr      # setup lidarr
           - morla-readarr     # setup readarr
           - morla-qbittorrent # setup qbittorrent
+          - morla-pyload
           - morla-syncthing   # setup syncting
           - morla-jellyfin    # setup jellyfin [public]
           - morla-navidrome   # setup navidrome [public]

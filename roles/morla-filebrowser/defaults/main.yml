@@ -50,6 +50,7 @@ morla_filebrowser_volumes:
     - '{{ morla_filebrowser_db }}:/database/filebrowser.db:Z'
     - '{{ morla_filebrowser_settings_json }}:/config/settings.json:Z'
     - '{{ morla_filebrowser_srv_dir }}:/srv:z'
+    - '{{ morla_download_dir }}:/download:z'
 
 # Labels/Traefik
 morla_filebrowser_labels:
