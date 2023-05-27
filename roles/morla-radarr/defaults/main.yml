@@ -45,7 +45,7 @@ morla_radarr_data_dir: '{{ morla_data_dir }}'
 morla_radarr_volumes:
     - '{{ morla_radarr_config_dir }}:/config:Z'
     - '{{ morla_radarr_data_dir }}:/data:z'
-    - '{{ morla_download_dir }}:/download:z'
+    - '{{ morla_download_dir }}:/downloads:z'
 
 # Labels/Traefik
 morla_radarr_labels:

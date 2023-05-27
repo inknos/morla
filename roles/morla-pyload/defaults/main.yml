@@ -24,8 +24,8 @@ morla_pyload_container_image_tag: latest
 morla_pyload_container_image: '{{ morla_pyload_container_image_base }}:{{ morla_pyload_container_image_tag }}'
 
 # Networking
-morla_pyload_reverse_proxy_port: '8000'
-morla_pyload_exposed_proxy_port: '{{ morla_pyload_reverse_proxy_port }}'
+morla_pyload_reverse_proxy_port: '8008'
+morla_pyload_exposed_proxy_port: '8000'
 
 # Networking/Firewall
 morla_pyload_fw_ports:

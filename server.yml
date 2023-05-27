@@ -53,7 +53,7 @@
           - morla-lidarr      # setup lidarr
           - morla-readarr     # setup readarr
           - morla-qbittorrent # setup qbittorrent
-          - morla-pyload
+          - morla-pyload-ng
           - morla-syncthing   # setup syncting
           - morla-jellyfin    # setup jellyfin [public]
           - morla-navidrome   # setup navidrome [public]

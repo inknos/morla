@@ -1,0 +1,5 @@
+---
+    - name: Check if Config dir exists
+      stat:
+          path: '{{ morla_pyload_ng_config_dir }}'
+      register: check_pyload_ng_config_dir
