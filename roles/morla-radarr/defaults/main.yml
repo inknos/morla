@@ -39,13 +39,13 @@ morla_radarr_ports:
 
 # Storage/Host
 morla_radarr_config_dir: '{{ morla_config_dir }}/{{ morla_radarr_long_name }}'
-morla_radarr_data_dir: '{{ morla_data_dir }}'
+morla_radarr_data_dir: '{{ morla_media_dir }}'
 
 # Storage/Mount
 morla_radarr_volumes:
     - '{{ morla_radarr_config_dir }}:/config:Z'
-    - '{{ morla_radarr_data_dir }}:/data:z'
-    - '{{ morla_download_dir }}:/downloads:z'
+    - '{{ morla_radarr_data_dir }}:/data/media:z'
+    - '{{ morla_torrents_dir }}:/data/torrents:z'
 
 # Labels/Traefik
 morla_radarr_labels:

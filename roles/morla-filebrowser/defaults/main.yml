@@ -43,14 +43,14 @@ morla_filebrowser_config_config_dir: '{{ morla_filebrowser_config_dir }}/config'
 morla_filebrowser_database_dir: '{{ morla_filebrowser_config_dir }}/database'
 morla_filebrowser_db: '{{ morla_filebrowser_database_dir }}/filebrowser.db'
 morla_filebrowser_settings_json: '{{ morla_filebrowser_config_config_dir }}/settings.json'
-morla_filebrowser_srv_dir: '{{ morla_data_dir }}'
 
 # Storage/Mount
 morla_filebrowser_volumes:
     - '{{ morla_filebrowser_db }}:/database/filebrowser.db:Z'
     - '{{ morla_filebrowser_settings_json }}:/config/settings.json:Z'
-    - '{{ morla_filebrowser_srv_dir }}:/srv:z'
-    - '{{ morla_download_dir }}:/downloads:z'
+    - '{{ morla_media_dir }}:/srv/media:z'
+    - '{{ morla_pyload_dir }}:/srv/pyload:z'
+    - '{{ morla_torrents_dir }}:/srv/torrents:z'
 
 # Labels/Traefik
 morla_filebrowser_labels:

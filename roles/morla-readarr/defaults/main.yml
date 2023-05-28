@@ -40,12 +40,13 @@ morla_readarr_ports:
 
 # Storage/Host
 morla_readarr_config_dir: '{{ morla_config_dir }}/{{ morla_readarr_long_name }}'
-morla_readarr_data_dir: '{{ morla_data_dir }}'
+morla_readarr_data_dir: '{{ morla_media_dir }}'
 
 # Storage/Mount
 morla_readarr_volumes:
     - '{{ morla_readarr_config_dir }}:/config:Z'
-    - '{{ morla_readarr_data_dir }}:/data:z'
+    - '{{ morla_readarr_data_dir }}:/data/media:z'
+    - '{{ morla_torrents_dir }}:/data/torrents:z'
 
 # Labels/Traefik
 morla_readarr_labels:

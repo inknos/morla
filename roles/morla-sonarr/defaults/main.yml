@@ -40,13 +40,13 @@ morla_sonarr_ports:
 
 # Storage/Host
 morla_sonarr_config_dir: '{{ morla_config_dir }}/{{ morla_sonarr_long_name }}'
-morla_sonarr_data_dir: '{{ morla_data_dir }}'
+morla_sonarr_data_dir: '{{ morla_media_dir }}'
 
 # Storage/Mount
 morla_sonarr_volumes:
     - '{{ morla_sonarr_config_dir }}:/config:Z'
-    - '{{ morla_sonarr_data_dir }}:/data:z'
-    - '{{ morla_download_dir }}:/downloads:z'
+    - '{{ morla_sonarr_data_dir }}:/data/media:z'
+    - '{{ morla_torrents_dir }}:/data/torrents:z'
 
 # Labels/Traefik
 morla_sonarr_labels:
