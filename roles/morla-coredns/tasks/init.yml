@@ -1,0 +1,5 @@
+---
+    - name: Check if Config dir exists
+      stat:
+          path: '{{ morla_coredns_config_dir }}'
+      register: check_coredns_config_dir

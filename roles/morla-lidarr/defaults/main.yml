@@ -6,7 +6,7 @@
 # configuration file for lidarr
 morla_lidarr_enabled: false
 
-morla_lidarr_flag_public: false
+morla_lidarr_flag_public: true
 morla_lidarr_flag_autostart: true
 morla_lidarr_flag_wireguard: true
 morla_lidarr_flag_firewall: true # replace with if port list non empty
@@ -18,6 +18,7 @@ morla_lidarr_short_name: lidarr
 morla_lidarr_container_short_name: '{{ morla_lidarr_short_name }}'
 morla_lidarr_container_name: '{{ morla_user_username }}-{{ morla_lidarr_container_short_name }}'
 morla_lidarr_public_url: '{{ morla_lidarr_short_name }}.{{ morla_public_url }}'
+morla_lidarr_tailscale_url: '{{ morla_lidarr_short_name }}.{{ morla_tailscale_url }}'
 
 morla_lidarr_container_image_base: cr.hotio.dev/hotio/lidarr
 morla_lidarr_container_image_tag: latest
@@ -52,7 +53,7 @@ morla_lidarr_labels:
     traefik.enable: '{{ morla_lidarr_flag_public }}'
     traefik.http.services.lidarr.loadbalancer.server.port: '{{ morla_lidarr_exposed_proxy_port }}'
     traefik.http.routers.lidarr.tls: true
-    traefik.http.routers.lidarr.rule: Host(`{{ morla_lidarr_public_url }}`)
-    traefik.http.routers.lidarr.entrypoints: websecure
+    traefik.http.routers.lidarr.rule: Host(`{{ morla_lidarr_tailscale_url }}`)
+    traefik.http.routers.lidarr.entrypoints: tswebsecure
     traefik.http.routers.lidarr.tls.certresolver: myresolver
-    traefik.http.routers.lidarr.tls.domains: '{{ morla_lidarr_public_url }}'
+    traefik.http.routers.lidarr.tls.domains: '{{ morla_lidarr_tailscale_url }}'

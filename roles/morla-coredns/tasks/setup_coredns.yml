@@ -1,0 +1,32 @@
+---
+    - name: Create config directory
+      ansible.builtin.file:
+          path: '{{ morla_coredns_config_dir }}'
+          state: directory
+          owner: '{{ morla_user_username }}'
+          group: '{{ morla_user_groupname }}'
+      when: not check_coredns_config_dir.stat.exists
+
+    - name: Create container
+      containers.podman.podman_container:
+          name: '{{ morla_coredns_container_name }}'
+          image: '{{ morla_coredns_container_image}}'
+          network: morla-wireguard-network
+          network_aliases: '{{ morla_coredns_short_name }}'
+          ports: '{{ morla_coredns_ports }}'
+          volumes: '{{ morla_coredns_volumes }}'
+          label: '{{ morla_coredns_labels }}'
+          cap_drop: '{{ morla_coredns_cap_drop }}'
+          cap_add: '{{ morla_coredns_cap_add }}'
+          env:
+              PUID: '{{ morla_fake_puid }}'
+              PGID: '{{ morla_fake_pgid }}'
+              TZ: '{{ morla_tz }}'
+          read_only: true
+          command: -conf /etc/coredns/Corefile
+          state: started
+          generate_systemd:
+              path: '{{ morla_home_config_systemd_dir }}'
+              restart_policy: always
+              names: true
+              container_prefix: '{{ morla_systemd_service_prefix }}'

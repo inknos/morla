@@ -7,7 +7,7 @@
 morla_syncthing_enabled: false
 morla_syncthing_become: true
 
-morla_syncthing_flag_public: false
+morla_syncthing_flag_public: true
 morla_syncthing_flag_autostart: true
 morla_syncthing_flag_wireguard: true
 morla_syncthing_flag_firewall: true # replace with if port list non empty
@@ -19,6 +19,7 @@ morla_syncthing_short_name: syncthing
 morla_syncthing_container_short_name: '{{ morla_syncthing_short_name }}'
 morla_syncthing_container_name: '{{ morla_user_username }}-{{ morla_syncthing_container_short_name }}'
 morla_syncthing_public_url: '{{ morla_syncthing_short_name }}.{{ morla_public_url }}'
+morla_syncthing_tailscale_url: '{{ morla_syncthing_short_name }}.{{ morla_tailscale_url }}'
 
 morla_syncthing_container_image_base: lscr.io/linuxserver/syncthing
 morla_syncthing_container_image_tag: latest
@@ -58,6 +59,5 @@ morla_syncthing_labels:
     traefik.enable: '{{ morla_syncthing_flag_public }}'
     traefik.http.services.syncthing.loadbalancer.server.port: '{{ morla_syncthing_exposed_proxy_port }}'
     traefik.http.routers.syncthing.tls: true
-    traefik.http.routers.syncthing.rule: Host(`{{ morla_syncthing_public_url }}`)
-    traefik.http.routers.syncthing.entrypoints: websecure
-    traefik.http.routers.syncthing.tls.certresolver: myresolver
+    traefik.http.routers.syncthing.rule: Host(`{{ morla_syncthing_tailscale_url }}`)
+    traefik.http.routers.syncthing.entrypoints: tswebsecure

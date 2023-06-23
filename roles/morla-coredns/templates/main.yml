@@ -1,0 +1,10 @@
+---
+    - name: Create Corefile template
+      ansible.builtin.template:
+          src: Corefile.j2
+          dest: '{{ morla_coredns_config_dir }}/Corefile'
+
+    - name: Create internal.hosts file
+      ansible.builtin.template:
+          src: internal.hosts.j2
+          dest: '{{ morla_coredns_config_dir }}/internal.hosts'

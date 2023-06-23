@@ -1,0 +1,38 @@
+---
+# roles/coredns/tasks/main.yml
+    - ansible.builtin.import_tasks: '{{ role_path }}/tasks/init.yml'
+      when: morla_coredns_enabled | bool
+      tags:
+          - always
+
+    - ansible.builtin.import_tasks: '{{ role_path }}/tasks/init_flag.yml'
+      when: morla_coredns_enabled | bool
+      tags:
+          - always
+          - setup-all
+          - setup-coredns
+
+    - ansible.builtin.import_tasks: '{{ role_path }}/templates/main.yml'
+      when: morla_coredns_enabled | bool
+      tags:
+          - setup-all
+          - setup-coredns
+
+    - ansible.builtin.import_tasks: '{{ role_path }}/tasks/pull_coredns.yml'
+      when: morla_coredns_enabled | bool
+      tags:
+          - setup-all
+          - setup-coredns
+
+    - ansible.builtin.import_tasks: '{{ role_path }}/tasks/destroy_coredns.yml'
+      when: morla_coredns_enabled | bool
+      tags:
+          - never
+          - destroy-all
+          - destroy-coredns
+
+    - ansible.builtin.import_tasks: '{{ role_path }}/tasks/setup_coredns.yml'
+      when: morla_coredns_enabled | bool
+      tags:
+          - setup-all
+          - setup-coredns

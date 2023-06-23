@@ -12,6 +12,7 @@
           - morla_domain: '{{ morla_main_domain }}'
           - morla_subdomain: morla
           - morla_public_url: '{{ morla_subdomain }}.{{ morla_domain }}'
+          - morla_tailscale_url: ts.{{ morla_subdomain }}.{{ morla_domain }}
 
           - morla_user_puid: 1000
           - morla_user_pgid: 1000
@@ -29,6 +30,7 @@
           - morla_download_dir: '{{ morla_home_dir }}/downloads'
           - morla_torrents_dir: '{{ morla_download_dir }}/torrents'
           - morla_pyload_dir: '{{ morla_download_dir }}/pyload'
+          - morla_syncthing_dir: '{{ morla_download_dir }}/syncthing'
 
           - morla_one_media: /one/media
           - morla_one_vault: /one/vault
@@ -45,6 +47,7 @@
       roles:
           - morla-base        # setup base environment for containers
           - morla-wireguard   # setup wireguard wpn and keys
+          - morla-coredns
           - morla-traefik     # support for traefik. since it's experimental it's using v3 beta
           - morla-filebrowser # setup filebrowser container
           - morla-radarr      # setup radarr

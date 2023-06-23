@@ -7,7 +7,7 @@
 morla_sonarr_enabled: false
 morla_sonarr_become: true
 
-morla_sonarr_flag_public: false
+morla_sonarr_flag_public: true
 morla_sonarr_flag_autostart: true
 morla_sonarr_flag_wireguard: true
 morla_sonarr_flag_firewall: true # replace with if port list non empty
@@ -19,6 +19,7 @@ morla_sonarr_short_name: sonarr
 morla_sonarr_container_short_name: '{{ morla_sonarr_short_name }}'
 morla_sonarr_container_name: '{{ morla_user_username }}-{{ morla_sonarr_container_short_name }}'
 morla_sonarr_public_url: '{{ morla_sonarr_short_name }}.{{ morla_public_url }}'
+morla_sonarr_tailscale_url: '{{ morla_sonarr_short_name }}.{{ morla_tailscale_url }}'
 
 morla_sonarr_container_image_base: cr.hotio.dev/hotio/sonarr
 morla_sonarr_container_image_tag: latest
@@ -53,7 +54,7 @@ morla_sonarr_labels:
     traefik.enable: '{{ morla_sonarr_flag_public }}'
     traefik.http.services.sonarr.loadbalancer.server.port: '{{ morla_sonarr_exposed_proxy_port }}'
     traefik.http.routers.sonarr.tls: true
-    traefik.http.routers.sonarr.rule: Host(`{{ morla_sonarr_public_url }}`)
-    traefik.http.routers.sonarr.entrypoints: websecure
+    traefik.http.routers.sonarr.rule: Host(`{{ morla_sonarr_tailscale_url }}`)
+    traefik.http.routers.sonarr.entrypoints: tswebsecure
     traefik.http.routers.sonarr.tls.certresolver: myresolver
-    traefik.http.routers.sonarr.tls.domains: '{{ morla_sonarr_public_url }}'
+    traefik.http.routers.sonarr.tls.domains: '{{ morla_sonarr_tailscale_url }}'

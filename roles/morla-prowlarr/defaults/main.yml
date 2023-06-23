@@ -6,7 +6,7 @@
 # configuration file for prowlarr
 morla_prowlarr_enabled: false
 
-morla_prowlarr_flag_public: false
+morla_prowlarr_flag_public: true
 morla_prowlarr_flag_autostart: true
 morla_prowlarr_flag_wireguard: true
 morla_prowlarr_flag_firewall: true # replace with if port list non empty
@@ -18,6 +18,7 @@ morla_prowlarr_short_name: prowlarr
 morla_prowlarr_container_short_name: '{{ morla_prowlarr_short_name }}'
 morla_prowlarr_container_name: '{{ morla_user_username }}-{{ morla_prowlarr_container_short_name }}'
 morla_prowlarr_public_url: '{{ morla_prowlarr_short_name }}.{{ morla_public_url }}'
+morla_prowlarr_tailscale_url: '{{ morla_prowlarr_short_name }}.{{ morla_tailscale_url }}'
 
 morla_prowlarr_container_image_base: cr.hotio.dev/hotio/prowlarr
 morla_prowlarr_container_image_tag: latest
@@ -49,7 +50,7 @@ morla_prowlarr_labels:
     traefik.enable: '{{ morla_prowlarr_flag_public }}'
     traefik.http.services.prowlarr.loadbalancer.server.port: '{{ morla_prowlarr_exposed_proxy_port }}'
     traefik.http.routers.prowlarr.tls: true
-    traefik.http.routers.prowlarr.rule: Host(`{{ morla_prowlarr_public_url }}`)
-    traefik.http.routers.prowlarr.entrypoints: websecure
+    traefik.http.routers.prowlarr.rule: Host(`{{ morla_prowlarr_tailscale_url }}`)
+    traefik.http.routers.prowlarr.entrypoints: tswebsecure
     traefik.http.routers.prowlarr.tls.certresolver: myresolver
-    traefik.http.routers.prowlarr.tls.domains: '{{ morla_prowlarr_public_url }}'
+    traefik.http.routers.prowlarr.tls.domains: '{{ morla_prowlarr_tailscale_url }}'

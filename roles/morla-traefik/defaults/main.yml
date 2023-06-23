@@ -29,6 +29,8 @@ morla_traefik_dashboard_port: '8080'
 # Network/Firewall
 morla_traefik_fw_ports:
     tcp:
+        - '80'
+        - '443'
         - '{{ morla_traefik_http_port }}'
         - '{{ morla_traefik_https_port }}'
         - '{{ morla_traefik_dashboard_port }}'
@@ -36,8 +38,10 @@ morla_traefik_fw_ports:
 
 # Network/Port Forwarding
 morla_traefik_ports:
-    - '{{ morla_traefik_http_port }}:80'
-    - '{{ morla_traefik_https_port }}:443'
+    - '{{ morla_traefik_http_port }}:{{ morla_traefik_http_port }}'
+    - '{{ morla_traefik_https_port }}:{{ morla_traefik_https_port }}'
+    - '{{ morla_tailscale_ip }}:80:80'
+    - '{{ morla_tailscale_ip }}:443:443'
     - '{{ morla_traefik_dashboard_port }}:8080'
 
 # Storage/Host
@@ -63,15 +67,18 @@ morla_traefik_command:
     - --api.insecure=true
     - --api.dashboard=true
     - --providers.docker=true
-    - --providers.docker.network=morla-wireguard-network
     - --providers.docker.exposedbydefault=false
     - --providers.file.directory=/rules
     - --providers.file.watch=true
-    - --entrypoints.web.address=:80/tcp
-    - --entrypoints.websecure.address=:443/tcp
-    - --entrypoints.wireguard.address=:443/udp
+    - --entrypoints.web.address=:1680/tcp
+    - --entrypoints.websecure.address=:1643/tcp
+    - --entrypoints.tsweb.address=:80/tcp
+    - --entrypoints.tswebsecure.address=:443/tcp
     - --entrypoints.web.http.redirections.entryPoint.to=websecure
     - --entrypoints.web.http.redirections.entryPoint.scheme=https
+    - --entrypoints.tsweb.http.redirections.entryPoint.to=tswebsecure
+    - --entrypoints.tsweb.http.redirections.entryPoint.scheme=https
+    - --certificatesresolvers.tsresolver.tailscale=true
     - --certificatesresolvers.myresolver.acme.dnschallenge=true
     - --certificatesresolvers.myresolver.acme.dnschallenge.provider=gandiv5
       #- "--certificatesresolvers.myresolver.acme.caserver=https://acme-staging-v02.api.letsencrypt.org/directory"
@@ -83,21 +90,18 @@ morla_traefik_command:
 
 morla_traefik_labels:
     traefik.enable: true
-    traefik.docker.network: morla-wireguard-network
     traefik.http.routers.traefik.rule: Host(`traefik.{{ morla_domain }}`) && (PathPrefix(`/api`) || PathPrefix(`/dashboard`))
     traefik.http.routers.traefik.service: api@internal
     traefik.http.routers.traefik.entrypoints: websecure
     traefik.http.routers.traefik.tls.certresolver: myresolver
-    traefik.http.routers.traefik.middlewares: wireguard-ipwhitelist@docker
-    # middleware redirect
-    traefik.http.middlewares.redirect-to-https.redirectscheme.scheme: https
-    # global redirect to https
-    traefik.http.routers.redirs.rule: hostregexp(`{host:.+}`)
-    traefik.http.routers.redirs.entrypoints: web
-    traefik.http.routers.redirs.middlewares: redirect-to-https
+    # # middleware redirect
+    # traefik.http.middlewares.redirect-to-https.redirectscheme.scheme: https
+    # # global redirect to https
+    # traefik.http.routers.redirs.rule: hostregexp(`{host:.+}`)
+    # traefik.http.routers.redirs.entrypoints: web
+    # traefik.http.routers.redirs.middlewares: redirect-to-https
     # private network ip whitelist
     # need a way to get public ip
-    traefik.http.middlewares.wireguard-ipwhitelist.ipwhitelist.sourcerange: 127.0.0.1/32, 10.0.0.1/24, {{ morla_public_ip }}/32
 
 # Sec Opt
 morla_traefik_security_opt:
@@ -107,5 +111,4 @@ morla_traefik_security_opt:
 morla_traefik_puid: 101
 morla_traefik_pgid: 101
 
-# Environment
 morla_traefik_env_gandiv5_api_key: '{{ morla_letsencrypt_gandi_api_key }}'

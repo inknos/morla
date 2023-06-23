@@ -13,6 +13,7 @@
           image: '{{ morla_traefik_container_image}}'
           network: morla-wireguard-network
           network_aliases: '{{ morla_traefik_short_name }}'
+          ip: 172.20.0.100
           ports: '{{ morla_traefik_ports }}'
           volumes: '{{ morla_traefik_volumes }}'
           label: '{{ morla_traefik_labels }}'
