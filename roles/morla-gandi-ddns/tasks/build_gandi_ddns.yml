@@ -20,4 +20,4 @@
           build:
               annotation:
                   app: '{{ morla_gandi_ddns_container_name }}'
-                  info: Gandi-DDNS in React
+                  info: Dynamic DNS Update Client for Gandi's LiveDNS.

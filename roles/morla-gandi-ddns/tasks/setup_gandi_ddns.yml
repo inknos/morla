@@ -14,7 +14,8 @@
           name: Check DNS for {{ morla_domain }}
           minute: 12
           hour: 10,22
-          job: /usr/bin/podman run --rm localhost/{{ morla_gandi_ddns_container_image }}
+          job: /usr/bin/podman run --rm -e GANDY_KEY={{ morla_letsencrypt_gandi_api_key }} -e GANDI_DOMAIN={{ morla_domain }} localhost/{{ morla_gandi_ddns_container_image
+              }}
       register: check_cron_dns
 
     - name: Restart service cron, also issue daemon-reload

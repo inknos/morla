@@ -78,7 +78,6 @@ morla_traefik_command:
     - --entrypoints.web.http.redirections.entryPoint.scheme=https
     - --entrypoints.tsweb.http.redirections.entryPoint.to=tswebsecure
     - --entrypoints.tsweb.http.redirections.entryPoint.scheme=https
-    - --certificatesresolvers.tsresolver.tailscale=true
     - --certificatesresolvers.myresolver.acme.dnschallenge=true
     - --certificatesresolvers.myresolver.acme.dnschallenge.provider=gandiv5
       #- "--certificatesresolvers.myresolver.acme.caserver=https://acme-staging-v02.api.letsencrypt.org/directory"
