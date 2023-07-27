@@ -59,10 +59,10 @@ morla_standardnotes_labels:
     traefik.enable: '{{ morla_standardnotes_flag_public }}'
     traefik.http.services.standardnotes.loadbalancer.server.port: '{{ morla_standardnotes_exposed_proxy_port }}'
     traefik.http.routers.standardnotes.tls: true
-    traefik.http.routers.standardnotes.rule: Host(`{{ morla_standardnotes_tailscale_url }}`)
+    traefik.http.routers.standardnotes.rule: Host(`{{ morla_standardnotes_public_url }}`)
     traefik.http.routers.standardnotes.entrypoints: websecure
     traefik.http.routers.standardnotes.tls.certresolver: myresolver
-    traefik.http.routers.standardnotes.tls.domains: '{{ morla_standardnotes_tailscale_url }}'
+    traefik.http.routers.standardnotes.tls.domains: '{{ morla_standardnotes_public_url }}'
 
 # DB
 # Name

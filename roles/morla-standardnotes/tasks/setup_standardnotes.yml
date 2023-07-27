@@ -97,7 +97,7 @@
 
     - name: Create Localstack
       containers.podman.podman_container:
-          name: '{{ morla_standardnotes_localstack_container_name }}'
+          name: localstack
           image: '{{ morla_standardnotes_localstack_container_image }}'
           pod: '{{ morla_standardnotes_pod_name }}'
           network: container:morla-standardnotes
@@ -110,7 +110,7 @@
 
     - name: Create Database
       containers.podman.podman_container:
-          name: '{{ morla_standardnotes_db_container_name }}'
+          name: db
           image: '{{ morla_standardnotes_db_container_image }}'
           pod: '{{ morla_standardnotes_pod_name }}'
           network: container:morla-standardnotes
@@ -128,7 +128,7 @@
 
     - name: Create Cache
       containers.podman.podman_container:
-          name: '{{ morla_standardnotes_cache_container_name }}'
+          name: cache
           image: '{{ morla_standardnotes_cache_container_image }}'
           pod: '{{ morla_standardnotes_pod_name }}'
           network: container:morla-standardnotes
