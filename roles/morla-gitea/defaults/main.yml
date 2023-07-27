@@ -1,0 +1,83 @@
+---
+# SPDX-FileCopyrightText: Nicola Sella
+#
+# SPDX-License-Identifier: GPL-3.0-or-later
+
+# configuration file for gitea
+morla_gitea_enabled: false
+
+morla_gitea_flag_public: true
+morla_gitea_flag_autostart: true
+morla_gitea_flag_wireguard: true
+morla_gitea_flag_firewall: true # replace with if port list non empty
+
+# Name
+morla_gitea_long_name: Gitea
+morla_gitea_short_name: gitea
+
+morla_gitea_container_short_name: '{{ morla_gitea_short_name }}'
+morla_gitea_container_name: '{{ morla_user_username }}-{{ morla_gitea_container_short_name }}'
+morla_gitea_public_url: '{{ morla_gitea_short_name }}.{{ morla_public_url }}'
+
+morla_gitea_pod_name: '{{ morla_gitea_container_name }}-pod'
+
+morla_gitea_container_image_base: docker.io/gitea/gitea
+morla_gitea_container_image_tag: 1.19
+morla_gitea_container_image: '{{ morla_gitea_container_image_base }}:{{ morla_gitea_container_image_tag }}'
+
+# Networking
+morla_gitea_reverse_proxy_port: '3000'
+morla_gitea_exposed_proxy_port: '{{ morla_gitea_reverse_proxy_port }}'
+
+# Networking/Firewall
+morla_gitea_fw_ports:
+    tcp:
+        - '{{ morla_gitea_reverse_proxy_port }}'
+        - '2222'
+    udp:
+
+# Networking/Port Forwarding
+morla_gitea_ports:
+    - '{{ morla_gitea_reverse_proxy_port }}:{{ morla_gitea_exposed_proxy_port }}'
+    - '{{ morla_gitea_fw_ports.tcp[1] }}:{{ morla_gitea_fw_ports.tcp[1] }}'
+
+# Storage/Host
+morla_gitea_config_dir: '{{ morla_config_dir }}/{{ morla_gitea_long_name }}'
+
+# Storage/Mount
+morla_gitea_volumes:
+    - '{{ morla_gitea_config_dir }}/config:/etc/gitea:Z'
+    - '{{ morla_gitea_config_dir }}/data:/var/lib/gitea:Z'
+
+# Labels/Traefik
+morla_gitea_labels:
+    traefik.enable: '{{ morla_gitea_flag_public }}'
+    traefik.http.services.gitea.loadbalancer.server.port: '{{ morla_gitea_exposed_proxy_port }}'
+    traefik.http.routers.gitea.tls: true
+    traefik.http.routers.gitea.rule: Host(`{{ morla_gitea_public_url }}`)
+    traefik.http.routers.gitea.entrypoints: websecure
+    traefik.http.routers.gitea.tls.certresolver: myresolver
+
+# DB
+# Name
+morla_gitea_db_long_name: GiteaDB
+morla_gitea_db_short_name: gitea-db
+
+morla_gitea_db_container_short_name: '{{ morla_gitea_db_short_name }}'
+morla_gitea_db_container_name: '{{ morla_user_username }}-{{ morla_gitea_db_container_short_name }}'
+
+morla_gitea_db_container_image_base: docker.io/library/postgres
+morla_gitea_db_container_image_tag: 14
+morla_gitea_db_container_image: '{{ morla_gitea_db_container_image_base }}:{{ morla_gitea_db_container_image_tag }}'
+
+# Environment
+morla_gitea_db_env_postgres_user: gitea
+morla_gitea_db_env_postgres_password: '{{ morla_gitea_db_password }}'
+morla_gitea_db_env_postgres_db: gitea-db
+
+# Storage/Host
+morla_gitea_db_config_dir: '{{ morla_config_dir }}/{{ morla_gitea_db_long_name }}'
+
+# Storage/Mount
+morla_gitea_db_volumes:
+    - '{{ morla_gitea_db_config_dir }}:/config:Z'

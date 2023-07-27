@@ -1,0 +1,5 @@
+---
+    - name: Pull Gitea image
+      containers.podman.podman_image:
+          name: '{{ morla_gitea_container_image }}'
+          tag: latest

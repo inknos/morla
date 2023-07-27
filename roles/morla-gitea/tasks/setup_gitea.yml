@@ -1,0 +1,86 @@
+---
+    - name: Create config directory
+      ansible.builtin.file:
+          path: '{{ morla_gitea_config_dir }}'
+          state: directory
+          owner: '{{ morla_user_username }}'
+          group: '{{ morla_user_groupname }}'
+      when: not check_gitea_config_dir.stat.exists
+
+    - name: Create Config/config directory
+      ansible.builtin.file:
+          path: '{{ morla_gitea_config_dir }}/config'
+          state: directory
+          owner: '{{ morla_user_username }}'
+          group: '{{ morla_user_groupname }}'
+      when: not check_gitea_config_config_dir.stat.exists
+
+    - name: Create Config/data directory
+      ansible.builtin.file:
+          path: '{{ morla_gitea_config_dir }}/data'
+          state: directory
+          owner: '{{ morla_user_username }}'
+          group: '{{ morla_user_groupname }}'
+      when: not check_gitea_config_data_dir.stat.exists
+
+    - name: Create DB config directory
+      ansible.builtin.file:
+          path: '{{ morla_gitea_db_config_dir }}'
+          state: directory
+          owner: '{{ morla_user_username }}'
+          group: '{{ morla_user_groupname }}'
+      when: not check_gitea_db_config_dir.stat.exists
+
+    - name: Create pod
+      containers.podman.podman_pod:
+          name: '{{ morla_gitea_pod_name }}'
+          network: morla-wireguard-network
+          ports: '{{ morla_gitea_ports }}'
+          label: '{{ morla_gitea_labels }}'
+          uidmap:
+              - '{{ morla_fake_puid }}:0:1'
+              - 0:1:{{ morla_fake_puid }}
+              - '{{ morla_fake_puid + 1 }}:{{ morla_fake_puid + 1 }}:{{ morla_subuid_size - morla_fake_puid }}'
+          gidmap:
+              - '{{ morla_fake_pgid }}:0:1'
+              - 0:1:{{ morla_fake_pgid }}
+              - '{{ morla_fake_pgid + 1 }}:{{ morla_fake_pgid + 1 }}:{{ morla_subgid_size - morla_fake_pgid }}'
+          generate_systemd:
+              path: '{{ morla_home_config_systemd_dir }}'
+              restart_policy: always
+              names: true
+              pod_prefix: '{{ morla_systemd_service_pod_prefix }}'
+          state: started
+
+    - name: Create container
+      containers.podman.podman_container:
+          name: '{{ morla_gitea_container_name }}'
+          image: '{{ morla_gitea_container_image}}'
+          pod: '{{ morla_gitea_pod_name }}'
+          volumes: '{{ morla_gitea_volumes }}'
+          env:
+              PUID: '{{ morla_fake_puid }}'
+              PGID: '{{ morla_fake_pgid }}'
+              TZ: '{{ morla_tz }}'
+              GITEA__database__DB_TYPE: postgres
+              GITEA__database__HOST: gitea-db:5432
+              GITEA__database__NAME: '{{ morla_gitea_db_env_postgres_db }}'
+              GITEA__database__USER: '{{ morla_gitea_db_env_postgres_user }}'
+              GITEA__database__PASSWD: '{{ morla_gitea_db_env_postgres_password }}'
+          state: started
+
+    - name: Create Database
+      containers.podman.podman_container:
+          name: '{{ morla_gitea_db_container_name }}'
+          image: '{{ morla_gitea_db_container_image }}'
+          pod: '{{ morla_gitea_pod_name }}'
+          network: container:morla-gitea
+          volumes: '{{ morla_gitea_db_volumes }}'
+          env:
+              PUID: '{{ morla_fake_puid }}'
+              PGID: '{{ morla_fake_pgid }}'
+              TZ: '{{ morla_tz }}'
+              POSTGRES_USER: '{{ morla_gitea_db_env_postgres_user }}'
+              POSTGRES_PASSWORD: '{{ morla_gitea_db_env_postgres_password }}'
+              POSTGRES_DB: '{{ morla_gitea_db_env_postgres_db }}'
+          state: started

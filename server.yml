@@ -68,6 +68,7 @@
           - morla-grav        # setup grav [public]
           - morla-hedgedoc    # setup hedgedoc [public]
           - morla-transfersh
+          - morla-gitea
           - morla-ipfs
           - morla-gandi-ddns  # setup python script to update gandi dns
           - morla-firewall  # manage firewall services and open ports

@@ -1,0 +1,20 @@
+---
+    - name: Check if Config dir exists
+      stat:
+          path: '{{ morla_gitea_config_dir }}'
+      register: check_gitea_config_dir
+
+    - name: Check if Config/config dir exists
+      stat:
+          path: '{{ morla_gitea_config_dir }}/config'
+      register: check_gitea_config_config_dir
+
+    - name: Check if Config/data dir exists
+      stat:
+          path: '{{ morla_gitea_config_dir }}/data'
+      register: check_gitea_config_data_dir
+
+    - name: Check if Config dir for DB exists
+      stat:
+          path: '{{ morla_gitea_db_config_dir }}'
+      register: check_gitea_db_config_dir
