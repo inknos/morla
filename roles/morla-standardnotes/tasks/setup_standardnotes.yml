@@ -1,0 +1,136 @@
+---
+    - name: Create config directory
+      ansible.builtin.file:
+          path: '{{ morla_standardnotes_config_dir }}'
+          state: directory
+          owner: '{{ morla_user_username }}'
+          group: '{{ morla_user_groupname }}'
+      when: not check_standardnotes_config_dir.stat.exists
+
+    - name: Create config/config directory
+      ansible.builtin.file:
+          path: '{{ morla_standardnotes_config_dir }}/config'
+          state: directory
+          owner: '{{ morla_user_username }}'
+          group: '{{ morla_user_groupname }}'
+      when: not check_standardnotes_config_config_dir.stat.exists
+
+    - name: Create config/logs directory
+      ansible.builtin.file:
+          path: '{{ morla_standardnotes_config_dir }}/logs'
+          state: directory
+          owner: '{{ morla_user_username }}'
+          group: '{{ morla_user_groupname }}'
+      when: not check_standardnotes_config_logs_dir.stat.exists
+
+    - name: Create config/uploads directory
+      ansible.builtin.file:
+          path: '{{ morla_standardnotes_config_dir }}/uploads'
+          state: directory
+          owner: '{{ morla_user_username }}'
+          group: '{{ morla_user_groupname }}'
+      when: not check_standardnotes_config_uploads_dir.stat.exists
+
+    - name: Create DB config directory
+      ansible.builtin.file:
+          path: '{{ morla_standardnotes_db_config_dir }}'
+          state: directory
+          owner: '{{ morla_user_username }}'
+          group: '{{ morla_user_groupname }}'
+      when: not check_standardnotes_db_config_dir.stat.exists
+
+    - name: Create DB config/data/mysql directory
+      ansible.builtin.file:
+          path: '{{ morla_standardnotes_db_config_dir }}/data/mysql'
+          state: directory
+          owner: '{{ morla_user_username }}'
+          group: '{{ morla_user_groupname }}'
+      when: not check_standardnotes_db_config_mysql_dir.stat.exists
+
+    - name: Create DB config/data/import directory
+      ansible.builtin.file:
+          path: '{{ morla_standardnotes_db_config_dir }}/data/import'
+          state: directory
+          owner: '{{ morla_user_username }}'
+          group: '{{ morla_user_groupname }}'
+      when: not check_standardnotes_db_config_import_dir.stat.exists
+
+    - name: Create DB config/data/redis directory
+      ansible.builtin.file:
+          path: '{{ morla_standardnotes_db_config_dir }}/data/redis'
+          state: directory
+          owner: '{{ morla_user_username }}'
+          group: '{{ morla_user_groupname }}'
+      when: not check_standardnotes_db_config_redis_dir.stat.exists
+
+    - ansible.builtin.import_tasks: '{{ role_path }}/templates/main.yml'
+
+    - name: Create pod
+      containers.podman.podman_pod:
+          name: '{{ morla_standardnotes_pod_name }}'
+          network: morla-wireguard-network
+          ports: '{{ morla_standardnotes_ports }}'
+          label: '{{ morla_standardnotes_labels }}'
+          uidmap:
+              - '{{ morla_fake_puid }}:0:1'
+              - 0:1:{{ morla_fake_puid }}
+              - '{{ morla_fake_puid + 1 }}:{{ morla_fake_puid + 1 }}:{{ morla_subuid_size - morla_fake_puid }}'
+          gidmap:
+              - '{{ morla_fake_pgid }}:0:1'
+              - 0:1:{{ morla_fake_pgid }}
+              - '{{ morla_fake_pgid + 1 }}:{{ morla_fake_pgid + 1 }}:{{ morla_subgid_size - morla_fake_pgid }}'
+          generate_systemd:
+              path: '{{ morla_home_config_systemd_dir }}'
+              restart_policy: always
+              names: true
+              pod_prefix: '{{ morla_systemd_service_pod_prefix }}'
+          state: started
+
+    - name: Create container
+      containers.podman.podman_container:
+          name: '{{ morla_standardnotes_container_name }}'
+          image: '{{ morla_standardnotes_container_image}}'
+          pod: '{{ morla_standardnotes_pod_name }}'
+          volumes: '{{ morla_standardnotes_volumes }}'
+          env_file: '{{ morla_standardnotes_env_file }}'
+          state: started
+
+    - name: Create Localstack
+      containers.podman.podman_container:
+          name: '{{ morla_standardnotes_localstack_container_name }}'
+          image: '{{ morla_standardnotes_localstack_container_image }}'
+          pod: '{{ morla_standardnotes_pod_name }}'
+          network: container:morla-standardnotes
+          volumes: '{{ morla_standardnotes_localstack_volumes }}'
+          env:
+              SERVICES: sns,sqs
+              HOSTNAME_EXTERNAL: localstack
+              LS_LOG: warn
+          state: started
+
+    - name: Create Database
+      containers.podman.podman_container:
+          name: '{{ morla_standardnotes_db_container_name }}'
+          image: '{{ morla_standardnotes_db_container_image }}'
+          pod: '{{ morla_standardnotes_pod_name }}'
+          network: container:morla-standardnotes
+          volumes: '{{ morla_standardnotes_db_volumes }}'
+          command: '{{ morla_standardnotes_db_command }}'
+          env:
+              PUID: '{{ morla_fake_puid }}'
+              PGID: '{{ morla_fake_pgid }}'
+              TZ: '{{ morla_tz }}'
+              MYSQL_USER: '{{ morla_standardnotes_db_env_mysql_user }}'
+              MYSQL_PASSWORD: '{{ morla_standardnotes_db_env_mysql_password }}'
+              MYSQL_DATABASE: '{{ morla_standardnotes_db_env_mysql_database }}'
+              MYSQL_ROOT_PASSWORD: '{{ morla_standardnotes_db_env_mysql_root_password }}'
+          state: started
+
+    - name: Create Cache
+      containers.podman.podman_container:
+          name: '{{ morla_standardnotes_cache_container_name }}'
+          image: '{{ morla_standardnotes_cache_container_image }}'
+          pod: '{{ morla_standardnotes_pod_name }}'
+          network: container:morla-standardnotes
+          volumes: '{{ morla_standardnotes_cache_volumes }}'
+          state: started

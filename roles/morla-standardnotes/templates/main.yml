@@ -1,0 +1,11 @@
+---
+    - name: Create ENV template
+      ansible.builtin.template:
+          src: .env.j2
+          dest: '{{ morla_standardnotes_config_dir }}/config/.env'
+
+    - name: Download Bootstrap File
+      ansible.builtin.get_url:
+          url: https://raw.githubusercontent.com/standardnotes/server/main/docker/localstack_bootstrap.sh
+          dest: '{{ morla_standardnotes_config_dir }}/config/localstack_bootstrap.sh'
+          mode: 0755

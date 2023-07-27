@@ -1,0 +1,40 @@
+---
+    - name: Check if Config dir exists
+      stat:
+          path: '{{ morla_standardnotes_config_dir }}'
+      register: check_standardnotes_config_dir
+
+    - name: Check if Config/config dir exists
+      stat:
+          path: '{{ morla_standardnotes_config_dir }}/config'
+      register: check_standardnotes_config_config_dir
+
+    - name: Check if Config/logs dir exists
+      stat:
+          path: '{{ morla_standardnotes_config_dir }}/logs'
+      register: check_standardnotes_config_logs_dir
+
+    - name: Check if Config/uploads dir exists
+      stat:
+          path: '{{ morla_standardnotes_config_dir }}/uploads'
+      register: check_standardnotes_config_uploads_dir
+
+    - name: Check if Config dir for DB exists
+      stat:
+          path: '{{ morla_standardnotes_db_config_dir }}'
+      register: check_standardnotes_db_config_dir
+
+    - name: Check if Config MySQL dir for DB exists
+      stat:
+          path: '{{ morla_standardnotes_db_config_dir }}/data/mysql'
+      register: check_standardnotes_db_config_mysql_dir
+
+    - name: Check if Config Import dir for DB exists
+      stat:
+          path: '{{ morla_standardnotes_db_config_dir }}/data/import'
+      register: check_standardnotes_db_config_import_dir
+
+    - name: Check if Config Redis dir for DB exists
+      stat:
+          path: '{{ morla_standardnotes_db_config_dir }}/data/redis'
+      register: check_standardnotes_db_config_redis_dir

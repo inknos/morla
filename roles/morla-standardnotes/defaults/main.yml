@@ -1,0 +1,135 @@
+---
+# SPDX-FileCopyrightText: Nicola Sella
+#
+# SPDX-License-Identifier: GPL-3.0-or-later
+
+# configuration file for standardnotes
+morla_standardnotes_enabled: false
+
+morla_standardnotes_flag_public: true
+morla_standardnotes_flag_autostart: true
+morla_standardnotes_flag_wireguard: true
+morla_standardnotes_flag_firewall: true # replace with if port list non empty
+
+# Name
+morla_standardnotes_long_name: Standardnotes
+morla_standardnotes_short_name: standardnotes
+
+morla_standardnotes_container_short_name: '{{ morla_standardnotes_short_name }}'
+morla_standardnotes_container_name: '{{ morla_user_username }}-{{ morla_standardnotes_container_short_name }}'
+morla_standardnotes_public_url: '{{ morla_standardnotes_short_name }}.{{ morla_public_url }}'
+morla_standardnotes_tailscale_url: '{{ morla_standardnotes_short_name }}.{{ morla_tailscale_url }}'
+
+morla_standardnotes_pod_name: '{{ morla_standardnotes_container_name }}-pod'
+
+morla_standardnotes_container_image_base: docker.io/standardnotes/server
+morla_standardnotes_container_image_tag: latest
+morla_standardnotes_container_image: '{{ morla_standardnotes_container_image_base }}:{{ morla_standardnotes_container_image_tag }}'
+
+# Environment
+
+morla_standardnotes_env_file: '{{ morla_standardnotes_config_dir }}/config/.env'
+
+# Networking
+morla_standardnotes_reverse_proxy_port: '3000'
+morla_standardnotes_exposed_proxy_port: '{{ morla_standardnotes_reverse_proxy_port }}'
+
+# Networking/Firewall
+morla_standardnotes_fw_ports:
+    tcp:
+        - '{{ morla_standardnotes_reverse_proxy_port }}'
+        - '3125'
+    udp:
+
+# Networking/Port Forwarding
+morla_standardnotes_ports:
+    - '{{ morla_standardnotes_reverse_proxy_port }}:{{ morla_standardnotes_exposed_proxy_port }}'
+    - '{{ morla_standardnotes_fw_ports.tcp[1] }}:3104'
+
+# Storage/Host
+morla_standardnotes_config_dir: '{{ morla_config_dir }}/{{ morla_standardnotes_long_name }}'
+
+# Storage/Mount
+morla_standardnotes_volumes:
+    - '{{ morla_standardnotes_config_dir }}/logs:/var/lib/server/logs:Z'
+    - '{{ morla_standardnotes_config_dir }}/uploads:/opt/bundled/files/packages/files/dist/uploads:Z'
+
+# Labels/Traefik
+morla_standardnotes_labels:
+    traefik.enable: '{{ morla_standardnotes_flag_public }}'
+    traefik.http.services.standardnotes.loadbalancer.server.port: '{{ morla_standardnotes_exposed_proxy_port }}'
+    traefik.http.routers.standardnotes.tls: true
+    traefik.http.routers.standardnotes.rule: Host(`{{ morla_standardnotes_tailscale_url }}`)
+    traefik.http.routers.standardnotes.entrypoints: websecure
+    traefik.http.routers.standardnotes.tls.certresolver: myresolver
+    traefik.http.routers.standardnotes.tls.domains: '{{ morla_standardnotes_tailscale_url }}'
+
+# DB
+# Name
+morla_standardnotes_db_long_name: StandardnotesDB
+morla_standardnotes_db_short_name: standardnotes-db
+
+morla_standardnotes_db_container_short_name: '{{ morla_standardnotes_db_short_name }}'
+morla_standardnotes_db_container_name: '{{ morla_user_username }}-{{ morla_standardnotes_db_container_short_name }}'
+
+morla_standardnotes_db_container_image_base: docker.io/library/mysql
+morla_standardnotes_db_container_image_tag: 8
+morla_standardnotes_db_container_image: '{{ morla_standardnotes_db_container_image_base }}:{{ morla_standardnotes_db_container_image_tag }}'
+
+# Command
+morla_standardnotes_db_command: --default-authentication-plugin=mysql_native_password --character-set-server=utf8mb4 --collation-server=utf8mb4_general_ci
+
+# Environment
+morla_standardnotes_db_env_mysql_user: standardnotes
+morla_standardnotes_db_env_mysql_password: '{{ morla_standardnotes_db_password }}'
+morla_standardnotes_db_env_mysql_database: '{{ morla_standardnotes_db_short_name }}'
+morla_standardnotes_db_env_mysql_root_password: '{{ morla_standardnotes_db_root_password }}'
+
+# Storage/Host
+morla_standardnotes_db_config_dir: '{{ morla_config_dir }}/{{ morla_standardnotes_db_long_name }}'
+
+# Storage/Mount
+morla_standardnotes_db_volumes:
+    - '{{ morla_standardnotes_db_config_dir }}/data/mysql:/var/lib/mysql:Z'
+    - '{{ morla_standardnotes_db_config_dir }}/data/import:/docker-entrypoint-initdb.d:Z'
+
+# Localstack
+# Name
+morla_standardnotes_localstack_long_name: StandardnotesLocalstack
+morla_standardnotes_localstack_short_name: standardnotes-localstack
+
+morla_standardnotes_localstack_container_short_name: '{{ morla_standardnotes_localstack_short_name }}'
+morla_standardnotes_localstack_container_name: '{{ morla_user_username }}-{{ morla_standardnotes_localstack_container_short_name }}'
+
+morla_standardnotes_localstack_container_image_base: docker.io/localstack/localstack
+morla_standardnotes_localstack_container_image_tag: 1.3
+morla_standardnotes_localstack_container_image: '{{ morla_standardnotes_localstack_container_image_base }}:{{ morla_standardnotes_localstack_container_image_tag
+    }}'
+
+# Environment
+
+# Storage/Host
+
+# Storage/Mount
+morla_standardnotes_localstack_volumes:
+    - '{{ morla_standardnotes_config_dir }}/config/localstack_bootstrap.sh:/etc/localstack/init/ready.d/localstack_bootstrap.sh:z'
+
+# cache
+# Name
+morla_standardnotes_cache_long_name: StandardnotesCache
+morla_standardnotes_cache_short_name: standardnotes-cache
+
+morla_standardnotes_cache_container_short_name: '{{ morla_standardnotes_cache_short_name }}'
+morla_standardnotes_cache_container_name: '{{ morla_user_username }}-{{ morla_standardnotes_cache_container_short_name }}'
+
+morla_standardnotes_cache_container_image_base: docker.io/library/redis
+morla_standardnotes_cache_container_image_tag: 6.0-alpine
+morla_standardnotes_cache_container_image: '{{ morla_standardnotes_cache_container_image_base }}:{{ morla_standardnotes_cache_container_image_tag }}'
+
+# Environment
+
+# Storage/Host
+
+# Storage/Mount
+morla_standardnotes_cache_volumes:
+    - '{{ morla_standardnotes_db_config_dir }}/data/redis:/data:Z'

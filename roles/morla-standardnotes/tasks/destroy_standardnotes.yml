@@ -1,0 +1,5 @@
+---
+    - name: Destroy Standardnotes
+      containers.podman.podman_container:
+          name: '{{ morla_standardnotes_container_name }}'
+          state: absent

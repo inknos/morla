@@ -1,0 +1,32 @@
+---
+# roles/standardnotes/tasks/main.yml
+    - ansible.builtin.import_tasks: '{{ role_path }}/tasks/init.yml'
+      when: morla_standardnotes_enabled | bool
+      tags:
+          - always
+
+    - ansible.builtin.import_tasks: '{{ role_path }}/tasks/init_flag.yml'
+      when: morla_standardnotes_enabled | bool
+      tags:
+          - always
+          - setup-all
+          - setup-standardnotes
+
+    - ansible.builtin.import_tasks: '{{ role_path }}/tasks/pull_standardnotes.yml'
+      when: morla_standardnotes_enabled | bool
+      tags:
+          - setup-all
+          - setup-standardnotes
+
+    - ansible.builtin.import_tasks: '{{ role_path }}/tasks/destroy_standardnotes.yml'
+      when: morla_standardnotes_enabled | bool
+      tags:
+          - never
+          - destroy-all
+          - destroy-standardnotes
+
+    - ansible.builtin.import_tasks: '{{ role_path }}/tasks/setup_standardnotes.yml'
+      when: morla_standardnotes_enabled | bool
+      tags:
+          - setup-all
+          - setup-standardnotes

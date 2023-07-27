@@ -1,0 +1,5 @@
+---
+    - name: Pull Standardnotes image
+      containers.podman.podman_image:
+          name: '{{ morla_standardnotes_container_image }}'
+          tag: latest
