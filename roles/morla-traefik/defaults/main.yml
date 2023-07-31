@@ -60,6 +60,7 @@ morla_traefik_volumes:
     # - '{{ morla_traefik_config_dir }}/traefik.log:/traefik.log:Z'
     - '{{ morla_traefik_letsencrypt_dir }}:/letsencrypt:Z'
     - /run/user/{{ morla_user_puid }}/podman/podman.sock:/var/run/docker.sock:Z,ro
+    - '{{ morla_traefik_config_dir }}/rules/rules.yml:/rules/rules.yml:Z'
 
 # Command
 morla_traefik_command:
@@ -86,6 +87,7 @@ morla_traefik_command:
     - --accesslog=true
     - --accesslog.filepath=/mnt/logs/access.log
     - --accesslog.bufferingsize=100
+    - --providers.file.filename=/rules/rules.yml
 
 morla_traefik_labels:
     traefik.enable: true
@@ -101,6 +103,7 @@ morla_traefik_labels:
     # traefik.http.routers.redirs.middlewares: redirect-to-https
     # private network ip whitelist
     # need a way to get public ip
+
 
 # Sec Opt
 morla_traefik_security_opt:
