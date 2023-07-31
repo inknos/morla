@@ -1,0 +1,82 @@
+---
+# SPDX-FileCopyrightText: Nicola Sella
+#
+# SPDX-License-Identifier: GPL-3.0-or-later
+
+# configuration file for etebase
+morla_etebase_enabled: false
+
+morla_etebase_flag_public: true
+morla_etebase_flag_autostart: true
+morla_etebase_flag_wireguard: true
+morla_etebase_flag_firewall: true # replace with if port list non empty
+
+# Name
+morla_etebase_long_name: Etebase
+morla_etebase_short_name: etebase
+
+morla_etebase_container_short_name: '{{ morla_etebase_short_name }}'
+morla_etebase_container_name: '{{ morla_user_username }}-{{ morla_etebase_container_short_name }}'
+morla_etebase_public_url: '{{ morla_etebase_short_name }}.{{ morla_public_url }}'
+
+morla_etebase_pod_name: '{{ morla_etebase_container_name }}-pod'
+morla_etebase_puid: 373
+morla_etebase_pgid: 373
+
+morla_etebase_container_image_base: docker.io/victorrds/etebase
+morla_etebase_container_image_tag: latest
+morla_etebase_container_image: '{{ morla_etebase_container_image_base }}:{{ morla_etebase_container_image_tag }}'
+
+# Networking
+morla_etebase_reverse_proxy_port: '3735'
+morla_etebase_exposed_proxy_port: '{{ morla_etebase_reverse_proxy_port }}'
+
+# Networking/Firewall
+morla_etebase_fw_ports:
+    tcp:
+        - '{{ morla_etebase_reverse_proxy_port }}'
+    udp:
+
+# Networking/Port Forwarding
+morla_etebase_ports:
+    - '{{ morla_etebase_reverse_proxy_port }}:{{ morla_etebase_exposed_proxy_port }}'
+
+# Storage/Host
+morla_etebase_config_dir: '{{ morla_config_dir }}/{{ morla_etebase_long_name }}'
+
+# Storage/Mount
+morla_etebase_volumes:
+    - '{{ morla_etebase_config_dir }}:/data:Z'
+
+# Labels/Traefik
+morla_etebase_labels:
+    traefik.enable: '{{ morla_etebase_flag_public }}'
+    traefik.http.services.etebase.loadbalancer.server.port: '{{ morla_etebase_exposed_proxy_port }}'
+    traefik.http.routers.etebase.tls: true
+    traefik.http.routers.etebase.rule: Host(`{{ morla_etebase_public_url }}`)
+    traefik.http.routers.etebase.entrypoints: websecure
+    traefik.http.routers.etebase.tls.certresolver: myresolver
+
+# DB
+# Name
+morla_etebase_db_long_name: EtebaseDB
+morla_etebase_db_short_name: etebase-db
+
+morla_etebase_db_container_short_name: '{{ morla_etebase_db_short_name }}'
+morla_etebase_db_container_name: '{{ morla_user_username }}-{{ morla_etebase_db_container_short_name }}'
+
+morla_etebase_db_container_image_base: docker.io/library/postgres
+morla_etebase_db_container_image_tag: 13
+morla_etebase_db_container_image: '{{ morla_etebase_db_container_image_base }}:{{ morla_etebase_db_container_image_tag }}'
+
+# Environment
+morla_etebase_db_env_postgres_user: etebase
+morla_etebase_db_env_postgres_password: '{{ morla_etebase_db_postgres_password }}'
+morla_etebase_db_env_postgres_db: etebase-db
+
+# Storage/Host
+morla_etebase_db_config_dir: '{{ morla_config_dir }}/{{ morla_etebase_db_long_name }}'
+
+# Storage/Mount
+morla_etebase_db_volumes:
+    - '{{ morla_etebase_db_config_dir }}:/var/lib/postgresql/data:Z'

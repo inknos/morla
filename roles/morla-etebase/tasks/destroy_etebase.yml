@@ -1,0 +1,5 @@
+---
+    - name: Destroy Etebase
+      containers.podman.podman_container:
+          name: '{{ morla_etebase_container_name }}'
+          state: absent

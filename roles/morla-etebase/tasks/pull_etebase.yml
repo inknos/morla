@@ -1,0 +1,5 @@
+---
+    - name: Pull Etebase image
+      containers.podman.podman_image:
+          name: '{{ morla_etebase_container_image }}'
+          tag: latest

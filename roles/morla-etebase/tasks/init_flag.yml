@@ -1,0 +1,10 @@
+---
+    - name: Add Container to the list of autostarting pods
+      ansible.builtin.set_fact:
+          morla_systemd_autostart_pods: '{{ morla_systemd_autostart_pods + [ morla_etebase_pod_name ] }} '
+      when: ( morla_etebase_flag_autostart is defined ) and ( morla_etebase_flag_autostart|bool == True )
+
+    - name: Add Container to the list of Firewall Services
+      ansible.builtin.set_fact:
+          morla_firewall_services: "{{ morla_firewall_services + [ { 'name': morla_etebase_short_name, 'ports': morla_etebase_fw_ports } ]}}"
+      when: ( morla_etebase_flag_firewall is defined ) and ( morla_etebase_flag_firewall|bool == True )

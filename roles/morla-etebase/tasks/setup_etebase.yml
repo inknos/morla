@@ -1,0 +1,77 @@
+---
+    - name: Create config directory
+      ansible.builtin.file:
+          path: '{{ morla_etebase_config_dir }}'
+          state: directory
+          owner: '{{ morla_user_username }}'
+          group: '{{ morla_user_groupname }}'
+      when: not check_etebase_config_dir.stat.exists
+
+    - name: Create DB config directory
+      ansible.builtin.file:
+          path: '{{ morla_etebase_db_config_dir }}'
+          state: directory
+          owner: '{{ morla_user_username }}'
+          group: '{{ morla_user_groupname }}'
+      when: not check_etebase_db_config_dir.stat.exists
+
+    - name: Create pod
+      containers.podman.podman_pod:
+          name: '{{ morla_etebase_pod_name }}'
+          network: morla-wireguard-network
+          ports: '{{ morla_etebase_ports }}'
+          label: '{{ morla_etebase_labels }}'
+          uidmap:
+              - '{{ morla_etebase_puid }}:0:1'
+              - 0:1:{{ morla_etebase_puid }}
+              - '{{ morla_etebase_puid + 1 }}:{{ morla_etebase_puid + 1 }}:{{ morla_subuid_size - morla_etebase_puid }}'
+          gidmap:
+              - '{{ morla_etebase_pgid }}:0:1'
+              - 0:1:{{ morla_etebase_pgid }}
+              - '{{ morla_etebase_pgid + 1 }}:{{ morla_etebase_pgid + 1 }}:{{ morla_subgid_size - morla_etebase_pgid }}'
+          generate_systemd:
+              path: '{{ morla_home_config_systemd_dir }}'
+              restart_policy: always
+              names: true
+              pod_prefix: '{{ morla_systemd_service_pod_prefix }}'
+          state: started
+
+    - name: Create Database
+      containers.podman.podman_container:
+          name: '{{ morla_etebase_db_container_name }}'
+          image: '{{ morla_etebase_db_container_image }}'
+          pod: '{{ morla_etebase_pod_name }}'
+          volumes: '{{ morla_etebase_db_volumes }}'
+          env:
+              TZ: '{{ morla_tz }}'
+              POSTGRES_USER: '{{ morla_etebase_db_env_postgres_user }}'
+              POSTGRES_PASSWORD: '{{ morla_etebase_db_env_postgres_password }}'
+              POSTGRES_DB: '{{ morla_etebase_db_env_postgres_db }}'
+          state: started
+
+    - name: Pause for 5 seconds to wait for DB to init
+      ansible.builtin.pause:
+          seconds: 5
+
+    - name: Create container
+      containers.podman.podman_container:
+          name: '{{ morla_etebase_container_name }}'
+          image: '{{ morla_etebase_container_image}}'
+          pod: '{{ morla_etebase_pod_name }}'
+          volumes: '{{ morla_etebase_volumes }}'
+          env:
+              TZ: '{{ morla_tz }}'
+              SERVER: asgi
+              SUPER_USER: admin
+              SUPER_PASS: '{{ morla_etebase_super_pass }}'
+              ALLOWED_HOSTS:
+                  - '{{ morla_etebase_public_url }}'
+                  - .{{ morla_public_url }}
+              DEBUG: false
+              SECRET_KEY: '{{ morla_etebase_secret_key }}'
+              DB_ENGINE: postgres
+              DATABASE_NAME: '{{ morla_etebase_db_env_postgres_db }}'
+              DATABASE_USER: '{{ morla_etebase_db_env_postgres_user }}'
+              DATABASE_PASSWORD: '{{ morla_etebase_db_env_postgres_password }}'
+              DATABASE_HOST: '{{ morla_etebase_db_container_name }}'
+          state: started
