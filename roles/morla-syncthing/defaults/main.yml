@@ -27,12 +27,12 @@ morla_syncthing_container_image: '{{ morla_syncthing_container_image_base }}:{{ 
 
 # Storage/Host
 morla_syncthing_config_dir: '{{ morla_config_dir }}/{{ morla_syncthing_long_name }}'
-morla_syncthing_data_dir: '{{ morla_media_dir }}'
+morla_syncthing_data_dir: '{{ morla_syncthing_dir }}'
 
 # Storage/Mount
 morla_syncthing_volumes:
     - '{{ morla_syncthing_config_dir }}:/config:Z'
-    - '{{ morla_syncthing_data_dir }}:/data1:z'
+    - '{{ morla_syncthing_data_dir }}:/sync:z'
 
 # Networking
 morla_syncthing_reverse_proxy_port: '8384'
