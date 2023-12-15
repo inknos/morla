@@ -1,0 +1,20 @@
+---
+    - name: Check if Config dir exists
+      stat:
+          path: '{{ morla_discord_soundboard_bot_config_dir }}'
+      register: check_discord_soundboard_bot_config_dir
+
+    - name: Check if Config/config dir exists
+      stat:
+          path: '{{ morla_discord_soundboard_bot_config_sounds_dir }}'
+      register: check_discord_soundboard_bot_config_sounds_dir
+
+    - name: Check if Config/data dir exists
+      stat:
+          path: '{{ morla_discord_soundboard_bot_config_recordings_dir }}'
+      register: check_discord_soundboard_bot_config_recordings_dir
+
+    - name: Check if Config dir for DB exists
+      stat:
+          path: '{{ morla_discord_soundboard_bot_db_config_dir }}'
+      register: check_discord_soundboard_bot_db_config_dir

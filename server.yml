@@ -63,7 +63,6 @@
           - morla-navidrome   # setup navidrome [public]
           - morla-piwigo      # setup piwigo [public]
           - morla-photoprism  # setup photoprism [public]
-          - morla-photoview  # setup photoview [public]
           - morla-lychee      # setup lychee [public]
           - morla-ghost       # setup ghost [public]
           - morla-grav        # setup grav [public]
@@ -75,3 +74,4 @@
           - morla-gandi-ddns  # setup python script to update gandi dns
           - morla-firewall  # manage firewall services and open ports
           - morla-systemd   # manage containers autostart
+          - morla-discord-soundboard-bot

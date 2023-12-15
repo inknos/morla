@@ -1,0 +1,85 @@
+---
+# SPDX-FileCopyrightText: Nicola Sella
+#
+# SPDX-License-Identifier: GPL-3.0-or-later
+
+# configuration file for discord_soundboard_bot
+morla_discord_soundboard_bot_enabled: false
+
+morla_discord_soundboard_bot_flag_public: true
+morla_discord_soundboard_bot_flag_autostart: true
+morla_discord_soundboard_bot_flag_wireguard: true
+morla_discord_soundboard_bot_flag_firewall: true # replace with if port list non empty
+
+# Name
+morla_discord_soundboard_bot_long_name: DiscordSoundboardBot
+morla_discord_soundboard_bot_short_name: discord-soundboard-bot
+
+morla_discord_soundboard_bot_container_short_name: '{{ morla_discord_soundboard_bot_short_name }}'
+morla_discord_soundboard_bot_container_name: '{{ morla_user_username }}-{{ morla_discord_soundboard_bot_container_short_name }}'
+morla_discord_soundboard_bot_public_url: soundboard.{{ morla_public_url }}
+
+morla_discord_soundboard_bot_pod_name: '{{ morla_discord_soundboard_bot_container_name }}-pod'
+
+morla_discord_soundboard_bot_container_image_base: ghcr.io/dominikks/discord-soundboard-bot
+morla_discord_soundboard_bot_container_image_tag: latest
+morla_discord_soundboard_bot_container_image: '{{ morla_discord_soundboard_bot_container_image_base }}:{{ morla_discord_soundboard_bot_container_image_tag
+    }}'
+
+# Networking
+morla_discord_soundboard_bot_reverse_proxy_port: '10011'
+morla_discord_soundboard_bot_exposed_proxy_port: '8000'
+
+# Networking/Firewall
+morla_discord_soundboard_bot_fw_ports:
+    tcp:
+        - '{{ morla_discord_soundboard_bot_reverse_proxy_port }}'
+    udp:
+
+# Networking/Port Forwarding
+morla_discord_soundboard_bot_ports:
+    - '{{ morla_discord_soundboard_bot_reverse_proxy_port }}:{{ morla_discord_soundboard_bot_exposed_proxy_port }}'
+
+# Storage/Host
+morla_discord_soundboard_bot_config_sounds_dir: '{{ morla_discord_soundboard_bot_config_dir }}/sounds'
+morla_discord_soundboard_bot_config_recordings_dir: '{{ morla_discord_soundboard_bot_config_dir }}/recordings'
+morla_discord_soundboard_bot_config_dir: '{{ morla_config_dir }}/{{ morla_discord_soundboard_bot_long_name }}'
+
+# Storage/Mount
+morla_discord_soundboard_bot_volumes:
+    - '{{ morla_discord_soundboard_bot_config_sounds_dir }}:/app/data/sounds:Z'
+    - '{{ morla_discord_soundboard_bot_config_recordings_dir }}:/app/data/recordings:Z'
+
+# Labels/Traefik
+morla_discord_soundboard_bot_labels:
+    traefik.enable: '{{ morla_discord_soundboard_bot_flag_public }}'
+    traefik.http.services.discord_soundboard_bot.loadbalancer.server.port: '{{ morla_discord_soundboard_bot_exposed_proxy_port }}'
+    traefik.http.routers.discord_soundboard_bot.tls: true
+    traefik.http.routers.discord_soundboard_bot.rule: Host(`{{ morla_discord_soundboard_bot_public_url }}`)
+    traefik.http.routers.discord_soundboard_bot.entrypoints: websecure
+    traefik.http.routers.discord_soundboard_bot.tls.certresolver: myresolver
+
+# DB
+# Name
+morla_discord_soundboard_bot_db_long_name: DiscordSoundboardBotDB
+morla_discord_soundboard_bot_db_short_name: discord-soundboard-bot-db
+
+morla_discord_soundboard_bot_db_container_short_name: '{{ morla_discord_soundboard_bot_db_short_name }}'
+morla_discord_soundboard_bot_db_container_name: '{{ morla_user_username }}-{{ morla_discord_soundboard_bot_db_container_short_name }}'
+
+morla_discord_soundboard_bot_db_container_image_base: docker.io/library/postgres
+morla_discord_soundboard_bot_db_container_image_tag: 16
+morla_discord_soundboard_bot_db_container_image: '{{ morla_discord_soundboard_bot_db_container_image_base }}:{{ morla_discord_soundboard_bot_db_container_image_tag
+    }}'
+
+# Environment
+morla_discord_soundboard_bot_db_env_postgres_user: discord_soundboard_bot
+morla_discord_soundboard_bot_db_env_postgres_password: '{{ morla_discord_soundboard_bot_db_password }}'
+morla_discord_soundboard_bot_db_env_postgres_db: discord-soundboard-bot-db
+
+# Storage/Host
+morla_discord_soundboard_bot_db_config_dir: '{{ morla_config_dir }}/{{ morla_discord_soundboard_bot_db_long_name }}'
+
+# Storage/Mount
+morla_discord_soundboard_bot_db_volumes:
+    - '{{ morla_discord_soundboard_bot_db_config_dir }}:/config:Z'

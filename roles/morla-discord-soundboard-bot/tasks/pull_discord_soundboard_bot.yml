@@ -1,0 +1,5 @@
+---
+    - name: Pull DiscordSoundboardBot image
+      containers.podman.podman_image:
+          name: '{{ morla_discord_soundboard_bot_container_image }}'
+          tag: latest

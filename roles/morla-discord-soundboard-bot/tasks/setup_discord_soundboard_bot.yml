@@ -1,0 +1,83 @@
+---
+    - name: Create config directory
+      ansible.builtin.file:
+          path: '{{ morla_discord_soundboard_bot_config_dir }}'
+          state: directory
+          owner: '{{ morla_user_username }}'
+          group: '{{ morla_user_groupname }}'
+      when: not check_discord_soundboard_bot_config_dir.stat.exists
+
+    - name: Create Config/config directory
+      ansible.builtin.file:
+          path: '{{ morla_discord_soundboard_bot_config_sounds_dir }}'
+          state: directory
+          owner: '{{ morla_user_username }}'
+          group: '{{ morla_user_groupname }}'
+      when: not check_discord_soundboard_bot_config_sounds_dir.stat.exists
+
+    - name: Create Config/data directory
+      ansible.builtin.file:
+          path: '{{ morla_discord_soundboard_bot_config_recordings_dir }}'
+          state: directory
+          owner: '{{ morla_user_username }}'
+          group: '{{ morla_user_groupname }}'
+      when: not check_discord_soundboard_bot_config_recordings_dir.stat.exists
+
+    - name: Create DB config directory
+      ansible.builtin.file:
+          path: '{{ morla_discord_soundboard_bot_db_config_dir }}'
+          state: directory
+          owner: '{{ morla_user_username }}'
+          group: '{{ morla_user_groupname }}'
+      when: not check_discord_soundboard_bot_db_config_dir.stat.exists
+
+    - name: Create pod
+      containers.podman.podman_pod:
+          name: '{{ morla_discord_soundboard_bot_pod_name }}'
+          network: morla-wireguard-network
+          ports: '{{ morla_discord_soundboard_bot_ports }}'
+          label: '{{ morla_discord_soundboard_bot_labels }}'
+          uidmap:
+              - 1000:0:1
+              - 0:1:1000
+              - '{{ 1000 + 1 }}:{{ 1000 + 1 }}:{{ morla_subuid_size - 1000 }}'
+          gidmap:
+              - 1000:0:1
+              - 0:1:1000
+              - '{{ 1000 + 1 }}:{{ 1000 + 1 }}:{{ morla_subgid_size - 1000 }}'
+          generate_systemd:
+              path: '{{ morla_home_config_systemd_dir }}'
+              restart_policy: always
+              names: true
+              pod_prefix: '{{ morla_systemd_service_pod_prefix }}'
+          state: started
+
+    - name: Create Database
+      containers.podman.podman_container:
+          name: '{{ morla_discord_soundboard_bot_db_container_name }}'
+          image: '{{ morla_discord_soundboard_bot_db_container_image }}'
+          pod: '{{ morla_discord_soundboard_bot_pod_name }}'
+          volumes: '{{ morla_discord_soundboard_bot_db_volumes }}'
+          env:
+              PUID: '1000'
+              PGID: '1000'
+              TZ: '{{ morla_tz }}'
+              POSTGRES_PASSWORD: '{{ morla_discord_soundboard_bot_db_env_postgres_password }}'
+          state: started
+
+    - name: Create container
+      containers.podman.podman_container:
+          name: '{{ morla_discord_soundboard_bot_container_name }}'
+          image: '{{ morla_discord_soundboard_bot_container_image}}'
+          pod: '{{ morla_discord_soundboard_bot_pod_name }}'
+          volumes: '{{ morla_discord_soundboard_bot_volumes }}'
+          env:
+              DISCORD_TOKEN: '{{ morla_discord_soundboard_bot_discord_token }}'
+              DISCORD_CLIENT_ID: '{{ morla_discord_soundboard_bot_discord_client_id }}'
+              DISCORD_CLIENT_SECRET: '{{ morla_discord_soundboard_bot_discord_client_secret }}'
+              ROCKET_SECRET_KEY: '{{ morla_discord_soundboard_bot_rocket_secret_key }}'
+              ROCKET_DATABASES: '{postgres_database={url="postgres://postgres:{{ morla_discord_soundboard_bot_db_env_postgres_password }}@{{ morla_discord_soundboard_bot_db_container_name
+                  }}/postgres"}}'
+              BASE_URL: https://{{ morla_discord_soundboard_bot_public_url }}
+              RUST_BACKTRACE: 1
+          state: started
