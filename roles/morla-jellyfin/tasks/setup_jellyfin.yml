@@ -7,6 +7,14 @@
           group: '{{ morla_user_groupname }}'
       when: not check_jellyfin_config_dir.stat.exists
 
+    - name: Create cache directory
+      ansible.builtin.file:
+          path: '{{ morla_jellyfin_cache_dir }}'
+          state: directory
+          owner: '{{ morla_user_username }}'
+          group: '{{ morla_user_groupname }}'
+      when: not check_jellyfin_cache_dir.stat.exists
+
     - name: Create container
       containers.podman.podman_container:
           name: '{{ morla_jellyfin_container_name }}'
@@ -16,10 +24,13 @@
           ports: '{{ morla_jellyfin_ports }}'
           volumes: '{{ morla_jellyfin_volumes }}'
           label: '{{ morla_jellyfin_labels }}'
+          # from getent group render | cut -d: -f3
+          group_add: 997
+          # requires setsebool container_use_devices=true 
+          device: "/dev/dri/renderD128:/dev/dri/renderD128"
           env:
-              PUID: 0
-              PGID: 0
               TZ: '{{ morla_tz }}'
+              JELLYFIN_PublishedServerUrl: 'http://{{ morla_jellyfin_public_url }}'
           state: started
           generate_systemd:
               path: '{{ morla_home_config_systemd_dir }}'

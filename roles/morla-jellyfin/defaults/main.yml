@@ -19,7 +19,7 @@ morla_jellyfin_container_short_name: '{{ morla_jellyfin_short_name }}'
 morla_jellyfin_container_name: '{{ morla_user_username }}-{{ morla_jellyfin_container_short_name }}'
 morla_jellyfin_public_url: '{{ morla_jellyfin_short_name }}.{{ morla_public_url }}'
 
-morla_jellyfin_container_image_base: lscr.io/linuxserver/jellyfin
+morla_jellyfin_container_image_base: docker.io/jellyfin/jellyfin
 morla_jellyfin_container_image_tag: latest
 morla_jellyfin_container_image: '{{ morla_jellyfin_container_image_base }}:{{ morla_radarr_container_image_tag }}'
 
@@ -45,11 +45,13 @@ morla_jellyfin_ports:
 
 # Storage/Host
 morla_jellyfin_config_dir: '{{ morla_config_dir }}/{{ morla_jellyfin_long_name }}'
+morla_jellyfin_cache_dir: '{{ morla_cache_dir }}/{{ morla_jellyfin_long_name }}'
 morla_jellyfin_media_dir: '{{ morla_media_dir }}'
 
 # Storage/Mount
 morla_jellyfin_volumes:
     - '{{ morla_jellyfin_config_dir }}:/config:Z'
+    - '{{ morla_jellyfin_cache_dir }}:/cache:z'
     - '{{ morla_jellyfin_media_dir }}:/data/media:z'
 
 # Labels/Traefik

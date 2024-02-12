@@ -27,6 +27,7 @@
           - morla_home_dir: /home/{{ morla_user_username }}
           - morla_home_config_systemd_dir: '{{ morla_home_dir }}/.config/systemd/user'
           - morla_config_dir: '{{ morla_home_dir }}/Config'
+          - morla_cache_dir: '{{ morla_home_dir }}/cache'
           - morla_download_dir: '{{ morla_home_dir }}/downloads'
           - morla_torrents_dir: '{{ morla_download_dir }}/torrents'
           - morla_pyload_dir: '{{ morla_download_dir }}/pyload'
@@ -58,6 +59,7 @@
           - morla-qbittorrent # setup qbittorrent
           - morla-pyload-ng
           - morla-etebase
+          - morla-wordpress
           - morla-syncthing   # setup syncting
           - morla-jellyfin    # setup jellyfin [public]
           - morla-navidrome   # setup navidrome [public]

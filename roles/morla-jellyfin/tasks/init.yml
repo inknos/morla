@@ -3,3 +3,8 @@
       stat:
           path: '{{ morla_jellyfin_config_dir }}'
       register: check_jellyfin_config_dir
+
+    - name: Check if Cache dir exists
+      stat:
+          path: '{{ morla_jellyfin_cache_dir }}'
+      register: check_jellyfin_cache_dir
