@@ -1,0 +1,55 @@
+---
+    - name: Create config directory
+      ansible.builtin.file:
+          path: '{{ morla_photostructure_config_dir }}'
+          state: directory
+          owner: '{{ morla_user_username }}'
+          group: '{{ morla_user_groupname }}'
+      when: not check_photostructure_config_dir.stat.exists
+
+    - name: Create logs directory
+      ansible.builtin.file:
+          path: '{{ morla_photostructure_logs_dir }}'
+          state: directory
+          owner: '{{ morla_user_username }}'
+          group: '{{ morla_user_groupname }}'
+      when: not check_photostructure_logs_dir.stat.exists
+
+    - name: Create temp directory
+      ansible.builtin.file:
+          path: '{{ morla_photostructure_tmp_dir }}'
+          state: directory
+          owner: '{{ morla_user_username }}'
+          group: '{{ morla_user_groupname }}'
+      when: not check_photostructure_tmp_dir.stat.exists
+
+    - name: Exit if Library directory does not exist
+      ansible.builtin.fail:
+          msg: "Library directory does not exist"
+      when: not check_photostructure_library_dir.stat.exists
+
+    - name: Exit if Pictures directory does not exist
+      ansible.builtin.fail:
+          msg: "Pictures directory does not exist"
+      when: not check_photostructure_pictures_dir.stat.exists
+
+    - name: Create container
+      containers.podman.podman_container:
+          name: '{{ morla_photostructure_container_name }}'
+          image: '{{ morla_photostructure_container_image}}'
+          network: morla-wireguard-network
+          network_aliases: '{{ morla_photostructure_short_name }}'
+          ports: '{{ morla_photostructure_ports }}'
+          volumes: '{{ morla_photostructure_volumes }}'
+          label: '{{ morla_photostructure_labels }}'
+          env:
+              PUID: '{{ morla_root_puid }}'
+              PGID: '{{ morla_root_pgid }}'
+              TZ: '{{ morla_tz }}'
+          stop_timeout: 120
+          state: started
+          generate_systemd:
+              path: '{{ morla_home_config_systemd_dir }}'
+              restart_policy: always
+              names: true
+              container_prefix: '{{ morla_systemd_service_prefix }}'

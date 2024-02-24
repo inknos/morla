@@ -1,0 +1,63 @@
+---
+# SPDX-FileCopyrightText: Nicola Sella
+#
+# SPDX-License-Identifier: GPL-3.0-or-later
+
+# configuration file for photostructure
+morla_photostructure_enabled: false
+
+morla_photostructure_flag_public: true
+morla_photostructure_flag_autostart: true
+morla_photostructure_flag_wireguard: true
+morla_photostructure_flag_firewall: true # replace with if port list non empty
+
+# Name
+morla_photostructure_long_name: Photostructure
+morla_photostructure_short_name: photostructure
+
+morla_photostructure_container_short_name: '{{ morla_photostructure_short_name }}'
+morla_photostructure_container_name: '{{ morla_user_username }}-{{ morla_photostructure_container_short_name }}'
+morla_photostructure_public_url: '{{ morla_photostructure_short_name }}.{{ morla_public_url }}'
+morla_photostructure_tailscale_url: '{{ morla_photostructure_short_name }}.{{ morla_tailscale_url }}'
+
+morla_photostructure_container_image_base: docker.io/photostructure/server
+morla_photostructure_container_image_tag: alpha
+morla_photostructure_container_image: '{{ morla_photostructure_container_image_base }}:{{ morla_photostructure_container_image_tag }}'
+
+# Networking
+morla_photostructure_reverse_proxy_port: '1787'
+morla_photostructure_exposed_proxy_port: '{{ morla_photostructure_reverse_proxy_port }}'
+
+# Networking/Firewall
+morla_photostructure_fw_ports:
+    tcp:
+        - '{{ morla_photostructure_reverse_proxy_port }}'
+    udp:
+
+# Networking/Port Forwarding
+morla_photostructure_ports:
+    - '{{ morla_photostructure_reverse_proxy_port }}:{{ morla_photostructure_exposed_proxy_port }}'
+
+# Storage/Host
+morla_photostructure_config_dir: '{{ morla_config_dir }}/{{ morla_photostructure_long_name }}'
+morla_photostructure_library_dir: '{{ morla_vault_dir }}/Pictures'
+morla_photostructure_tmp_dir: '{{ morla_cache_dir }}/{{ morla_photostructure_long_name }}'
+morla_photostructure_logs_dir: '{{ morla_logs_dir }}/{{ morla_photostructure_long_name }}'
+morla_photostructure_pictures_dir: '{{ morla_media_dir }}/pictures'
+
+# Storage/Mount
+morla_photostructure_volumes:
+    - '{{ morla_photostructure_config_dir }}:/ps/config:Z'
+    - '{{ morla_photostructure_library_dir }}:/ps/library:z'
+    - '{{ morla_photostructure_tmp_dir }}:/ps/tmp:z'
+    - '{{ morla_photostructure_logs_dir }}:/ps/logs:z'
+    - '{{ morla_photostructure_pictures_dir }}:/pictures:z'
+
+# Labels/Traefik
+morla_photostructure_labels:
+    traefik.enable: '{{ morla_photostructure_flag_public }}'
+    traefik.http.services.photostructure.loadbalancer.server.port: '{{ morla_photostructure_exposed_proxy_port }}'
+    traefik.http.routers.photostructure.tls: true
+    traefik.http.routers.photostructure.rule: Host(`{{ morla_photostructure_tailscale_url }}`)
+    traefik.http.routers.photostructure.entrypoints: tswebsecure
+    traefik.http.routers.photostructure.tls.domains: '{{ morla_photostructure_tailscale_url }}'

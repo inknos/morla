@@ -28,6 +28,7 @@
           - morla_home_config_systemd_dir: '{{ morla_home_dir }}/.config/systemd/user'
           - morla_config_dir: '{{ morla_home_dir }}/Config'
           - morla_cache_dir: '{{ morla_home_dir }}/cache'
+          - morla_logs_dir: '{{ morla_home_dir }}/logs'
           - morla_download_dir: '{{ morla_home_dir }}/downloads'
           - morla_torrents_dir: '{{ morla_download_dir }}/torrents'
           - morla_pyload_dir: '{{ morla_download_dir }}/pyload'
@@ -39,7 +40,7 @@
           - morla_data_dir: '{{ morla_one_media }}/data'
           - morla_media_dir: '{{ morla_one_media }}/data/media'
 
-          - morla_vault_dir: '{{ morla_one_vault }}/Vault'
+          - morla_vault_dir: '{{ morla_one_vault }}'
 
       vars_files:
           - group_vars/vault.yml
@@ -65,6 +66,7 @@
           - morla-navidrome   # setup navidrome [public]
           - morla-piwigo      # setup piwigo [public]
           - morla-photoprism  # setup photoprism [public]
+          - morla-photostructure # setup photostructure [public]
           - morla-lychee      # setup lychee [public]
           - morla-ghost       # setup ghost [public]
           - morla-grav        # setup grav [public]
