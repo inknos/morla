@@ -1,4 +1,5 @@
 password
+inventory/vars.yml
 
 # ignore git folders
 roles/morla-*/files/*-git/
