@@ -1,0 +1,55 @@
+
+# SPDX-FileCopyrightText: Nicola Sella
+#
+# SPDX-License-Identifier: GPL-3.0-or-later
+
+# configuration file for jellyseerr
+morla_jellyseerr_enabled: false
+
+morla_jellyseerr_flag_public: true
+morla_jellyseerr_flag_autostart: true
+morla_jellyseerr_flag_wireguard: true
+morla_jellyseerr_flag_firewall: true # replace with if port list non empty
+
+# Name
+morla_jellyseerr_long_name: Jellyseerr
+morla_jellyseerr_short_name: jellyseerr
+
+morla_jellyseerr_container_short_name: '{{ morla_jellyseerr_short_name }}'
+morla_jellyseerr_container_name: '{{ morla_user_username }}-{{ morla_jellyseerr_container_short_name }}'
+morla_jellyseerr_public_url: '{{ morla_jellyseerr_short_name }}.{{ morla_public_url }}'
+
+morla_jellyseerr_container_image_base: ghcr.io/hotio/jellyseerr
+morla_jellyseerr_container_image_tag: latest
+morla_jellyseerr_container_image: '{{ morla_jellyseerr_container_image_base }}:{{ morla_radarr_container_image_tag }}'
+
+# Networking
+morla_jellyseerr_reverse_proxy_port: '5055'
+morla_jellyseerr_exposed_proxy_port: '{{ morla_jellyseerr_reverse_proxy_port }}'
+
+# Networking/Firewall
+morla_jellyseerr_fw_ports:
+    tcp:
+        - '{{ morla_jellyseerr_reverse_proxy_port }}'
+    udp:
+
+# Networking/Port Forwarding
+morla_jellyseerr_ports:
+    - '{{ morla_jellyseerr_reverse_proxy_port }}:{{ morla_jellyseerr_exposed_proxy_port }}'
+
+# Storage/Host
+morla_jellyseerr_config_dir: '{{ morla_config_dir }}/{{ morla_jellyseerr_long_name }}'
+
+# Storage/Mount
+morla_jellyseerr_volumes:
+    - '{{ morla_jellyseerr_config_dir }}:/config:Z'
+
+# Labels/Traefik
+morla_jellyseerr_labels:
+    traefik.enable: '{{ morla_jellyseerr_flag_public }}'
+    traefik.http.services.jellyseerr.loadbalancer.server.port: '{{ morla_jellyseerr_reverse_proxy_port }}'
+    traefik.http.routers.jellyseerr.tls: true
+    traefik.http.routers.jellyseerr.rule: Host(`{{ morla_jellyseerr_public_url }}`)
+    traefik.http.routers.jellyseerr.entrypoints: websecure
+    traefik.http.routers.jellyseerr.tls.certresolver: myresolver
+    traefik.http.routers.jellyseerr.tls.domains: '{{ morla_jellyseerr_public_url }}'

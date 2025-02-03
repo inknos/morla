@@ -1,0 +1,26 @@
+---
+    - name: Create config directory
+      ansible.builtin.file:
+          path: '{{ morla_jellyseerr_config_dir }}'
+          state: directory
+          owner: '{{ morla_user_username }}'
+          group: '{{ morla_user_groupname }}'
+      when: not check_jellyseerr_config_dir.stat.exists
+
+    - name: Create container
+      containers.podman.podman_container:
+          name: '{{ morla_jellyseerr_container_name }}'
+          image: '{{ morla_jellyseerr_container_image}}'
+          network: morla-wireguard-network
+          network_aliases: '{{ morla_jellyseerr_short_name }}'
+          ports: '{{ morla_jellyseerr_ports }}'
+          volumes: '{{ morla_jellyseerr_volumes }}'
+          label: '{{ morla_jellyseerr_labels }}'
+          env:
+              TZ: '{{ morla_tz }}'
+          state: started
+          generate_systemd:
+              path: '{{ morla_home_config_systemd_dir }}'
+              restart_policy: always
+              names: true
+              container_prefix: '{{ morla_systemd_service_prefix }}'

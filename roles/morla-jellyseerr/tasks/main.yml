@@ -1,0 +1,32 @@
+---
+# roles/jellyseerr/tasks/main.yml
+    - ansible.builtin.import_tasks: '{{ role_path }}/tasks/init.yml'
+      when: morla_jellyseerr_enabled | bool
+      tags:
+          - always
+
+    - ansible.builtin.import_tasks: '{{ role_path }}/tasks/init_flag.yml'
+      when: morla_jellyseerr_enabled | bool
+      tags:
+          - always
+          - setup-all
+          - setup-jellyseerr
+
+    - ansible.builtin.import_tasks: '{{ role_path }}/tasks/pull_jellyseerr.yml'
+      when: morla_jellyseerr_enabled | bool
+      tags:
+          - setup-all
+          - setup-jellyseerr
+
+    - ansible.builtin.import_tasks: '{{ role_path }}/tasks/destroy_jellyseerr.yml'
+      when: morla_jellyseerr_enabled | bool
+      tags:
+          - never
+          - destroy-all
+          - destroy-jellyseerr
+
+    - ansible.builtin.import_tasks: '{{ role_path }}/tasks/setup_jellyseerr.yml'
+      when: morla_jellyseerr_enabled | bool
+      tags:
+          - setup-all
+          - setup-jellyseerr

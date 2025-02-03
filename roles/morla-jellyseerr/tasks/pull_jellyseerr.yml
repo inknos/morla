@@ -1,0 +1,5 @@
+---
+    - name: Pull Jellyseerr image
+      containers.podman.podman_image:
+          name: '{{ morla_jellyseerr_container_image }}'
+          tag: latest

@@ -1,0 +1,5 @@
+---
+    - name: Check if Config dir exists
+      stat:
+          path: '{{ morla_jellyseerr_config_dir }}'
+      register: check_jellyseerr_config_dir
