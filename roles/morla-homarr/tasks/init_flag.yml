@@ -1,0 +1,10 @@
+---
+    - name: Add Container to the list of autostart containers
+      ansible.builtin.set_fact:
+          morla_systemd_autostart_containers: '{{ morla_systemd_autostart_containers + [ morla_homarr_container_name ] }} '
+      when: ( morla_homarr_flag_autostart is defined ) and ( morla_homarr_flag_autostart|bool == True )
+
+    - name: Add Container to the list of Firewall Services
+      ansible.builtin.set_fact:
+          morla_firewall_services: "{{ morla_firewall_services + [ { 'name': morla_homarr_short_name, 'ports': morla_homarr_fw_ports } ]}}"
+      when: ( morla_homarr_flag_firewall is defined ) and ( morla_homarr_flag_firewall|bool == True )

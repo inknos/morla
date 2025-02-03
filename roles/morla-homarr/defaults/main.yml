@@ -1,0 +1,60 @@
+---
+# SPDX-FileCopyrightText: Nicola Sella
+#
+# SPDX-License-Identifier: GPL-3.0-or-later
+
+# configuration file for homarr
+morla_homarr_enabled: false
+
+morla_homarr_flag_public: true
+morla_homarr_flag_autostart: true
+morla_homarr_flag_wireguard: true
+morla_homarr_flag_firewall: true # replace with if port list non empty
+
+# Name
+morla_homarr_long_name: Homarr
+morla_homarr_short_name: homarr
+
+morla_homarr_container_short_name: '{{ morla_homarr_short_name }}'
+morla_homarr_container_name: '{{ morla_user_username }}-{{ morla_homarr_container_short_name }}'
+morla_homarr_public_url: dashboard.{{ morla_public_url }}
+morla_homarr_tailscale_url: '{{ morla_homarr_short_name }}.{{ morla_tailscale_url }}'
+
+morla_homarr_container_image_base: ghcr.io/ajnart/homarr
+morla_homarr_container_image_tag: latest
+morla_homarr_container_image: '{{ morla_homarr_container_image_base }}:{{ morla_homarr_container_image_tag }}'
+
+# Networking
+morla_homarr_reverse_proxy_port: '7575'
+morla_homarr_exposed_proxy_port: '{{ morla_homarr_reverse_proxy_port }}'
+
+# Networking/Firewall
+morla_homarr_fw_ports:
+    tcp:
+        - '{{ morla_homarr_reverse_proxy_port }}'
+    udp:
+
+# Networking/Port Forwarding
+morla_homarr_ports:
+    - '{{ morla_homarr_reverse_proxy_port }}:{{ morla_homarr_exposed_proxy_port }}'
+
+# Storage/Host
+morla_homarr_config_dir: '{{ morla_config_dir }}/{{ morla_homarr_long_name }}/configs'
+morla_homarr_icons_dir: '{{ morla_config_dir }}/{{ morla_homarr_long_name }}/icons'
+morla_homarr_data_dir: '{{ morla_config_dir }}/{{ morla_homarr_long_name }}/data'
+
+# Storage/Mount
+morla_homarr_volumes:
+    - '{{ morla_homarr_config_dir }}:/app/data/configs:Z'
+    - '{{ morla_homarr_icons_dir }}:/app/public/icons:Z'
+    - '{{ morla_homarr_data_dir }}:/data:Z'
+    - /run/user/{{ morla_user_puid }}/podman/podman.sock:/var/run/docker.sock:z
+
+# Labels/Traefik
+morla_homarr_labels:
+    traefik.enable: '{{ morla_homarr_flag_public }}'
+    traefik.http.services.homarr.loadbalancer.server.port: '{{ morla_homarr_exposed_proxy_port }}'
+    traefik.http.routers.homarr.tls: true
+    traefik.http.routers.homarr.rule: Host(`{{ morla_homarr_public_url }}`)
+    traefik.http.routers.homarr.entrypoints: websecure
+    traefik.http.routers.homarr.tls.domains: '{{ morla_homarr_public_url }}'

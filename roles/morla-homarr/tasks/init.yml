@@ -1,0 +1,15 @@
+---
+    - name: Check if Config dir exists
+      stat:
+          path: '{{ morla_homarr_config_dir }}'
+      register: check_homarr_config_dir
+
+    - name: Check if Icons dir exists
+      stat:
+          path: '{{ morla_homarr_icons_dir }}'
+      register: check_homarr_icons_dir
+
+    - name: Check if Data dir exists
+      stat:
+          path: '{{ morla_homarr_data_dir }}'
+      register: check_homarr_data_dir

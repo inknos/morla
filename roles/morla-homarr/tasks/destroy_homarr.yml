@@ -1,0 +1,5 @@
+---
+    - name: Destroy Homarr
+      containers.podman.podman_container:
+          name: '{{ morla_homarr_container_name }}'
+          state: absent
