@@ -16,22 +16,13 @@
           ports: '{{ morla_navidrome_ports }}'
           volumes: '{{ morla_navidrome_volumes }}'
           labels: '{{ morla_navidrome_labels }}'
+          user: '0:0'
           env:
-              PUID: '{{ morla_fake_puid }}'
-              PGID: '{{ morla_fake_pgid }}'
               TZ: '{{ morla_tz }}'
               ND_SCANSCHEDULE: '{{ morla_navidrome_env_nd_scanschedule }}'
               ND_LOGLEVEL: '{{ morla_navidrome_env_nd_loglevel }}'
               ND_SESSIONTIMEOUT: '{{ morla_navidrome_env_nd_sessiontimeout }}'
               ND_BASEURL: '{{ morla_navidrome_env_nd_baseurl }}'
-          uidmap:
-              - '{{ morla_fake_puid }}:0:1'
-              - 0:1:{{ morla_fake_puid }}
-              - '{{ morla_fake_puid + 1 }}:{{ morla_fake_puid + 1 }}:{{ morla_subuid_size - morla_fake_puid }}'
-          gidmap:
-              - '{{ morla_fake_pgid }}:0:1'
-              - 0:1:{{ morla_fake_pgid }}
-              - '{{ morla_fake_pgid + 1 }}:{{ morla_fake_pgid + 1 }}:{{ morla_subgid_size - morla_fake_pgid }}'
           state: started
           generate_systemd:
               path: '{{ morla_home_config_systemd_dir }}'

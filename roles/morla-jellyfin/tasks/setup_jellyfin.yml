@@ -23,11 +23,14 @@
           network_aliases: '{{ morla_jellyfin_short_name }}'
           ports: '{{ morla_jellyfin_ports }}'
           volumes: '{{ morla_jellyfin_volumes }}'
+          mount: '{{ morla_jellyfin_mount }}'
           label: '{{ morla_jellyfin_labels }}'
           # from getent group render | cut -d: -f3
           group_add: 997
           # requires setsebool container_use_devices=true 
-          device: "/dev/dri/renderD128:/dev/dri/renderD128"
+          device: "/dev/dri/:/dev/dri/"
+          user: '{{ morla_user_puid }}:{{ morla_user_pgid }}'
+          userns: keep-id
           env:
               TZ: '{{ morla_tz }}'
               JELLYFIN_PublishedServerUrl: 'http://{{ morla_jellyfin_public_url }}'

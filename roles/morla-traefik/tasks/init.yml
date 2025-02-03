@@ -25,6 +25,32 @@
           group: '{{ morla_user_groupname }}'
       when: not check_traefik_rules_dir.stat.exists
 
+    - name: Check if Traefik certificates dir
+      stat:
+          path: '{{ morla_traefik_config_dir }}/certificates'
+      register: check_traefik_certificates_dir
+
+    - name: Create certificates dir
+      ansible.builtin.file:
+          path: '{{ morla_traefik_config_dir }}/certificates'
+          state: directory
+          owner: '{{ morla_user_username }}'
+          group: '{{ morla_user_groupname }}'
+      when: not check_traefik_certificates_dir.stat.exists
+
+    - name: Check if Traefik Cloudflared dir exists
+      stat:
+          path: '{{ morla_traefik_cloudflared_config_dir }}'
+      register: check_traefik_cloudflared_config_dir
+
+    - name: Create Cloudflared directory
+      ansible.builtin.file:
+          path: '{{ morla_traefik_cloudflare_config_dir }}'
+          state: directory
+          owner: '{{ morla_user_username }}'
+          group: '{{ morla_user_groupname }}'
+      when: not check_traefik_cloudflared_config_dir.stat.exists
+
     - name: Check if Traefik Letsencypt dir exists
       stat:
           path: '{{ morla_traefik_letsencrypt_dir }}'

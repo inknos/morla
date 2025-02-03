@@ -11,9 +11,11 @@
       containers.podman.podman_container:
           name: '{{ morla_traefik_container_name }}'
           image: '{{ morla_traefik_container_image}}'
-          network: morla-wireguard-network
+          network:
+            - morla-wireguard-network
+            - morla-cftunnel-network
           network_aliases: '{{ morla_traefik_short_name }}'
-          ip: 172.20.0.100
+            #ip: 172.20.0.100
           ports: '{{ morla_traefik_ports }}'
           volumes: '{{ morla_traefik_volumes }}'
           label: '{{ morla_traefik_labels }}'
@@ -23,7 +25,7 @@
               PUID: '{{ morla_fake_puid }}'
               PGID: '{{ morla_fake_pgid }}'
               TZ: '{{ morla_tz }}'
-              GANDIV5_API_KEY: '{{ morla_traefik_env_gandiv5_api_key }}'
+              CF_DNS_API_TOKEN: '{{ morla_traefik_env_cloudflare_dns_api_token }}'
           uidmap:
               - '{{ morla_fake_puid }}:0:1'
               - 0:1:{{ morla_fake_puid }}

@@ -55,6 +55,6 @@ morla_pyload_ng_labels:
     traefik.http.services.pyload_ng.loadbalancer.server.port: '{{ morla_pyload_ng_exposed_proxy_port }}'
     traefik.http.routers.pyload_ng.tls: true
     traefik.http.routers.pyload_ng.rule: Host(`{{ morla_pyload_ng_tailscale_url }}`)
-    traefik.http.routers.pyload_ng.entrypoints: tswebsecure
+    traefik.http.routers.pyload_ng.entrypoints: websecure
     traefik.http.routers.pyload_ng.tls.certresolver: myresolver
     traefik.http.routers.pyload_ng.tls.domains: '{{ morla_pyload_ng_tailscale_url }}'

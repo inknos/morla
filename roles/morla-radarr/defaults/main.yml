@@ -20,7 +20,7 @@ morla_radarr_container_name: '{{ morla_user_username }}-{{ morla_radarr_containe
 morla_radarr_public_url: '{{ morla_radarr_short_name }}.{{ morla_public_url }}'
 morla_radarr_tailscale_url: '{{ morla_radarr_short_name }}.{{ morla_tailscale_url }}'
 
-morla_radarr_container_image_base: cr.hotio.dev/hotio/radarr
+morla_radarr_container_image_base: ghcr.io/hotio/radarr
 morla_radarr_container_image_tag: latest
 morla_radarr_container_image: '{{ morla_radarr_container_image_base }}:{{ morla_radarr_container_image_tag }}'
 
@@ -54,5 +54,5 @@ morla_radarr_labels:
     traefik.http.services.radarr.loadbalancer.server.port: '{{ morla_radarr_exposed_proxy_port }}'
     traefik.http.routers.radarr.tls: true
     traefik.http.routers.radarr.rule: Host(`{{ morla_radarr_tailscale_url }}`)
-    traefik.http.routers.radarr.entrypoints: tswebsecure
+    traefik.http.routers.radarr.entrypoints: websecure
     traefik.http.routers.radarr.tls.domains: '{{ morla_radarr_tailscale_url }}'

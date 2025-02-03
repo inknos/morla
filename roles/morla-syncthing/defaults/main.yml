@@ -60,4 +60,4 @@ morla_syncthing_labels:
     traefik.http.services.syncthing.loadbalancer.server.port: '{{ morla_syncthing_exposed_proxy_port }}'
     traefik.http.routers.syncthing.tls: true
     traefik.http.routers.syncthing.rule: Host(`{{ morla_syncthing_tailscale_url }}`)
-    traefik.http.routers.syncthing.entrypoints: tswebsecure
+    traefik.http.routers.syncthing.entrypoints: websecure

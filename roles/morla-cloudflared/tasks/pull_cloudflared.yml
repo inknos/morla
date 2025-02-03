@@ -1,0 +1,5 @@
+---
+    - name: Pull Cloudflared image
+      containers.podman.podman_image:
+          name: '{{ morla_cloudflared_container_image }}'
+          tag: latest

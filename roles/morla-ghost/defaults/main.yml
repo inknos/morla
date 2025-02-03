@@ -17,12 +17,12 @@ morla_ghost_short_name: ghost
 
 morla_ghost_container_short_name: '{{ morla_ghost_short_name }}'
 morla_ghost_container_name: '{{ morla_user_username }}-{{ morla_ghost_container_short_name }}'
-morla_ghost_public_url: '{{ morla_ghost_short_name }}.{{ morla_public_url }}'
+morla_ghost_public_url: 'blog.{{ morla_public_url }}'
 
 morla_ghost_pod_name: '{{ morla_ghost_container_name }}-pod'
 
 morla_ghost_container_image_base: docker.io/library/ghost
-morla_ghost_container_image_tag: latest
+morla_ghost_container_image_tag: 5-alpine
 morla_ghost_container_image: '{{ morla_ghost_container_image_base }}:{{ morla_ghost_container_image_tag }}'
 
 # Networking
@@ -64,12 +64,13 @@ morla_ghost_db_short_name: ghost-db
 morla_ghost_db_container_short_name: '{{ morla_ghost_db_short_name }}'
 morla_ghost_db_container_name: '{{ morla_user_username }}-{{ morla_ghost_db_container_short_name }}'
 
-morla_ghost_db_container_image_base: lscr.io/linuxserver/mariadb
-morla_ghost_db_container_image_tag: 10.6.10
+morla_ghost_db_container_image_base: docker.io/library/mysql
+morla_ghost_db_container_image_tag: 8
 morla_ghost_db_container_image: '{{ morla_ghost_db_container_image_base }}:{{ morla_ghost_db_container_image_tag }}'
 
 # Environment
-morla_ghost_db_env_mysql_root_password: '{{ morla_ghost_db_password}}'
+morla_ghost_db_env_mysql_root_password: '{{ morla_ghost_db_root_password}}'
+morla_ghost_db_env_mysql_password: '{{ morla_ghost_db_password}}'
 morla_ghost_db_env_mysql_database: ghost-db
 
 # Storage/Host
@@ -77,4 +78,4 @@ morla_ghost_db_config_dir: '{{ morla_config_dir }}/{{ morla_ghost_db_long_name }
 
 # Storage/Mount
 morla_ghost_db_volumes:
-    - '{{ morla_ghost_db_config_dir }}:/config:Z'
+    - '{{ morla_ghost_db_config_dir }}:/var/lib/mysql:Z'

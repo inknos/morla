@@ -59,5 +59,5 @@ morla_photostructure_labels:
     traefik.http.services.photostructure.loadbalancer.server.port: '{{ morla_photostructure_exposed_proxy_port }}'
     traefik.http.routers.photostructure.tls: true
     traefik.http.routers.photostructure.rule: Host(`{{ morla_photostructure_tailscale_url }}`)
-    traefik.http.routers.photostructure.entrypoints: tswebsecure
+    traefik.http.routers.photostructure.entrypoints: websecure
     traefik.http.routers.photostructure.tls.domains: '{{ morla_photostructure_tailscale_url }}'

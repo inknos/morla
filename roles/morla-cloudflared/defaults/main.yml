@@ -1,0 +1,67 @@
+---
+# SPDX-FileCopyrightText: Nicola Sella
+#
+# SPDX-License-Identifier: GPL-3.0-or-later
+
+# configuration file for cloudflared
+
+morla_cloudflared_flag_public: false
+morla_cloudflared_flag_autostart: true
+morla_cloudflared_flag_wireguard: false
+morla_cloudflared_flag_firewall: true # replace with if port list non empty
+
+# Name
+morla_cloudflared_long_name: Cloudflared
+morla_cloudflared_short_name: cloudflared
+
+morla_cloudflared_container_short_name: cloudflared
+morla_cloudflared_container_name: '{{ morla_user_username }}-{{ morla_cloudflared_container_short_name }}'
+
+morla_cloudflared_container_image_base: docker.io/cloudflare/cloudflared
+morla_cloudflared_container_image_tag: latest
+morla_cloudflared_container_image: '{{ morla_cloudflared_container_image_base }}:{{ morla_cloudflared_container_image_tag }}'
+
+# Network
+
+# Network/Firewall
+morla_cloudflared_fw_ports:
+    tcp:
+    udp:
+
+# Network/Port Forwarding
+morla_cloudflared_ports:
+
+# Storage/Host
+morla_cloudflared_config_dir: '{{ morla_config_dir }}/{{ morla_cloudflared_long_name}}'
+
+# Storage/Mount
+morla_cloudflared_volumes:
+
+# Command
+#
+morla_cloudflared_env_tunnel_token: "{{ morla_cloudflared_token }}"
+morla_cloudflared_env_tunnel_loglevel: debug
+morla_cloudflared_command: "tunnel --no-autoupdate run"
+
+
+
+morla_cloudflared_labels:
+    cloudflared.enable: true
+    cloudflared.http.routers.cloudflared.rule: Host(`cloudflared.{{ morla_domain }}`) && (PathPrefix(`/api`) || PathPrefix(`/dashboard`))
+    cloudflared.http.routers.cloudflared.service: api@internal
+    cloudflared.http.routers.cloudflared.entrypoints: websecure
+    cloudflared.http.routers.cloudflared.tls.certresolver: myresolver
+    # middleware redirect
+    cloudflared.http.middlewares.redirect-to-https.redirectscheme.scheme: https
+    # # global redirect to https
+    # cloudflared.http.routers.redirs.rule: hostregexp(`{host:.+}`)
+    # cloudflared.http.routers.redirs.entrypoints: web
+    # cloudflared.http.routers.redirs.middlewares: redirect-to-https
+    # private network ip whitelist
+
+morla_cloudflared_network: morla-cftunnel-network
+
+
+# Sec Opt
+morla_cloudflared_security_opt:
+    - label=disable

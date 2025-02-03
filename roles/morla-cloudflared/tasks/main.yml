@@ -1,5 +1,5 @@
 ---
-# roles/traefik/tasks/main.yml
+# roles/cloudflared/tasks/main.yml
     - ansible.builtin.import_tasks: '{{ role_path }}/tasks/init.yml'
       tags:
           - always
@@ -8,24 +8,24 @@
       tags:
           - always
           - setup-all
-          - setup-traefik
+          - setup-cloudflared
           - setup-network
 
-    - ansible.builtin.import_tasks: '{{ role_path }}/tasks/pull_traefik.yml'
+    - ansible.builtin.import_tasks: '{{ role_path }}/tasks/pull_cloudflared.yml'
       tags:
           - setup-all
-          - setup-traefik
+          - setup-cloudflared
           - setup-network
 
-    - ansible.builtin.import_tasks: '{{ role_path }}/tasks/destroy_traefik.yml'
+    - ansible.builtin.import_tasks: '{{ role_path }}/tasks/destroy_cloudflared.yml'
       tags:
           - never
           - destroy-all
-          - destroy-traefik
+          - destroy-cloudflared
           - destroy-network
 
-    - ansible.builtin.import_tasks: '{{ role_path }}/tasks/setup_traefik.yml'
+    - ansible.builtin.import_tasks: '{{ role_path }}/tasks/setup_cloudflared.yml'
       tags:
           - setup-all
-          - setup-traefik
+          - setup-cloudflared
           - setup-network

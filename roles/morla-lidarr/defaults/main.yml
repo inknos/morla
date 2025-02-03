@@ -20,7 +20,7 @@ morla_lidarr_container_name: '{{ morla_user_username }}-{{ morla_lidarr_containe
 morla_lidarr_public_url: '{{ morla_lidarr_short_name }}.{{ morla_public_url }}'
 morla_lidarr_tailscale_url: '{{ morla_lidarr_short_name }}.{{ morla_tailscale_url }}'
 
-morla_lidarr_container_image_base: cr.hotio.dev/hotio/lidarr
+morla_lidarr_container_image_base: ghcr.io/hotio/lidarr
 morla_lidarr_container_image_tag: latest
 morla_lidarr_container_image: '{{ morla_lidarr_container_image_base }}:{{ morla_lidarr_container_image_tag }}'
 
@@ -54,6 +54,6 @@ morla_lidarr_labels:
     traefik.http.services.lidarr.loadbalancer.server.port: '{{ morla_lidarr_exposed_proxy_port }}'
     traefik.http.routers.lidarr.tls: true
     traefik.http.routers.lidarr.rule: Host(`{{ morla_lidarr_tailscale_url }}`)
-    traefik.http.routers.lidarr.entrypoints: tswebsecure
+    traefik.http.routers.lidarr.entrypoints: websecure
     traefik.http.routers.lidarr.tls.certresolver: myresolver
     traefik.http.routers.lidarr.tls.domains: '{{ morla_lidarr_tailscale_url }}'

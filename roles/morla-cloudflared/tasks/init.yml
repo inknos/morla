@@ -1,0 +1,14 @@
+---
+    - name: Check if Cloudflared Config dir exists
+      stat:
+          path: '{{ morla_cloudflared_config_dir }}'
+      register: check_cloudflared_config_dir
+
+    - name: Create config directory
+      ansible.builtin.file:
+          path: '{{ morla_cloudflared_config_dir }}'
+          state: directory
+          owner: '{{ morla_user_username }}'
+          group: '{{ morla_user_groupname }}'
+      when: not check_cloudflared_config_dir.stat.exists
+

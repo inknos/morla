@@ -1,0 +1,28 @@
+---
+    - name: Create config directory
+      ansible.builtin.file:
+          path: '{{ morla_cloudflared_config_dir }}'
+          state: directory
+          owner: '{{ morla_user_username }}'
+          group: '{{ morla_user_groupname }}'
+      when: not check_cloudflared_config_dir.stat.exists
+
+    - name: Create container
+      containers.podman.podman_container:
+          name: '{{ morla_cloudflared_container_name }}'
+          image: '{{ morla_cloudflared_container_image}}'
+          network: '{{ morla_cloudflared_network }}'
+          network_aliases: '{{ morla_cloudflared_short_name }}'
+          command: '{{ morla_cloudflared_command }}'
+          env:
+            TUNNEL_TOKEN: '{{ morla_cloudflared_env_tunnel_token }}'
+          dns:
+            - 1.1.1.1
+          cap_add:
+            - ALL
+          state: started
+          generate_systemd:
+              path: '{{ morla_home_config_systemd_dir }}'
+              restart_policy: always
+              names: true
+              container_prefix: '{{ morla_systemd_service_prefix }}'

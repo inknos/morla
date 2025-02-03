@@ -4,3 +4,9 @@
           name: morla-wireguard-network
           subnet: 172.20.0.0/24
           driver: bridge
+
+    - name: Create Tunnel Network
+      containers.podman.podman_network:
+          name: morla-cftunnel-network
+          subnet: 172.120.0.0/24
+          driver: bridge

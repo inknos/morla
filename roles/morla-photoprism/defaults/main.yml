@@ -4,7 +4,7 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 
 # configuration file for photoprism
-morla_photoprism_enabled: true
+morla_photoprism_enabled: false
 
 morla_photoprism_flag_public: true
 morla_photoprism_flag_autostart: true

@@ -60,6 +60,6 @@ morla_qbittorrent_labels:
     traefik.http.services.qbittorrent.loadbalancer.server.port: '{{ morla_qbittorrent_exposed_proxy_port }}'
     traefik.http.routers.qbittorrent.tls: true
     traefik.http.routers.qbittorrent.rule: Host(`{{ morla_qbittorrent_tailscale_url }}`)
-    traefik.http.routers.qbittorrent.entrypoints: tswebsecure
-    traefik.http.routers.qbittorrent.tls.certresolver: myresolve
+    traefik.http.routers.qbittorrent.entrypoints: websecure
+    traefik.http.routers.qbittorrent.tls.certresolver: myresolver
     traefik.http.routers.qbittorrent.tls.domains: '{{ morla_qbittorrent_tailscale_url }}'

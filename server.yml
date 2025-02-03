@@ -10,8 +10,13 @@
 
           - morla_internal_ip: 192.168.1.166
           - morla_domain: '{{ morla_main_domain }}'
+            deprecated: true
           - morla_subdomain: morla
-          - morla_public_url: '{{ morla_subdomain }}.{{ morla_domain }}'
+          # Using two subdomains gets Error code: SSL_ERROR_NO_CYPHER_OVERLAP
+          # in Firefox which means that cloudflare tunnel cannot deal
+          # really well with sub-subdomains
+          # - morla_public_url: '{{ morla_subdomain }}.{{ morla_main_domain }}'
+          - morla_public_url: '{{ morla_main_domain }}'
           - morla_tailscale_url: ts.{{ morla_subdomain }}.{{ morla_domain }}
 
           - morla_user_puid: 1000
@@ -37,8 +42,10 @@
           - morla_one_media: /one/media
           - morla_one_vault: /one/vault
 
-          - morla_data_dir: '{{ morla_one_media }}/data'
-          - morla_media_dir: '{{ morla_one_media }}/data/media'
+          - morla_raid: /raid
+
+          - morla_data_dir: '{{ morla_raid }}/data'
+          - morla_media_dir: '{{ morla_raid }}/data/media'
 
           - morla_vault_dir: '{{ morla_one_vault }}'
 
@@ -50,6 +57,7 @@
           - morla-base        # setup base environment for containers
           - morla-wireguard   # setup wireguard wpn and keys
           - morla-coredns
+          - morla-cloudflared
           - morla-traefik     # support for traefik. since it's experimental it's using v3 beta
           - morla-filebrowser # setup filebrowser container
           - morla-radarr      # setup radarr
@@ -58,11 +66,13 @@
           - morla-lidarr      # setup lidarr
           - morla-readarr     # setup readarr
           - morla-qbittorrent # setup qbittorrent
+          - morla-homarr
           - morla-pyload-ng
           - morla-etebase
           - morla-wordpress
           - morla-syncthing   # setup syncting
           - morla-jellyfin    # setup jellyfin [public]
+          - morla-jellyseerr
           - morla-navidrome   # setup navidrome [public]
           - morla-piwigo      # setup piwigo [public]
           - morla-photoprism  # setup photoprism [public]

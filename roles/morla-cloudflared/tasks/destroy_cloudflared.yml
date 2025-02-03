@@ -1,0 +1,5 @@
+---
+    - name: Destroy Cloudflared
+      containers.podman.podman_container:
+          name: '{{ morla_cloudflared_container_name }}'
+          state: absent

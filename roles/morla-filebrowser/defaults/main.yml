@@ -59,6 +59,6 @@ morla_filebrowser_labels:
     traefik.http.services.filebrowser.loadbalancer.server.port: '{{ morla_filebrowser_exposed_proxy_port }}'
     traefik.http.routers.filebrowser.tls: true
     traefik.http.routers.filebrowser.rule: Host(`{{ morla_filebrowser_tailscale_url }}`)
-    traefik.http.routers.filebrowser.entrypoints: tswebsecure
+    traefik.http.routers.filebrowser.entrypoints: websecure
     traefik.http.routers.filebrowser.tls.certresolver: myresolver
     traefik.http.routers.filebrowser.tls.domains: '{{ morla_filebrowser_tailscale_url }}'

@@ -20,7 +20,7 @@ morla_readarr_container_short_name: '{{ morla_readarr_short_name }}'
 morla_readarr_container_name: '{{ morla_user_username }}-{{ morla_readarr_container_short_name }}'
 morla_readarr_public_url: '{{ morla_readarr_short_name }}.{{ morla_public_url }}'
 
-morla_readarr_container_image_base: cr.hotio.dev/hotio/readarr
+morla_readarr_container_image_base: ghcr.io/hotio/readarr
 morla_readarr_container_image_tag: latest
 morla_readarr_container_image: '{{ morla_readarr_container_image_base }}:{{ morla_readarr_container_image_tag }}'
 

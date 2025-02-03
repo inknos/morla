@@ -38,15 +38,16 @@ morla_traefik_fw_ports:
 
 # Network/Port Forwarding
 morla_traefik_ports:
-    - '{{ morla_traefik_http_port }}:{{ morla_traefik_http_port }}'
-    - '{{ morla_traefik_https_port }}:{{ morla_traefik_https_port }}'
-    - '{{ morla_tailscale_ip }}:80:80'
-    - '{{ morla_tailscale_ip }}:443:443'
+    - '{{ morla_traefik_http_port }}:80'
+    - '{{ morla_traefik_https_port }}:443'
+    # - '{{ morla_tailscale_ip }}:80:80'
+    # - '{{ morla_tailscale_ip }}:443:443'
     - '{{ morla_traefik_dashboard_port }}:8080'
 
 # Storage/Host
 morla_traefik_config_dir: '{{ morla_config_dir }}/{{ morla_traefik_long_name}}'
 morla_traefik_letsencrypt_dir: '{{ morla_config_dir }}/{{ morla_traefik_long_name}}Letsencrypt'
+morla_traefik_cloudflared_config_dir: '{{ morla_config_dir }}/{{ morla_traefik_long_name }}CloudflaredCerts'
 
 # Storage/Mount
 morla_traefik_volumes:
@@ -59,8 +60,7 @@ morla_traefik_volumes:
     # Log File (optional)
     # - '{{ morla_traefik_config_dir }}/traefik.log:/traefik.log:Z'
     - '{{ morla_traefik_letsencrypt_dir }}:/letsencrypt:Z'
-    - /run/user/{{ morla_user_puid }}/podman/podman.sock:/var/run/docker.sock:Z,ro
-    - '{{ morla_traefik_config_dir }}/rules/rules.yml:/rules/rules.yml:Z'
+    - /run/user/{{ morla_user_puid }}/podman/podman.sock:/var/run/docker.sock:z,ro
 
 # Command
 morla_traefik_command:
@@ -69,25 +69,16 @@ morla_traefik_command:
     - --api.dashboard=true
     - --providers.docker=true
     - --providers.docker.exposedbydefault=false
-    - --providers.file.directory=/rules
-    - --providers.file.watch=true
-    - --entrypoints.web.address=:1680/tcp
-    - --entrypoints.websecure.address=:1643/tcp
-    - --entrypoints.tsweb.address=:80/tcp
-    - --entrypoints.tswebsecure.address=:443/tcp
-    - --entrypoints.web.http.redirections.entryPoint.to=websecure
-    - --entrypoints.web.http.redirections.entryPoint.scheme=https
-    - --entrypoints.tsweb.http.redirections.entryPoint.to=tswebsecure
-    - --entrypoints.tsweb.http.redirections.entryPoint.scheme=https
+    - --entrypoints.web.address=:80/tcp
+    - --entrypoints.websecure.address=:443/tcp
+    - --entryPoints.websecure.forwardedHeaders.trustedIPs=127.0.0.1/32,192.168.1.166,172.20.0.0/24,172.120.0.0/24
     - --certificatesresolvers.myresolver.acme.dnschallenge=true
-    - --certificatesresolvers.myresolver.acme.dnschallenge.provider=gandiv5
-      #- "--certificatesresolvers.myresolver.acme.caserver=https://acme-staging-v02.api.letsencrypt.org/directory"
+    - --certificatesresolvers.myresolver.acme.dnschallenge.provider=cloudflare
     - --certificatesresolvers.myresolver.acme.email={{ morla_letsencrypt_email }}
     - --certificatesresolvers.myresolver.acme.storage=/letsencrypt/acme.json
     - --accesslog=true
     - --accesslog.filepath=/mnt/logs/access.log
     - --accesslog.bufferingsize=100
-    - --providers.file.filename=/rules/rules.yml
 
 morla_traefik_labels:
     traefik.enable: true
@@ -95,15 +86,6 @@ morla_traefik_labels:
     traefik.http.routers.traefik.service: api@internal
     traefik.http.routers.traefik.entrypoints: websecure
     traefik.http.routers.traefik.tls.certresolver: myresolver
-    # # middleware redirect
-    # traefik.http.middlewares.redirect-to-https.redirectscheme.scheme: https
-    # # global redirect to https
-    # traefik.http.routers.redirs.rule: hostregexp(`{host:.+}`)
-    # traefik.http.routers.redirs.entrypoints: web
-    # traefik.http.routers.redirs.middlewares: redirect-to-https
-    # private network ip whitelist
-    # need a way to get public ip
-
 
 # Sec Opt
 morla_traefik_security_opt:
@@ -113,4 +95,5 @@ morla_traefik_security_opt:
 morla_traefik_puid: 101
 morla_traefik_pgid: 101
 
-morla_traefik_env_gandiv5_api_key: '{{ morla_letsencrypt_gandi_api_key }}'
+morla_traefik_env_cloudflare_dns_api_token: '{{ morla_traefik_cloudflare_dns_api_token }}'
+

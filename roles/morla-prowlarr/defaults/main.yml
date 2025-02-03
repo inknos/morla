@@ -20,7 +20,7 @@ morla_prowlarr_container_name: '{{ morla_user_username }}-{{ morla_prowlarr_cont
 morla_prowlarr_public_url: '{{ morla_prowlarr_short_name }}.{{ morla_public_url }}'
 morla_prowlarr_tailscale_url: '{{ morla_prowlarr_short_name }}.{{ morla_tailscale_url }}'
 
-morla_prowlarr_container_image_base: cr.hotio.dev/hotio/prowlarr
+morla_prowlarr_container_image_base: ghcr.io/hotio/prowlarr
 morla_prowlarr_container_image_tag: latest
 morla_prowlarr_container_image: '{{ morla_prowlarr_container_image_base }}:{{ morla_prowlarr_container_image_tag }}'
 
@@ -51,6 +51,6 @@ morla_prowlarr_labels:
     traefik.http.services.prowlarr.loadbalancer.server.port: '{{ morla_prowlarr_exposed_proxy_port }}'
     traefik.http.routers.prowlarr.tls: true
     traefik.http.routers.prowlarr.rule: Host(`{{ morla_prowlarr_tailscale_url }}`)
-    traefik.http.routers.prowlarr.entrypoints: tswebsecure
+    traefik.http.routers.prowlarr.entrypoints: websecure
     traefik.http.routers.prowlarr.tls.certresolver: myresolver
     traefik.http.routers.prowlarr.tls.domains: '{{ morla_prowlarr_tailscale_url }}'

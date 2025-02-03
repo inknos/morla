@@ -21,19 +21,27 @@
           network: morla-wireguard-network
           ports: '{{ morla_ghost_ports }}'
           label: '{{ morla_ghost_labels }}'
-          uidmap:
-              - '{{ morla_user_puid }}:0:1'
-              - 0:1:{{ morla_user_puid }}
-              - '{{ morla_user_puid + 1 }}:{{ morla_user_puid + 1 }}:{{ morla_subuid_size - morla_user_puid }}'
-          gidmap:
-              - '{{ morla_user_pgid }}:0:1'
-              - 0:1:{{ morla_user_pgid }}
-              - '{{ morla_user_pgid + 1 }}:{{ morla_user_pgid + 1 }}:{{ morla_subgid_size - morla_user_pgid }}'
           generate_systemd:
               path: '{{ morla_home_config_systemd_dir }}'
               restart_policy: always
               names: true
               pod_prefix: '{{ morla_systemd_service_pod_prefix }}'
+          state: started
+
+    - name: Create Database
+      containers.podman.podman_container:
+          name: '{{ morla_ghost_db_container_name }}'
+          image: '{{ morla_ghost_db_container_image }}'
+          pod: '{{ morla_ghost_pod_name }}'
+          volumes: '{{ morla_ghost_db_volumes }}'
+          env:
+              PUID: '{{ morla_user_puid }}'
+              PGID: '{{ morla_user_pgid }}'
+              TZ: '{{ morla_tz }}'
+              MYSQL_DATABASE: '{{ morla_ghost_db_env_mysql_database }}'
+              MYSQL_ROOT_PASSWORD: '{{ morla_ghost_db_env_mysql_root_password }}'
+              MYSQL_USER: ghost
+              MYSQL_PASSWORD: '{{ morla_ghost_db_env_mysql_password }}' 
           state: started
 
     - name: Create container
@@ -43,26 +51,13 @@
           pod: '{{ morla_ghost_pod_name }}'
           volumes: '{{ morla_ghost_volumes }}'
           env:
-              NODE_ENV: development
+              #NODE_ENV: development
               TZ: '{{ morla_tz }}'
+              url: 'https://{{ morla_ghost_public_url }}'
               database__client: mysql
-              database__connection__host: localhost
-              database__connection__user: root
-              database__connection__password: '{{ morla_ghost_db_env_mysql_root_password }}'
+              database__connection__host: morla-ghost-db
+              database__connection__user: ghost
+              # database__connection__password: '{{ morla_ghost_db_env_mysql_root_password }}'
+              database__connection__password: '{{ morla_ghost_db_env_mysql_password }}' 
               database__connection__database: '{{ morla_ghost_db_env_mysql_database }}'
-          state: started
-
-    - name: Create Database
-      containers.podman.podman_container:
-          name: '{{ morla_ghost_db_container_name }}'
-          image: '{{ morla_ghost_db_container_image }}'
-          pod: '{{ morla_ghost_pod_name }}'
-          network: container:morla-ghost
-          volumes: '{{ morla_ghost_db_volumes }}'
-          env:
-              PUID: '{{ morla_user_puid }}'
-              PGID: '{{ morla_user_pgid }}'
-              TZ: '{{ morla_tz }}'
-              MYSQL_DATABASE: '{{ morla_ghost_db_env_mysql_database }}'
-              MYSQL_ROOT_PASSWORD: '{{ morla_ghost_db_env_mysql_root_password }}'
           state: started

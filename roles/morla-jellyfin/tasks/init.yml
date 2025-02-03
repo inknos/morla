@@ -8,3 +8,11 @@
       stat:
           path: '{{ morla_jellyfin_cache_dir }}'
       register: check_jellyfin_cache_dir
+
+    - name: Enable setsebool option to allow the use of the render device
+      ansible.posix.seboolean:
+          name: container_use_dri_devices
+          state: true
+          persistent: true
+      become: true
+

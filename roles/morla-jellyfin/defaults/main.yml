@@ -1,4 +1,3 @@
----
 # SPDX-FileCopyrightText: Nicola Sella
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
@@ -52,7 +51,9 @@ morla_jellyfin_media_dir: '{{ morla_media_dir }}'
 morla_jellyfin_volumes:
     - '{{ morla_jellyfin_config_dir }}:/config:Z'
     - '{{ morla_jellyfin_cache_dir }}:/cache:z'
-    - '{{ morla_jellyfin_media_dir }}:/data/media:z'
+
+morla_jellyfin_mount:
+    - 'type=bind,source={{ morla_jellyfin_media_dir }},destination=/data/media,ro=true,relabel=private'
 
 # Labels/Traefik
 morla_jellyfin_labels:
