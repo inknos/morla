@@ -1,5 +1,0 @@
----
-    - name: Pull Photostructure image
-      containers.podman.podman_image:
-          name: '{{ morla_photostructure_container_image }}'
-          tag: latest

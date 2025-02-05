@@ -1,5 +1,0 @@
----
-    - name: Pull Pyload image
-      containers.podman.podman_image:
-          name: '{{ morla_pyload_container_image }}'
-          tag: latest

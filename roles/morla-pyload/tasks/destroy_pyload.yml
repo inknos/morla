@@ -1,5 +1,0 @@
----
-    - name: Destroy Pyload
-      containers.podman.podman_container:
-          name: '{{ morla_pyload_container_name }}'
-          state: absent

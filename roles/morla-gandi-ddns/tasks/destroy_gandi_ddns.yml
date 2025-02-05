@@ -1,5 +1,0 @@
----
-    - name: Destroy Gandi-DDNS
-      containers.podman.podman_container:
-          name: '{{ morla_gandi_ddns_container_name }}'
-          state: absent

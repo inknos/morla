@@ -1,5 +1,0 @@
----
-    - name: Destroy Grav
-      containers.podman.podman_container:
-          name: '{{ morla_grav_container_name }}'
-          state: absent

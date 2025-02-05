@@ -1,5 +1,0 @@
----
-    - name: Destroy DiscordSoundboardBot
-      containers.podman.podman_container:
-          name: '{{ morla_discord_soundboard_bot_container_name }}'
-          state: absent

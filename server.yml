@@ -54,10 +54,8 @@
           - inventory/vars.yml
 
       roles:
-          - morla-base        # setup base environment for containers
-          - morla-wireguard   # setup wireguard wpn and keys
-          - morla-coredns
-          - morla-cloudflared
+          - morla-base        # setup base environment for containers like networks
+          - morla-cloudflared # runs cloudlfared in a separate network to tunnel containers traffic
           - morla-traefik     # support for traefik. since it's experimental it's using v3 beta
           - morla-filebrowser # setup filebrowser container
           - morla-radarr      # setup radarr
@@ -66,25 +64,26 @@
           - morla-lidarr      # setup lidarr
           - morla-readarr     # setup readarr
           - morla-qbittorrent # setup qbittorrent
-          - morla-homarr
           - morla-pyload-ng
-          - morla-etebase
           - morla-syncthing   # setup syncting
           - morla-jellyfin    # setup jellyfin [public]
-          - morla-jellyseerr
           - morla-navidrome   # setup navidrome [public]
-          - morla-piwigo      # setup piwigo [public]
-          - morla-photoprism  # setup photoprism [public]
-          - morla-photostructure # setup photostructure [public]
-          - morla-lychee      # setup lychee [public]
           - morla-ghost       # setup ghost [public]
-          - morla-grav        # setup grav [public]
-          - morla-hedgedoc    # setup hedgedoc [public]
-          - morla-transfersh
-          - morla-standardnotes
-          - morla-gitea
-          - morla-ipfs
-          - morla-gandi-ddns  # setup python script to update gandi dns
           - morla-firewall  # manage firewall services and open ports
           - morla-systemd   # manage containers autostart
-          - morla-discord-soundboard-bot
+
+          # unused modules
+          # keeping them commented as I don't plan to test on them until I reconsider
+          # # trying them out
+          # - morla-etebase
+          # - morla-gitea
+          # - morla-hedgedoc    # setup hedgedoc [public]
+          # - morla-homarr
+          # - morla-ipfs
+          # - morla-jellyseerr
+          # - morla-lychee      # setup lychee [public]
+          # - morla-photoprism  # setup photoprism [public]
+          # - morla-piwigo      # setup piwigo [public]
+          # - morla-standardnotes
+          # - morla-transfersh
+          # - morla-wireguard
