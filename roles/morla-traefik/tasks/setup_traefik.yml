@@ -34,9 +34,10 @@
               - '{{ morla_fake_pgid }}:0:1'
               - 0:1:{{ morla_fake_pgid }}
               - '{{ morla_fake_pgid + 1 }}:{{ morla_fake_pgid + 1 }}:{{ morla_subgid_size - morla_fake_pgid }}'
-          state: started
-          generate_systemd:
-              path: '{{ morla_home_config_systemd_dir }}'
-              restart_policy: always
-              names: true
-              container_prefix: '{{ morla_systemd_service_prefix }}'
+          state: quadlet
+          quadlet_options:
+            - "AutoUpdate=registry"
+            - "Pull=newer"
+            - |
+              [Install]
+              WantedBy=default.target

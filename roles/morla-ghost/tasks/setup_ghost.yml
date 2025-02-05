@@ -21,12 +21,11 @@
           network: morla-wireguard-network
           ports: '{{ morla_ghost_ports }}'
           label: '{{ morla_ghost_labels }}'
-          generate_systemd:
-              path: '{{ morla_home_config_systemd_dir }}'
-              restart_policy: always
-              names: true
-              pod_prefix: '{{ morla_systemd_service_pod_prefix }}'
-          state: started
+          state: quadlet
+          quadlet_options:
+            - |
+              [Install]
+              WantedBy=default.target
 
     - name: Create Database
       containers.podman.podman_container:
@@ -42,7 +41,13 @@
               MYSQL_ROOT_PASSWORD: '{{ morla_ghost_db_env_mysql_root_password }}'
               MYSQL_USER: ghost
               MYSQL_PASSWORD: '{{ morla_ghost_db_env_mysql_password }}' 
-          state: started
+          state: quadlet
+          quadlet_options:
+            - "AutoUpdate=registry"
+            - "Pull=newer"
+            - |
+              [Install]
+              WantedBy=default.target
 
     - name: Create container
       containers.podman.podman_container:
@@ -60,4 +65,10 @@
               # database__connection__password: '{{ morla_ghost_db_env_mysql_root_password }}'
               database__connection__password: '{{ morla_ghost_db_env_mysql_password }}' 
               database__connection__database: '{{ morla_ghost_db_env_mysql_database }}'
-          state: started
+          state: quadlet
+          quadlet_options:
+            - "AutoUpdate=registry"
+            - "Pull=newer"
+            - |
+              [Install]
+              WantedBy=default.target

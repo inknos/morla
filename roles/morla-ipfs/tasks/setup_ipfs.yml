@@ -26,9 +26,10 @@
           label: '{{ morla_ipfs_labels }}'
           env:
               IPFS_PROFILE: '{{ morla_ipfs_env_ipfs_profile }}'
-          state: started
-          generate_systemd:
-              path: '{{ morla_home_config_systemd_dir }}'
-              restart_policy: always
-              names: true
-              container_prefix: '{{ morla_systemd_service_prefix }}'
+          state: quadlet
+          quadlet_options:
+            - "AutoUpdate=registry"
+            - "Pull=newer"
+            - |
+              [Install]
+              WantedBy=default.target

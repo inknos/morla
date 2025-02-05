@@ -45,12 +45,11 @@
               - '{{ morla_fake_pgid }}:0:1'
               - 0:1:{{ morla_fake_pgid }}
               - '{{ morla_fake_pgid + 1 }}:{{ morla_fake_pgid + 1 }}:{{ morla_subgid_size - morla_fake_pgid }}'
-          generate_systemd:
-              path: '{{ morla_home_config_systemd_dir }}'
-              restart_policy: always
-              names: true
-              pod_prefix: '{{ morla_systemd_service_pod_prefix }}'
-          state: started
+          state: quadlet
+          quadlet_options:
+            - |
+              [Install]
+              WantedBy=default.target
 
     - name: Create container
       containers.podman.podman_container:
@@ -67,7 +66,13 @@
               GITEA__database__NAME: '{{ morla_gitea_db_env_postgres_db }}'
               GITEA__database__USER: '{{ morla_gitea_db_env_postgres_user }}'
               GITEA__database__PASSWD: '{{ morla_gitea_db_env_postgres_password }}'
-          state: started
+          state: quadlet
+          quadlet_options:
+            - "AutoUpdate=registry"
+            - "Pull=newer"
+            - |
+              [Install]
+              WantedBy=default.target
 
     - name: Create Database
       containers.podman.podman_container:
@@ -83,4 +88,10 @@
               POSTGRES_USER: '{{ morla_gitea_db_env_postgres_user }}'
               POSTGRES_PASSWORD: '{{ morla_gitea_db_env_postgres_password }}'
               POSTGRES_DB: '{{ morla_gitea_db_env_postgres_db }}'
-          state: started
+          state: quadlet
+          quadlet_options:
+            - "AutoUpdate=registry"
+            - "Pull=newer"
+            - |
+              [Install]
+              WantedBy=default.target

@@ -23,9 +23,10 @@
               HTTP_AUTH_IP_WHITELIST: '{{ morla_transfersh_env_http_auth_ip_whitelist }}'
               RATE_LIMIT: '{{ morla_transfersh_env_rate_limit }}'
               PURGE_DAYS: '{{ morla_transfersh_env_purge_days }}'
-          state: started
-          generate_systemd:
-              path: '{{ morla_home_config_systemd_dir }}'
-              restart_policy: always
-              names: true
-              container_prefix: '{{ morla_systemd_service_prefix }}'
+          state: quadlet
+          quadlet_options:
+            - "AutoUpdate=registry"
+            - "Pull=newer"
+            - |
+              [Install]
+              WantedBy=default.target

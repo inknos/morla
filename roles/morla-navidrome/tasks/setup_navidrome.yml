@@ -23,9 +23,10 @@
               ND_LOGLEVEL: '{{ morla_navidrome_env_nd_loglevel }}'
               ND_SESSIONTIMEOUT: '{{ morla_navidrome_env_nd_sessiontimeout }}'
               ND_BASEURL: '{{ morla_navidrome_env_nd_baseurl }}'
-          state: started
-          generate_systemd:
-              path: '{{ morla_home_config_systemd_dir }}'
-              restart_policy: always
-              names: true
-              container_prefix: '{{ morla_systemd_service_prefix }}'
+          state: quadlet
+          quadlet_options:
+            - "AutoUpdate=registry"
+            - "Pull=newer"
+            - |
+              [Install]
+              WantedBy=default.target

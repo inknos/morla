@@ -29,12 +29,11 @@
               - '{{ morla_fake_pgid }}:0:1'
               - 0:1:{{ morla_fake_pgid }}
               - '{{ morla_fake_pgid + 1 }}:{{ morla_fake_pgid + 1 }}:{{ morla_subgid_size - morla_fake_pgid }}'
-          generate_systemd:
-              path: '{{ morla_home_config_systemd_dir }}'
-              restart_policy: always
-              names: true
-              pod_prefix: '{{ morla_systemd_service_pod_prefix }}'
-          state: started
+          state: quadlet
+          quadlet_options:
+            - |
+              [Install]
+              WantedBy=default.target
 
     - name: Create container
       containers.podman.podman_container:
@@ -51,7 +50,13 @@
               DB_PASSWORD: '{{ morla_lychee_db_env_mysql_password }}'
               DB_HOST: localhost
               DB_PORT: 3306
-          state: started
+          state: quadlet
+          quadlet_options:
+            - "AutoUpdate=registry"
+            - "Pull=newer"
+            - |
+              [Install]
+              WantedBy=default.target
 
     - name: Create Database
       containers.podman.podman_container:
@@ -68,4 +73,10 @@
               MYSQL_PASSWORD: '{{ morla_lychee_db_env_mysql_password }}'
               MYSQL_DATABASE: '{{ morla_lychee_db_env_mysql_database }}'
               MYSQL_ROOT_PASSWORD: '{{ morla_lychee_db_env_mysql_root_password }}'
-          state: started
+          state: quadlet
+          quadlet_options:
+            - "AutoUpdate=registry"
+            - "Pull=newer"
+            - |
+              [Install]
+              WantedBy=default.target
