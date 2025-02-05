@@ -69,7 +69,6 @@
           - morla-homarr
           - morla-pyload-ng
           - morla-etebase
-          - morla-wordpress
           - morla-syncthing   # setup syncting
           - morla-jellyfin    # setup jellyfin [public]
           - morla-jellyseerr
