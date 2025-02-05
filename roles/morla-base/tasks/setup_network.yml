@@ -4,9 +4,17 @@
           name: morla-wireguard-network
           subnet: 172.20.0.0/24
           driver: bridge
+          state: quadlet
+          quadlet_options:
+            - IPv6=true
+            - Label="ipv6 network"
 
     - name: Create Tunnel Network
       containers.podman.podman_network:
           name: morla-cftunnel-network
           subnet: 172.120.0.0/24
           driver: bridge
+          state: quadlet
+          quadlet_options:
+            - IPv6=true
+            - Label="ipv6 network"

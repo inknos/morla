@@ -1,39 +1,44 @@
 ---
-    - name: Enable Services for Containers
-      ansible.builtin.systemd:
-          name: '{{ morla_systemd_service_prefix }}-{{ item }}'
-          enabled: yes
+    - name: Reload and Update services
+      ansible.builtin.systemd_service:
+          daemon_reload: true
           scope: user
-      loop: '{{ morla_systemd_autostart_containers }}'
 
-    - name: Start Services for Containers
+    - name: Enable and Start Cloudflare Network
       ansible.builtin.systemd:
-          name: '{{ morla_systemd_service_prefix }}-{{ item }}'
+          name: morla-cftunnel-network-network.service
+          enabled: yes
+          state: started
+          scope: user
+
+    - name: Enable and Start Wireguard Network
+      ansible.builtin.systemd:
+          name: morla-wireguard-network-network.service
+          enabled: yes
+          state: started
+          scope: user
+
+    - name: Enable and Start Containers
+      ansible.builtin.systemd:
+          name: '{{ item }}'
+          enabled: yes
           state: started
           scope: user
       loop: '{{ morla_systemd_autostart_containers }}'
       ignore_errors: yes
 
-    - name: Enable Services for Pods
+    - name: Enable and Start Pods
       ansible.builtin.systemd:
-          name: '{{ morla_systemd_service_pod_prefix }}-{{ item }}'
+          name: '{{ item }}'
+          enabled: yes
           enabled: yes
           scope: user
       loop: '{{ morla_systemd_autostart_pods }}'
-
-    - name: Start Services for Pods
-      ansible.builtin.systemd:
-          name: '{{ morla_systemd_service_pod_prefix }}-{{ item }}'
-          state: started
-          scope: user
-      loop: '{{ morla_systemd_autostart_pods }}'
-      ignore_errors: yes
 
     - name: Check Linger Enabled
       ansible.builtin.shell: loginctl show-user {{ morla_user_username }} --property=Linger
       register: check_linger_equals_yes
       changed_when: false
-
 
     - name: Enable Linger to Autostart Containers with No Login
   # https://docs.podman.io/en/latest/markdown/podman-generate-systemd.1.html
