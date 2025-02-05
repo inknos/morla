@@ -2,9 +2,30 @@
     - name: Get All Firewall Services
       become: yes
       ansible.builtin.command: "firewall-cmd --list-services --zone=home"
-      register: all_firewall_services
+      register: firewalld_command_output
 
-    - name: Close All Firewall Services
+    - name: Put All Services Into a List
+      set_fact:
+        all_firewalld_services: '{{ firewalld_command_output.stdout | split }}'
+
+    - name: Filter Out Default Firewall Services
+      set_fact:
+        all_container_firewalld_services: '{{ all_firewalld_services | difference(morla_default_firewalld_services) }}'
+
+    - name: Get a List from Enabled Firewall Services Dict
+      set_fact:
+        enabled_container_firewalld_services_list: '{{ enabled_container_firewalld_services_list | default([]) + [item.name] }}'
+      loop: '{{ morla_firewall_services }}'
+
+    - name: Get All Enabled Firewall Services
+      set_fact:
+        enabled_container_firewalld_services: "{{ enabled_container_firewalld_services_list | map('regex_replace', '^', 'container-morla-') | list }}"
+
+    - name: Filter Out Enabled Container Firewall Services
+      set_fact:
+        disabled_container_firewalld_services: '{{ all_container_firewalld_services | difference(enabled_container_firewalld_services) }}'
+
+    - name: Close All Disabled Container Firewall Services
       become: yes
       ansible.posix.firewalld:
         service: '{{ item }}'
@@ -12,9 +33,9 @@
         zone: home
         state: disabled
         immediate: true
-      loop: "{{ all_firewall_services.stdout | split }}"
+      loop: '{{ disabled_container_firewalld_services }}'
 
-    - name: Enable Default Firewall Services
+    - name: Ensure Default Firewall Services Are Enabled
       become: yes
       ansible.posix.firewalld:
         service: '{{ item }}'
@@ -22,20 +43,14 @@
         zone: home
         state: enabled
         immediate: true
-      loop:
-        - cockpit
-        - dhcpv6-client
-        - mdns
-        - samba-client
-        - ssh
+      loop: '{{ morla_default_firewalld_services }}'
 
-
-    - name: Enable Container Firewall Service
+    - name: Ensure Enable Container Firewall Service Are Active
       become: yes
       ansible.posix.firewalld:
-        service: container-morla-{{ item.name }}
+        service: '{{ item }}'
         permanent: yes
         zone: home
         state: enabled
         immediate: true
-      loop: '{{ morla_firewall_services }}'
+      loop: '{{ enabled_container_firewalld_services }}'

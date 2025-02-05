@@ -49,6 +49,17 @@
 
           - morla_vault_dir: '{{ morla_one_vault }}'
 
+
+          - morla_system_default_firewalld_services:
+            - cockpit
+            - dhcpv6-client
+            - mdns
+            - samba-client
+            - ssh
+          - morla_default_firewalld_services: '{{ morla_system_default_firewalld_services + morla_firewalld_private_services }}'
+
+          
+
       vars_files:
           - group_vars/vault.yml
           - inventory/vars.yml
