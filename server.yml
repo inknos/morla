@@ -58,6 +58,11 @@
             - ssh
           - morla_default_firewalld_services: '{{ morla_system_default_firewalld_services + morla_firewalld_private_services }}'
 
+
+          - morla_container_networks:
+            - morla-cftunnel-network-network
+            - morla-wireguard-network-network
+
           
 
       vars_files:

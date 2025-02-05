@@ -4,19 +4,48 @@
           daemon_reload: true
           scope: user
 
-    - name: Enable and Start Cloudflare Network
-      ansible.builtin.systemd:
-          name: morla-cftunnel-network-network.service
-          enabled: yes
-          state: started
-          scope: user
+    - name: Get All Services that Are Related to the Server
+      ansible.builtin.command: "systemctl --user list-units --type=service --all --no-pager --quiet --plain"
+      register: systemd_user_command_output
 
-    - name: Enable and Start Wireguard Network
+    - name: Get First Column of Output
+      set_fact:
+        systemd_user_all_units: "{{ systemd_user_all_units|default([]) + [item.split(' ')[0]] }}"
+      loop: "{{ systemd_user_command_output.stdout_lines }}"
+      no_log: true
+
+    - name: Make List Unique
+      set_fact:
+        systemd_user_unique_output: "{{ systemd_user_all_units | unique }}"
+
+    - name: Filter List Based on Prefix
+      set_fact:
+        systemd_user_morla_all_services: "{{ systemd_user_unique_output | select('regex', '^morla') | list }}"
+
+    - name: Filter Out Networks
+      set_fact:
+        systemd_user_morla_services: "{{ systemd_user_morla_all_services | difference(morla_container_networks | map('regex_replace', '$', '.service') | list) }}"
+
+    - name: Filter Out Enabled Container Services
+      set_fact:
+        disabled_systemd_services: "{{ systemd_user_morla_services | difference(morla_systemd_autostart_containers | map('regex_replace', '$', '.service') | list) }}"
+
+    - name: Disable and Stop Disabled Containers
       ansible.builtin.systemd:
-          name: morla-wireguard-network-network.service
+          name: '{{ item }}'
           enabled: yes
           state: started
           scope: user
+      loop: '{{ disabled_systemd_services }}'
+      ignore_errors: yes
+
+    - name: Enable and Start Networks
+      ansible.builtin.systemd:
+          name: '{{ item }}'
+          enabled: yes
+          state: started
+          scope: user
+      loop: '{{ morla_container_networks }}'
 
     - name: Enable and Start Containers
       ansible.builtin.systemd:
