@@ -7,30 +7,31 @@
     - name: Get All Services that Are Related to the Server
       ansible.builtin.command: "systemctl --user list-units --type=service --all --no-pager --quiet --plain"
       register: systemd_user_command_output
+      changed_when: false
 
-    - name: Get First Column of Output
+    - name: Filter Output and Get Service Names from the First Column
       set_fact:
         systemd_user_all_units: "{{ systemd_user_all_units|default([]) + [item.split(' ')[0]] }}"
       loop: "{{ systemd_user_command_output.stdout_lines }}"
       no_log: true
 
-    - name: Make List Unique
+    - name: Remove Duplicate Services from the List of Enabled Services
       set_fact:
         systemd_user_unique_output: "{{ systemd_user_all_units | unique }}"
 
-    - name: Filter List Based on Prefix
+    - name: Get Enabled Services Based on Prefix
       set_fact:
         systemd_user_morla_all_services: "{{ systemd_user_unique_output | select('regex', '^morla') | list }}"
 
-    - name: Filter Out Networks
+    - name: Filter Out Networks from List of Enabled Services
       set_fact:
         systemd_user_morla_services: "{{ systemd_user_morla_all_services | difference(morla_container_networks | map('regex_replace', '$', '.service') | list) }}"
 
-    - name: Filter Out Enabled Container Services
+    - name: Filter Out Enabled Container from List of Enabled Services
       set_fact:
         disabled_systemd_services: "{{ systemd_user_morla_services | difference(morla_systemd_autostart_containers | map('regex_replace', '$', '.service') | list) }}"
 
-    - name: Disable and Stop Disabled Containers
+    - name: Disable and Stop Services for Disabled Containers
       ansible.builtin.systemd:
           name: '{{ item }}'
           enabled: yes

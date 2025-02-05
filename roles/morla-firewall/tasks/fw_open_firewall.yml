@@ -3,6 +3,7 @@
       become: yes
       ansible.builtin.command: "firewall-cmd --list-services --zone=home"
       register: firewalld_command_output
+      changed_when: false
 
     - name: Put All Services Into a List
       set_fact:
