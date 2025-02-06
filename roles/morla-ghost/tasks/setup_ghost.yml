@@ -31,7 +31,7 @@
       containers.podman.podman_container:
           name: '{{ morla_ghost_db_container_name }}'
           image: '{{ morla_ghost_db_container_image }}'
-          pod: '{{ morla_ghost_pod_name }}'
+          pod: '{{ morla_ghost_pod_name }}.pod'
           volumes: '{{ morla_ghost_db_volumes }}'
           env:
               PUID: '{{ morla_user_puid }}'
@@ -53,8 +53,12 @@
       containers.podman.podman_container:
           name: '{{ morla_ghost_container_name }}'
           image: '{{ morla_ghost_container_image}}'
-          pod: '{{ morla_ghost_pod_name }}'
+          pod: '{{ morla_ghost_pod_name }}.pod'
           volumes: '{{ morla_ghost_volumes }}'
+          healthcheck: "sleep 1"
+          health_startup_cmd: "sleep 3"
+          health_startup_interval: "5s"
+          health_startup_retries: 3
           env:
               #NODE_ENV: development
               TZ: '{{ morla_tz }}'

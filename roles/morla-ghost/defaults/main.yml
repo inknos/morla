@@ -19,7 +19,7 @@ morla_ghost_container_short_name: '{{ morla_ghost_short_name }}'
 morla_ghost_container_name: '{{ morla_user_username }}-{{ morla_ghost_container_short_name }}'
 morla_ghost_public_url: 'blog.{{ morla_public_url }}'
 
-morla_ghost_pod_name: '{{ morla_ghost_container_name }}-pod'
+morla_ghost_pod_name: '{{ morla_ghost_container_name }}-p'
 
 morla_ghost_container_image_base: docker.io/library/ghost
 morla_ghost_container_image_tag: 5-alpine
