@@ -1,0 +1,30 @@
+---
+    - name: Create config directory
+      ansible.builtin.file:
+          path: '{{ morla_flaresolverr_config_dir }}'
+          state: directory
+          owner: '{{ morla_user_username }}'
+          group: '{{ morla_user_groupname }}'
+      when: not check_flaresolverr_config_dir.stat.exists
+
+    - name: Create container
+      containers.podman.podman_container:
+          name: '{{ morla_flaresolverr_container_name }}'
+          image: '{{ morla_flaresolverr_container_image}}'
+          network: morla-wireguard-network
+          network_aliases: '{{ morla_flaresolverr_short_name }}'
+          ports: '{{ morla_flaresolverr_ports }}'
+          volumes: '{{ morla_flaresolverr_volumes }}'
+          label: '{{ morla_flaresolverr_labels }}'
+          dns:
+            - 1.1.1.1
+          env:
+              TZ: '{{ morla_tz }}'
+              LOG_LEVEL: info
+          state: quadlet
+          quadlet_options:
+            - "AutoUpdate=registry"
+            - "Pull=newer"
+            - |
+              [Install]
+              WantedBy=default.target

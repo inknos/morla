@@ -1,0 +1,59 @@
+---
+# SPDX-FileCopyrightText: Nicola Sella
+#
+# SPDX-License-Identifier: GPL-3.0-or-later
+
+# configuration file for flaresolverr
+morla_flaresolverr_enabled: false
+
+morla_flaresolverr_flag_public: true
+morla_flaresolverr_flag_autostart: true
+morla_flaresolverr_flag_wireguard: true
+morla_flaresolverr_flag_firewall: true # replace with if port list non empty
+
+# Name
+morla_flaresolverr_long_name: Flaresolverr
+morla_flaresolverr_short_name: flaresolverr
+
+morla_flaresolverr_container_short_name: '{{ morla_flaresolverr_short_name }}'
+morla_flaresolverr_container_name: '{{ morla_user_username }}-{{ morla_flaresolverr_container_short_name }}'
+morla_flaresolverr_public_url: '{{ morla_flaresolverr_short_name }}.{{ morla_public_url }}'
+morla_flaresolverr_tailscale_url: '{{ morla_flaresolverr_short_name }}.{{ morla_tailscale_url }}'
+
+morla_flaresolverr_container_image_base: ghcr.io/flaresolverr/flaresolverr
+morla_flaresolverr_container_image_tag: latest
+morla_flaresolverr_container_image: '{{ morla_flaresolverr_container_image_base }}:{{ morla_flaresolverr_container_image_tag }}'
+
+# Networking
+morla_flaresolverr_reverse_proxy_port: '8191'
+morla_flaresolverr_exposed_proxy_port: '{{ morla_flaresolverr_reverse_proxy_port }}'
+
+# Networking/Firewall
+morla_flaresolverr_fw_ports:
+    tcp:
+        - '{{ morla_flaresolverr_reverse_proxy_port }}'
+    udp:
+
+# Networking/Port Forwarding
+morla_flaresolverr_ports:
+    - '{{ morla_flaresolverr_reverse_proxy_port }}:{{ morla_flaresolverr_exposed_proxy_port }}'
+
+# Storage/Host
+morla_flaresolverr_config_dir: '{{ morla_config_dir }}/{{ morla_flaresolverr_long_name }}'
+morla_flaresolverr_data_dir: '{{ morla_media_dir }}'
+
+# Storage/Mount
+morla_flaresolverr_volumes:
+    - '{{ morla_flaresolverr_config_dir }}:/config:Z'
+    - '{{ morla_flaresolverr_data_dir }}:/data/media:z'
+    - '{{ morla_torrents_dir }}:/data/torrents:z'
+
+# Labels/Traefik
+morla_flaresolverr_labels:
+    traefik.enable: '{{ morla_flaresolverr_flag_public }}'
+    traefik.http.services.flaresolverr.loadbalancer.server.port: '{{ morla_flaresolverr_exposed_proxy_port }}'
+    traefik.http.routers.flaresolverr.tls: true
+    traefik.http.routers.flaresolverr.rule: Host(`{{ morla_flaresolverr_tailscale_url }}`)
+    traefik.http.routers.flaresolverr.entrypoints: websecure
+    traefik.http.routers.flaresolverr.tls.certresolver: myresolver
+    traefik.http.routers.flaresolverr.tls.domains: '{{ morla_flaresolverr_tailscale_url }}'

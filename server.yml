@@ -74,6 +74,7 @@
           - morla-cloudflared # runs cloudlfared in a separate network to tunnel containers traffic
           - morla-traefik     # support for traefik. since it's experimental it's using v3 beta
           - morla-filebrowser # setup filebrowser container
+          - morla-flaresolverr
           - morla-radarr      # setup radarr
           - morla-sonarr      # setup sonarr
           - morla-prowlarr    # setup prowlarr
