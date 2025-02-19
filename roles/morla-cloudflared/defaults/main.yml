@@ -46,13 +46,13 @@ morla_cloudflared_command: "tunnel --no-autoupdate run"
 
 
 morla_cloudflared_labels:
-    cloudflared.enable: true
-    cloudflared.http.routers.cloudflared.rule: Host(`cloudflared.{{ morla_domain }}`) && (PathPrefix(`/api`) || PathPrefix(`/dashboard`))
-    cloudflared.http.routers.cloudflared.service: api@internal
-    cloudflared.http.routers.cloudflared.entrypoints: websecure
-    cloudflared.http.routers.cloudflared.tls.certresolver: myresolver
+    # cloudflared.enable: true
+    # cloudflared.http.routers.cloudflared.rule: Host(`cloudflared.{{ morla_domain }}`) && (PathPrefix(`/api`) || PathPrefix(`/dashboard`))
+    # cloudflared.http.routers.cloudflared.service: api@internal
+    # cloudflared.http.routers.cloudflared.entrypoints: websecure
+    # cloudflared.http.routers.cloudflared.tls.certresolver: myresolver
     # middleware redirect
-    cloudflared.http.middlewares.redirect-to-https.redirectscheme.scheme: https
+    # cloudflared.http.middlewares.redirect-to-https.redirectscheme.scheme: https
     # # global redirect to https
     # cloudflared.http.routers.redirs.rule: hostregexp(`{host:.+}`)
     # cloudflared.http.routers.redirs.entrypoints: web

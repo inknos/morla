@@ -11,9 +11,7 @@
       containers.podman.podman_container:
           name: '{{ morla_traefik_container_name }}'
           image: '{{ morla_traefik_container_image}}'
-          network:
-            - morla-wireguard-network
-            - morla-cftunnel-network
+          network: '{{ morla_container_networks }}'
           network_aliases: '{{ morla_traefik_short_name }}'
             #ip: 172.20.0.100
           ports: '{{ morla_traefik_ports }}'

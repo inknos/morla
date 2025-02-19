@@ -59,9 +59,11 @@
           - morla_default_firewalld_services: '{{ morla_system_default_firewalld_services + morla_firewalld_private_services }}'
 
 
-          - morla_container_networks:
-            - morla-cftunnel-network-network
-            - morla-wireguard-network-network
+          - morla_container_default_networks:
+            - morla-cftunnel-network
+            - morla-wireguard-network
+
+          - morla_container_networks: '{{ morla_container_default_networks + morla_container_private_networks }}'
 
           
 

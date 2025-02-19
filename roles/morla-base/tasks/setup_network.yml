@@ -5,6 +5,8 @@
           subnet: 172.20.0.0/24
           driver: bridge
           state: quadlet
+          dns:
+            - 1.1.1.1
           # quadlet_options:
           #   - DNS=1.1.1.1
           #   - IPv6=true

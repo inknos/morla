@@ -20,6 +20,8 @@
           network_aliases: '{{ morla_qbittorrent_short_name }}'
           ports: '{{ morla_qbittorrent_ports }}'
           volumes: '{{ morla_qbittorrent_volumes }}'
+          dns:
+            - 1.1.1.1
           label: '{{ morla_qbittorrent_labels }}'
           env:
               PUID: '{{ morla_root_puid }}'

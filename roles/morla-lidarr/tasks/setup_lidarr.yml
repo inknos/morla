@@ -16,6 +16,8 @@
           ports: '{{ morla_lidarr_ports }}'
           volumes: '{{ morla_lidarr_volumes }}'
           label: '{{ morla_lidarr_labels }}'
+          dns:
+            - 1.1.1.1
           env:
               PUID: '{{ morla_fake_puid }}'
               PGID: '{{ morla_fake_pgid }}'
