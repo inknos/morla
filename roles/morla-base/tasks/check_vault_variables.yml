@@ -1,0 +1,51 @@
+- name: Check that variables are defined in the vault
+  ansible.builtin.fail:
+    msg: "Variable '{{ item }}' is not defined"
+  when: item not in vars
+  loop:
+    - morla_main_domain
+    - morla_public_ip
+    - morla_tailscale_ip
+    - ansible_become_password
+    - morla_cloudflared_token
+    - morla_discord_soundboard_bot_discord_token
+    - morla_discord_soundboard_bot_discord_client_id
+    - morla_discord_soundboard_bot_discord_client_secret
+    - morla_discord_soundboard_bot_rocket_secret_key
+    - morla_discord_soundboard_bot_db_env_postgres_password
+    - morla_etebase_super_pass
+    - morla_etebase_secret_key
+    - morla_etebase_db_postgres_password
+    - morla_ghost_db_password
+    - morla_ghost_db_root_password
+    - morla_gitea_db_password
+    - morla_gitea_db_root_password
+    - morla_hedgedoc_auth_github_clientid
+    - morla_hedgedoc_auth_github_clientsecret
+    - morla_hedgedoc_db_password
+    - morla_hedgedoc_db_root_password
+    - morla_letsencrypt_email
+    - morla_letsencrypt_gandi_api_key
+    - morla_letsencrypt_gandiv5_personal_access_token
+    - morla_lychee_db_password
+    - morla_lychee_db_root_password
+    - morla_obfs4_bridge_email
+    - morla_obfs4_bridge_nickname
+    - morla_photoprism_admin_password
+    - morla_photoprism_db_mysql_password
+    - morla_photoprism_db_mysql_root_password
+    - morla_photoview_db_password
+    - morla_piwigo_db_password
+    - morla_piwigo_db_root_password
+    - morla_standardnotes_db_password
+    - morla_standardnotes_db_root_password
+    - morla_standardnotes_auth_jwt_secret
+    - morla_standardnotes_auth_server_encryption_server_key
+    - morla_standardnotes_auto_valet_token_secret
+    - morla_traefik_cloudflare_dns_api_token
+    - morla_transfersh_http_auth_pass
+    - morla_turtl_app_secure_hash_salt
+    - morla_turtl_db_postgres_password
+    - morla_wordpress_db_mysql_password
+    - morla_firewalld_private_services
+    - morla_container_private_networks
