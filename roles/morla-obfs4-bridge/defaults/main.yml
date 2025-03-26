@@ -1,0 +1,67 @@
+---
+# SPDX-FileCopyrightText: Nicola Sella
+#
+# SPDX-License-Identifier: GPL-3.0-or-later
+
+# configuration file for obfs4-bridge
+morla_obfs4_bridge_enabled: false
+
+morla_obfs4_bridge_flag_public: false
+morla_obfs4_bridge_flag_autostart: true
+morla_obfs4_bridge_flag_wireguard: true
+morla_obfs4_bridge_flag_firewall: true # replace with if port list non empty
+
+# Name
+morla_obfs4_bridge_long_name: Obfs4Bridge
+morla_obfs4_bridge_short_name: obfs4-bridge
+
+morla_obfs4_bridge_container_short_name: '{{ morla_obfs4_bridge_short_name }}'
+morla_obfs4_bridge_container_name: '{{ morla_user_username }}-{{ morla_obfs4_bridge_container_short_name }}'
+morla_obfs4_bridge_public_url: '{{ morla_obfs4_bridge_short_name }}.{{ morla_public_url }}'
+morla_obfs4_bridge_tailscale_url: '{{ morla_obfs4_bridge_short_name }}.{{ morla_tailscale_url }}'
+
+morla_obfs4_bridge_container_image_base: docker.io/thetorproject/obfs4-bridge
+morla_obfs4_bridge_container_image_tag: latest
+morla_obfs4_bridge_container_image: '{{ morla_obfs4_bridge_container_image_base }}:{{ morla_obfs4_bridge_container_image_tag }}'
+
+# Networking
+morla_obfs4_bridge_or_port: '19311'
+morla_obfs4_bridge_pt_port: '14072'
+
+morla_obfs4_bridge_reverse_proxy_port: '{{ morla_obfs4_bridge_or_port }}'
+morla_obfs4_bridge_exposed_proxy_port: '{{ morla_obfs4_bridge_reverse_proxy_port }}'
+
+
+# Networking/Firewall
+morla_obfs4_bridge_fw_ports:
+    tcp:
+        - '{{ morla_obfs4_bridge_reverse_proxy_port }}'
+        - '{{ morla_obfs4_bridge_pt_port }}'
+    udp:
+
+# Networking/Port Forwarding
+morla_obfs4_bridge_ports:
+    - '{{ morla_obfs4_bridge_reverse_proxy_port }}:{{ morla_obfs4_bridge_exposed_proxy_port }}'
+    - '{{ morla_obfs4_bridge_pt_port }}:{{ morla_obfs4_bridge_pt_port }}'
+
+# Environment
+morla_obfs4_bridge_env_or_port: '{{ morla_obfs4_bridge_or_port }}'
+morla_obfs4_bridge_env_pt_port: '{{ morla_obfs4_bridge_pt_port }}'
+morla_obfs4_bridge_env_email: '{{ morla_obfs4_bridge_email }}'
+morla_obfs4_bridge_env_nickname: '{{ morla_obfs4_bridge_nickname }}'
+
+# Storage/Host
+morla_obfs4_bridge_config_dir: '{{ morla_config_dir }}/{{ morla_obfs4_bridge_long_name }}'
+
+# Storage/Mount
+morla_obfs4_bridge_volumes:
+    - '{{ morla_obfs4_bridge_config_dir }}:/var/lib/tor:Z'
+
+# Labels/Traefik
+morla_obfs4_bridge_labels:
+    traefik.enable: '{{ morla_obfs4_bridge_flag_public }}'
+    traefik.http.services.obfs4_bridge.loadbalancer.server.port: '{{ morla_obfs4_bridge_exposed_proxy_port }}'
+    traefik.http.routers.obfs4_bridge.tls: true
+    traefik.http.routers.obfs4_bridge.rule: Host(`{{ morla_obfs4_bridge_tailscale_url }}`)
+    traefik.http.routers.obfs4_bridge.entrypoints: websecure
+    traefik.http.routers.obfs4_bridge.tls.domains: '{{ morla_obfs4_bridge_tailscale_url }}'

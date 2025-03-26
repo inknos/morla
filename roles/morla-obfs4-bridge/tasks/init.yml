@@ -1,0 +1,5 @@
+---
+    - name: Check if Config dir exists
+      stat:
+          path: '{{ morla_obfs4_bridge_config_dir }}'
+      register: check_obfs4_bridge_config_dir

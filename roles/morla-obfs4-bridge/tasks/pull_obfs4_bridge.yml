@@ -1,0 +1,5 @@
+---
+    - name: Pull Obfs4Bridge image
+      containers.podman.podman_image:
+          name: '{{ morla_obfs4_bridge_container_image }}'
+          tag: latest

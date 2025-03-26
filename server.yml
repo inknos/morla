@@ -75,6 +75,7 @@
           - morla-base        # setup base environment for containers like networks
           - morla-cloudflared # runs cloudlfared in a separate network to tunnel containers traffic
           - morla-traefik     # support for traefik. since it's experimental it's using v3 beta
+          - morla-obfs4-bridge # tor relay node
           - morla-filebrowser # setup filebrowser container
           - morla-flaresolverr
           - morla-radarr      # setup radarr

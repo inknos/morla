@@ -1,0 +1,33 @@
+---
+    - name: Create config directory
+      ansible.builtin.file:
+          path: '{{ morla_obfs4_bridge_config_dir }}'
+          state: directory
+          owner: '{{ morla_user_username }}'
+          group: '{{ morla_user_groupname }}'
+      when: not check_obfs4_bridge_config_dir.stat.exists
+
+    - name: Create container
+      containers.podman.podman_container:
+          name: '{{ morla_obfs4_bridge_container_name }}'
+          image: '{{ morla_obfs4_bridge_container_image}}'
+          network: morla-wireguard-network
+          network_aliases: '{{ morla_obfs4_bridge_short_name }}'
+          ports: '{{ morla_obfs4_bridge_ports }}'
+          volumes: '{{ morla_obfs4_bridge_volumes }}'
+          label: '{{ morla_obfs4_bridge_labels }}'
+          dns:
+            - 1.1.1.1
+          userns: keep-id:uid=101,gid=101
+          env:
+            OR_PORT: '{{ morla_obfs4_bridge_or_port }}'
+            PT_PORT: '{{ morla_obfs4_bridge_pt_port }}'
+            EMAIL: '{{ morla_obfs4_bridge_email }}'
+            NICKNAME: '{{ morla_obfs4_bridge_nickname }}'
+          state: quadlet
+          quadlet_options:
+            - "AutoUpdate=registry"
+            - "Pull=newer"
+            - |
+              [Install]
+              WantedBy=default.target

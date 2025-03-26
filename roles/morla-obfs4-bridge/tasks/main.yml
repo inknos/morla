@@ -1,0 +1,32 @@
+---
+# roles/obfs4_bridge/tasks/main.yml
+    - ansible.builtin.import_tasks: '{{ role_path }}/tasks/init.yml'
+      when: morla_obfs4_bridge_enabled | bool
+      tags:
+          - always
+
+    - ansible.builtin.import_tasks: '{{ role_path }}/tasks/init_flag.yml'
+      when: morla_obfs4_bridge_enabled | bool
+      tags:
+          - always
+          - setup-all
+          - setup-obfs4-bridge
+
+    - ansible.builtin.import_tasks: '{{ role_path }}/tasks/pull_obfs4_bridge.yml'
+      when: morla_obfs4_bridge_enabled | bool
+      tags:
+          - setup-all
+          - setup-obfs4-bridge
+
+    - ansible.builtin.import_tasks: '{{ role_path }}/tasks/destroy_obfs4_bridge.yml'
+      when: morla_obfs4_bridge_enabled | bool
+      tags:
+          - never
+          - destroy-all
+          - destroy-obfs4-bridge
+
+    - ansible.builtin.import_tasks: '{{ role_path }}/tasks/setup_obfs4_bridge.yml'
+      when: morla_obfs4_bridge_enabled | bool
+      tags:
+          - setup-all
+          - setup-obfs4-bridge
