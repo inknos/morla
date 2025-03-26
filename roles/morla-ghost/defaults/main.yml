@@ -22,7 +22,7 @@ morla_ghost_public_url: 'blog.{{ morla_public_url }}'
 morla_ghost_pod_name: '{{ morla_ghost_container_name }}-p'
 
 morla_ghost_container_image_base: docker.io/library/ghost
-morla_ghost_container_image_tag: 5-alpine
+morla_ghost_container_image_tag: 5
 morla_ghost_container_image: '{{ morla_ghost_container_image_base }}:{{ morla_ghost_container_image_tag }}'
 
 # Networking
