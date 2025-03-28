@@ -1,0 +1,32 @@
+---
+# roles/drupal/tasks/main.yml
+    - ansible.builtin.import_tasks: '{{ role_path }}/tasks/init.yml'
+      when: morla_drupal_enabled | bool
+      tags:
+          - always
+
+    - ansible.builtin.import_tasks: '{{ role_path }}/tasks/init_flag.yml'
+      when: morla_drupal_enabled | bool
+      tags:
+          - always
+          - setup-all
+          - setup-drupal
+
+    - ansible.builtin.import_tasks: '{{ role_path }}/tasks/pull_drupal.yml'
+      when: morla_drupal_enabled | bool
+      tags:
+          - setup-all
+          - setup-drupal
+
+    - ansible.builtin.import_tasks: '{{ role_path }}/tasks/destroy_drupal.yml'
+      when: morla_drupal_enabled | bool
+      tags:
+          - never
+          - destroy-all
+          - destroy-drupal
+
+    - ansible.builtin.import_tasks: '{{ role_path }}/tasks/setup_drupal.yml'
+      when: morla_drupal_enabled | bool
+      tags:
+          - setup-all
+          - setup-drupal

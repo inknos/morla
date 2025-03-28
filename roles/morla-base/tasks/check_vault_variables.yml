@@ -8,6 +8,7 @@
     - morla_tailscale_ip
     - ansible_become_password
     - morla_cloudflared_token
+    - morla_drupal_db_password
     - morla_discord_soundboard_bot_discord_token
     - morla_discord_soundboard_bot_discord_client_id
     - morla_discord_soundboard_bot_discord_client_secret

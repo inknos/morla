@@ -1,0 +1,30 @@
+---
+    - name: Check if Config dir exists
+      stat:
+          path: '{{ morla_drupal_config_dir }}'
+      register: check_drupal_config_dir
+
+    - name: Check if Modules dir exists
+      stat:
+          path: '{{ morla_drupal_modules_dir }}'
+      register: check_drupal_modules_dir
+
+    - name: Check if Profiles dir exists
+      stat:
+          path: '{{ morla_drupal_profiles_dir }}'
+      register: check_drupal_profiles_dir
+
+    - name: Check if Themes dir exists
+      stat:
+          path: '{{ morla_drupal_themes_dir }}'
+      register: check_drupal_themes_dir
+
+    - name: Check if Sites dir exists
+      stat:
+          path: '{{ morla_drupal_sites_dir }}'
+      register: check_drupal_sites_dir
+
+    - name: Check if Config dir for DB exists
+      stat:
+          path: '{{ morla_drupal_db_config_dir }}'
+      register: check_drupal_db_config_dir

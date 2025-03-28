@@ -1,0 +1,90 @@
+---
+# SPDX-FileCopyrightText: Nicola Sella
+#
+# SPDX-License-Identifier: GPL-3.0-or-later
+
+# configuration file for drupal
+morla_drupal_enabled: false
+
+morla_drupal_flag_public: true
+morla_drupal_flag_autostart: true
+morla_drupal_flag_wireguard: true
+morla_drupal_flag_firewall: true # replace with if port list non empty
+
+# Name
+morla_drupal_long_name: Drupal
+morla_drupal_short_name: drupal
+
+morla_drupal_container_short_name: '{{ morla_drupal_short_name }}'
+morla_drupal_container_name: '{{ morla_user_username }}-{{ morla_drupal_container_short_name }}'
+morla_drupal_public_url: 'blog.{{ morla_public_url }}'
+
+morla_drupal_pod_name: '{{ morla_drupal_container_name }}-p'
+
+morla_drupal_container_image_base: docker.io/library/drupal
+morla_drupal_container_image_tag: latest
+morla_drupal_container_image: '{{ morla_drupal_container_image_base }}:{{ morla_drupal_container_image_tag }}'
+
+# Networking
+morla_drupal_reverse_proxy_port: '23123'
+morla_drupal_exposed_proxy_port: '80'
+
+# Networking/Firewall
+morla_drupal_fw_ports:
+    tcp:
+        - '{{ morla_drupal_reverse_proxy_port }}'
+    udp:
+
+# Networking/Port Forwarding
+morla_drupal_ports:
+    - '{{ morla_drupal_reverse_proxy_port }}:{{ morla_drupal_exposed_proxy_port }}'
+
+# Storage/Host
+morla_drupal_config_dir: '{{ morla_config_dir }}/{{ morla_drupal_long_name }}'
+morla_drupal_modules_dir: '{{ morla_drupal_config_dir }}/modules'
+morla_drupal_profiles_dir: '{{ morla_drupal_config_dir }}/profiles'
+morla_drupal_themes_dir: '{{ morla_drupal_config_dir }}/themes'
+morla_drupal_sites_dir: '{{ morla_drupal_config_dir }}/sites'
+
+# Storage/Mount
+morla_drupal_volumes:
+    - '{{ morla_drupal_modules_dir }}:/var/www/html/modules:Z'
+    - '{{ morla_drupal_profiles_dir }}:/var/www/html/profiles:Z'
+    - '{{ morla_drupal_themes_dir }}:/var/www/html/themes:Z'
+      # this takes advantage of the feature in Docker that a new anonymous
+      # volume (which is what we're creating here) will be initialized with the
+      # existing content of the image at the same location
+    - '{{ morla_drupal_sites_dir }}:/var/www/html/sites:Z'
+
+# Labels/Traefik
+morla_drupal_labels:
+    traefik.enable: '{{ morla_drupal_flag_public }}'
+    traefik.http.services.drupal.loadbalancer.server.port: '{{ morla_drupal_exposed_proxy_port }}'
+    traefik.http.routers.drupal.tls: true
+    traefik.http.routers.drupal.rule: Host(`{{ morla_drupal_public_url }}`)
+    traefik.http.routers.drupal.entrypoints: websecure
+    traefik.http.routers.drupal.tls.certresolver: myresolver
+
+# DB
+# Name
+morla_drupal_db_long_name: DrupalDB
+morla_drupal_db_short_name: drupal-db
+
+morla_drupal_db_container_short_name: '{{ morla_drupal_db_short_name }}'
+morla_drupal_db_container_name: '{{ morla_user_username }}-{{ morla_drupal_db_container_short_name }}'
+
+morla_drupal_db_container_image_base: docker.io/library/postgres
+morla_drupal_db_container_image_tag: latest
+morla_drupal_db_container_image: '{{ morla_drupal_db_container_image_base }}:{{ morla_drupal_db_container_image_tag }}'
+
+# Environment
+morla_drupal_db_env_postgres_user: drupal
+morla_drupal_db_env_postgres_password: '{{ morla_drupal_db_password}}'
+morla_drupal_db_env_postgres_db: drupal-db
+
+# Storage/Host
+morla_drupal_db_config_dir: '{{ morla_config_dir }}/{{ morla_drupal_db_long_name }}'
+
+# Storage/Mount
+morla_drupal_db_volumes:
+    - '{{ morla_drupal_db_config_dir }}:/var/lib/postgresql/data:Z'

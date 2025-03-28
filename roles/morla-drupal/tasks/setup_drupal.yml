@@ -1,0 +1,103 @@
+---
+    - name: Create config directory
+      ansible.builtin.file:
+          path: '{{ morla_drupal_config_dir }}'
+          state: directory
+          owner: '{{ morla_user_username }}'
+          group: '{{ morla_user_groupname }}'
+      when: not check_drupal_config_dir.stat.exists
+
+    - name: Create Modules directory
+      ansible.builtin.file:
+          path: '{{ morla_drupal_modules_dir }}'
+          state: directory
+          owner: '{{ morla_user_username }}'
+          group: '{{ morla_user_groupname }}'
+      when: not check_drupal_modules_dir.stat.exists
+
+    - name: Create Profiles directory
+      ansible.builtin.file:
+          path: '{{ morla_drupal_profiles_dir }}'
+          state: directory
+          owner: '{{ morla_user_username }}'
+          group: '{{ morla_user_groupname }}'
+      when: not check_drupal_profiles_dir.stat.exists
+
+    - name: Create Themes directory
+      ansible.builtin.file:
+          path: '{{ morla_drupal_themes_dir }}'
+          state: directory
+          owner: '{{ morla_user_username }}'
+          group: '{{ morla_user_groupname }}'
+      when: not check_drupal_themes_dir.stat.exists
+
+    - name: Create Sites directory
+      ansible.builtin.file:
+          path: '{{ morla_drupal_sites_dir }}'
+          state: directory
+          owner: '{{ morla_user_username }}'
+          group: '{{ morla_user_groupname }}'
+      when: not check_drupal_sites_dir.stat.exists
+
+    - name: Create DB config directory
+      ansible.builtin.file:
+          path: '{{ morla_drupal_db_config_dir }}'
+          state: directory
+          owner: '{{ morla_user_username }}'
+          group: '{{ morla_user_groupname }}'
+      when: not check_drupal_db_config_dir.stat.exists
+
+    - name: Create pod
+      containers.podman.podman_pod:
+          name: '{{ morla_drupal_pod_name }}'
+          network: morla-wireguard-network
+          ports: '{{ morla_drupal_ports }}'
+          label: '{{ morla_drupal_labels }}'
+          state: quadlet
+          quadlet_options:
+            - |
+              [Install]
+              WantedBy=default.target
+
+    - name: Create Database
+      containers.podman.podman_container:
+          name: '{{ morla_drupal_db_container_name }}'
+          image: '{{ morla_drupal_db_container_image }}'
+          pod: '{{ morla_drupal_pod_name }}.pod'
+          volumes: '{{ morla_drupal_db_volumes }}'
+          env:
+              PUID: '{{ morla_user_puid }}'
+              PGID: '{{ morla_user_pgid }}'
+              TZ: '{{ morla_tz }}'
+              POSTGRES_DB: '{{ morla_drupal_db_env_postgres_db }}'
+              POSTGRES_USER: '{{ morla_drupal_db_env_postgres_user }}'
+              POSTGRES_PASSWORD: '{{ morla_drupal_db_env_postgres_password }}'
+          user: 0:0
+          userns: keep-id:uid=999,gid=999
+          state: quadlet
+          quadlet_options:
+            - "AutoUpdate=registry"
+            - "Pull=newer"
+            - |
+              [Install]
+              WantedBy=default.target
+
+    - name: Create container
+      containers.podman.podman_container:
+          name: '{{ morla_drupal_container_name }}'
+          image: '{{ morla_drupal_container_image}}'
+          pod: '{{ morla_drupal_pod_name }}.pod'
+          volumes: '{{ morla_drupal_volumes }}'
+          user: 0:0
+          userns: keep-id:uid=33,gid=33
+          # healthcheck: "sleep 1"
+          # health_startup_cmd: "sleep 3"
+          # health_startup_interval: "5s"
+          # health_startup_retries: 3
+          state: quadlet
+          quadlet_options:
+            - "AutoUpdate=registry"
+            - "Pull=newer"
+            - |
+              [Install]
+              WantedBy=default.target

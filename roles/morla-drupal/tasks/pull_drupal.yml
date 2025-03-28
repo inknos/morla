@@ -1,0 +1,5 @@
+---
+    - name: Pull Drupal image
+      containers.podman.podman_image:
+          name: '{{ morla_drupal_container_image }}'
+          tag: latest

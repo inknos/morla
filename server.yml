@@ -89,6 +89,7 @@
           - morla-jellyfin    # setup jellyfin [public]
           - morla-navidrome   # setup navidrome [public]
           - morla-ghost       # setup ghost [public]
+          - morla-drupal
           - morla-firewall  # manage firewall services and open ports
           - morla-systemd   # manage containers autostart
 
