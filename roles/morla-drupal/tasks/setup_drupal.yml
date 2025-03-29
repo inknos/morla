@@ -53,6 +53,8 @@
           network: morla-wireguard-network
           ports: '{{ morla_drupal_ports }}'
           label: '{{ morla_drupal_labels }}'
+          dns:
+              - 1.1.1.1
           state: quadlet
           quadlet_options:
             - |
@@ -88,8 +90,8 @@
           image: '{{ morla_drupal_container_image}}'
           pod: '{{ morla_drupal_pod_name }}.pod'
           volumes: '{{ morla_drupal_volumes }}'
-          user: 0:0
-          userns: keep-id:uid=33,gid=33
+          # user: 0:0
+          # userns: keep-id:uid=33,gid=33
           # healthcheck: "sleep 1"
           # health_startup_cmd: "sleep 3"
           # health_startup_interval: "5s"
