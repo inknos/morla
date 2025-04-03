@@ -49,7 +49,20 @@
               [Install]
               WantedBy=default.target
 
-    - name: Create container
+    - name: Create Activity Pub container
+      containers.podman.podman_container:
+          name: '{{ morla_ghost_container_name }}-activity-pub'
+          image: localhost/ghost-activity-pub:latest
+          pod: '{{ morla_ghost_pod_name}}.pod'
+          state: quadlet
+          quadlet_options:
+              - "AutoUpdate=registry"
+              - "Pull=newer"
+              - |
+                [Install]
+                WantedBy=default.target
+
+    - name: Create Server container
       containers.podman.podman_container:
           name: '{{ morla_ghost_container_name }}'
           image: '{{ morla_ghost_container_image}}'

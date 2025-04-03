@@ -1,4 +1,36 @@
 ---
+    - name: Make a temp dir to build the container
+      ansible.builtin.tempfile:
+          state: directory
+          prefix: morla
+      register: builddir
+
+    - name: Clone from Ghost Activity Pub
+      ansible.builtin.git:
+          repo: https://github.com/TryGhost/ActivityPub.git
+          dest: '{{ builddir.path }}'
+          single_branch: yes
+
+    - name: Add registry infor to dockerfile image
+      ansible.builtin.replace:
+          path: '{{ builddir.path }}/Dockerfile'
+          regexp: '^FROM\s(.*)?$'
+          replace: 'FROM docker.io/library/\1'
+
+    - name: Build Ghost Activity Pub Image
+      containers.podman.podman_image:
+          name: ghost-activity-pub
+          path: '{{ builddir.path }}'
+      ignore_errors: true
+
+    # TODO: should do ignore errors here and then cleanup folder then error out
+
+    - name: Remove the temporary dir and file
+      ansible.builtin.file:
+          path: "{{ builddir.path }}"
+          state: absent
+      when: builddir.path is defined
+
     - name: Pull Ghost image
       containers.podman.podman_image:
           name: '{{ morla_ghost_container_image }}'
