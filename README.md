@@ -1,4 +1,11 @@
 # morla
+
+> [!WARNING]  
+> Code now lives here
+> https://codeberg.org/inknos/morla
+
+---
+
 Ansible scripts to configure my private server
 
 Run with:
